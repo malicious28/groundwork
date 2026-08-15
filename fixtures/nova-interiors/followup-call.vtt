@@ -1,0 +1,117 @@
+WEBVTT
+
+NOTE Microsoft Teams meeting transcript
+NOTE Nova Interiors — discovery call 2
+NOTE 26 March 2026, 11:30 IST
+NOTE Rohit Menon joined late and left at 00:14
+
+00:00:03.400 --> 00:00:11.900
+<v Ashika Panigrahi>Good morning. Rohit said he'd join partway. I wanted to go deeper on the operational side today, so Priya and Sameer, you two are the right people anyway.</v>
+
+00:00:12.400 --> 00:00:19.100
+<v Priya Nair>He's on a site visit. He said to carry on and he'd catch up on whatever we decide.</v>
+
+00:00:19.600 --> 00:00:27.300
+<v Ashika Panigrahi>Fine. I sent over the notes from the twelfth — anything in there that landed wrong?</v>
+
+00:00:27.800 --> 00:00:41.500
+<v Priya Nair>No, it was accurate. But reading it back I realised we left out a whole area, which is materials. Half of what goes wrong on a project is material, and none of that was in what we discussed.</v>
+
+00:00:42.000 --> 00:00:47.700
+<v Ashika Panigrahi>Tell me about that. What does material tracking look like today?</v>
+
+00:00:48.200 --> 00:01:02.900
+<v Sameer Kulkarni>It's a purchase order in Zoho, then a WhatsApp message to the vendor, then hopefully the vendor sends a delivery date, then we write it on the site whiteboard. There's no system. I keep the important ones in my own notes app.</v>
+
+00:01:03.400 --> 00:01:12.100
+<v Priya Nair>And when a delivery slips, nobody finds out until the carpenter turns up and there's no plywood. Then the whole week reshuffles.</v>
+
+00:01:12.600 --> 00:01:19.300
+<v Ashika Panigrahi>So you'd want the portal to also cover what's ordered, what's arrived, and what's late.</v>
+
+00:01:19.800 --> 00:01:30.500
+<v Priya Nair>Yes. We also need to know what's ordered against each project. Honestly that might be worth more to us than the client-facing side. The client stuff is what Rohit feels; the material stuff is what actually costs us weeks.</v>
+
+00:01:31.000 --> 00:01:38.700
+<v Ashika Panigrahi>That's a significant addition to what we scoped on the twelfth. I want to be careful — that's a second module, not a small feature.</v>
+
+00:01:39.200 --> 00:01:45.900
+<v Priya Nair>I understand. But I don't think the first version is useful to us internally without it.</v>
+
+00:01:46.400 --> 00:01:53.100
+<v Ashika Panigrahi>Understood, I'll cost it separately so you can see the difference and decide. Which brings me to budget.</v>
+
+00:01:53.600 --> 00:02:06.300
+<v Priya Nair>Rohit mentioned around five lakh is fine if it saves the coordinator time. He said that to me last week after the Kharadi handover went badly. So I think there's more room than what he told you on the first call.</v>
+
+00:02:06.800 --> 00:02:13.500
+<v Ashika Panigrahi>That's helpful to know, and I'll confirm it with him directly rather than assume.</v>
+
+00:02:14.000 --> 00:02:20.700
+<v Ashika Panigrahi>Let's do approvals. On the first call Rohit said everything client-facing routes through him.</v>
+
+00:02:21.200 --> 00:02:35.900
+<v Priya Nair>That's not going to work in practice and I'll be honest with you about it. Site-level updates I approve, I don't want to wait for Rohit. If a supervisor posts that the false ceiling is done and I can see the photo, that should go to the client the same hour.</v>
+
+00:02:36.400 --> 00:02:42.100
+<v Ashika Panigrahi>And what about the things that burned him — dates, costs, scope changes?</v>
+
+00:02:42.600 --> 00:02:52.300
+<v Priya Nair>Dates and money, sure, send those to him. But progress updates? If those queue behind Rohit's inbox they'll go out three days late and we're back to where we started.</v>
+
+00:02:52.800 --> 00:02:59.500
+<v Sameer Kulkarni>That's true. Rohit's good but he's on sites. Things sit with him.</v>
+
+00:03:00.000 --> 00:03:06.700
+<v Ashika Panigrahi>I'm going to write that up as an open question rather than pick a side. It's a decision the two of you need to make together.</v>
+
+00:03:07.200 --> 00:03:13.900
+<v Priya Nair>Fair. Put it in front of him with the delay numbers and he'll come round.</v>
+
+00:03:14.400 --> 00:03:21.100
+<v Ashika Panigrahi>Let's cover the existing sheet. When this goes live, what happens to the master Excel?</v>
+
+00:03:21.600 --> 00:03:29.300
+<v Priya Nair>I assumed it just… stops? We'd use the new thing.</v>
+
+00:03:29.800 --> 00:03:38.500
+<v Ashika Panigrahi>For live projects, though — the eighteen or twenty that are mid-flight on the day you switch. Does their history come across?</v>
+
+00:03:39.000 --> 00:03:46.700
+<v Priya Nair>Hm. I hadn't thought about that. Some of those are eight months in. Sameer, would you want the old history?</v>
+
+00:03:47.200 --> 00:03:55.900
+<v Sameer Kulkarni>The milestones, yes. The week-by-week notes, no. Nobody reads those after the fact.</v>
+
+00:03:56.400 --> 00:04:02.100
+<v Priya Nair>Let's say milestones then. But I'd want to check with Rohit, he might want everything.</v>
+
+00:04:02.600 --> 00:04:09.300
+<v Ashika Panigrahi>Another one for the list. What about the client logins — how does a client get access?</v>
+
+00:04:09.800 --> 00:04:17.500
+<v Priya Nair>We send them a link, I suppose? Most of our clients are not going to install an app, I can tell you that now.</v>
+
+00:04:18.000 --> 00:04:26.700
+<v Sameer Kulkarni>Some of them are sixty-plus and their son handles everything. So whatever it is, it has to work if you forward it to somebody else.</v>
+
+00:04:27.200 --> 00:04:34.900
+<v Ashika Panigrahi>That's a genuinely useful constraint, thank you. Last area — is there anything about invoicing I should know?</v>
+
+00:04:35.400 --> 00:04:47.100
+<v Priya Nair>Only that GST on interior work is complicated and our accountant is particular. I wouldn't want the portal generating anything that looks like an invoice. Zoho stays the source of truth for money.</v>
+
+00:04:47.600 --> 00:04:52.300
+<v Ashika Panigrahi>Show the status, never generate the document. Understood.</v>
+
+00:04:52.800 --> 00:05:01.500
+<v Priya Nair>One more thing — will this work on a phone? Because my supervisors do not own laptops. Everything they do is on a phone, in the field, often on bad signal.</v>
+
+00:05:02.000 --> 00:05:09.700
+<v Ashika Panigrahi>That changes the shape of it quite a bit, and I'm glad you said it now rather than in June. Anything else on that?</v>
+
+00:05:10.200 --> 00:05:19.900
+<v Sameer Kulkarni>Uploading photos has to be fast and it has to survive a bad connection. If it fails halfway they'll go back to WhatsApp and you'll never get them off it.</v>
+
+00:05:20.400 --> 00:05:27.100
+<v Ashika Panigrahi>That's the sharpest requirement I've heard in two calls. I'll make sure it's written down that way.</v>

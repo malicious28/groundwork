@@ -1,0 +1,125 @@
+WEBVTT
+
+NOTE Microsoft Teams meeting transcript
+NOTE Nova Interiors — discovery call 1
+NOTE 12 March 2026, 15:00 IST
+
+00:00:04.120 --> 00:00:12.480
+<v Ashika Panigrahi>Thanks for making the time, both of you. I've got about forty minutes blocked. Before we talk about any software, can you walk me through what actually happens today when a project starts?</v>
+
+00:00:13.010 --> 00:00:24.900
+<v Rohit Menon>Sure. So a client signs, we take the advance, and then Priya's team opens a WhatsApp group. Client, our project manager, sometimes the site supervisor. That group basically becomes the project.</v>
+
+00:00:25.400 --> 00:00:31.200
+<v Ashika Panigrahi>When you say it becomes the project — is there anything else running alongside it? A tool, a sheet?</v>
+
+00:00:31.700 --> 00:00:44.300
+<v Priya Nair>There's a master Excel. Every project is a tab. Sameer or I update it, supposedly weekly. And invoices are in Zoho Books, that part is fine, we don't want to touch that.</v>
+
+00:00:44.800 --> 00:00:52.100
+<v Ashika Panigrahi>Supposedly weekly — I want to pull on that. How current is the sheet in practice?</v>
+
+00:00:52.600 --> 00:01:05.400
+<v Priya Nair>Honestly? It depends how mad the week is. If we're doing two handovers in the same week, nobody's touching that sheet. It can be ten days stale. And then someone quotes an old date to a client and it's a whole thing.</v>
+
+00:01:06.000 --> 00:01:14.700
+<v Rohit Menon>That's the thing that's actually killing us. Not the sheet itself. It's that I get a call from a client asking where their kitchen is, and I don't know.</v>
+
+00:01:15.200 --> 00:01:20.900
+<v Ashika Panigrahi>How often does a client call you directly rather than their project manager?</v>
+
+00:01:21.400 --> 00:01:33.800
+<v Rohit Menon>Every day. Multiple times a day. And it's not their fault — they don't know who to ask, so they ask the person whose number they got first, which is me because I did the sales call.</v>
+
+00:01:34.300 --> 00:01:43.100
+<v Priya Nair>And then Rohit messages me, I message Sameer, Sameer goes and looks, and it comes back up the chain. That round trip is a day sometimes.</v>
+
+00:01:43.600 --> 00:01:50.200
+<v Ashika Panigrahi>So the client asks a question, and it takes a day to answer something your own team already knows.</v>
+
+00:01:50.700 --> 00:01:53.400
+<v Rohit Menon>That's exactly it. That's the whole problem.</v>
+
+00:01:54.000 --> 00:02:04.600
+<v Ashika Panigrahi>Let me ask about the WhatsApp groups specifically. What's in them that isn't anywhere else?</v>
+
+00:02:05.100 --> 00:02:19.800
+<v Priya Nair>Photos, mostly. Site progress photos, snags, material deliveries. The supervisors are good about photographing everything. The problem is it's all in the group, so if you join late you scroll for an hour, and after the project closes it's just gone.</v>
+
+00:02:20.300 --> 00:02:27.900
+<v Sameer Kulkarni>Also approvals. Client says "yes go ahead with the walnut finish" in the group, and that's our only record of it.</v>
+
+00:02:28.400 --> 00:02:35.100
+<v Ashika Panigrahi>That's worth flagging. Has that ever come back on you — a client disputing something they approved?</v>
+
+00:02:35.600 --> 00:02:47.200
+<v Sameer Kulkarni>Twice this year. One we found the message. One we couldn't because the client had left the group and we'd lost the history on the old phone. We ate that cost.</v>
+
+00:02:47.700 --> 00:02:52.300
+<v Ashika Panigrahi>How much was it, roughly? I ask because it helps size what this is worth fixing.</v>
+
+00:02:52.800 --> 00:02:57.400
+<v Sameer Kulkarni>That one was about eighty thousand. Redoing a wardrobe shutter set.</v>
+
+00:02:58.000 --> 00:03:08.500
+<v Ashika Panigrahi>Right. So let's talk about what you'd want instead. If a client could see one screen about their project, what's on it?</v>
+
+00:03:09.000 --> 00:03:20.600
+<v Rohit Menon>Where we are. What's done, what's next, when it finishes. And the photos. If they can see the photos themselves they'll stop calling me to ask how it looks.</v>
+
+00:03:21.100 --> 00:03:29.800
+<v Priya Nair>And payments. Half the calls I get are "what's my next payment and when". That's in Zoho but the client can't see it.</v>
+
+00:03:30.300 --> 00:03:36.900
+<v Ashika Panigrahi>Would you want the portal to show payment status, or actually take payments?</v>
+
+00:03:37.400 --> 00:03:45.100
+<v Rohit Menon>Show. Definitely just show. We're not putting payments through something new, not in the first version.</v>
+
+00:03:45.600 --> 00:03:51.200
+<v Ashika Panigrahi>Understood. And on your side — what would your team use, as opposed to the client?</v>
+
+00:03:51.700 --> 00:04:05.400
+<v Priya Nair>Somewhere to put the weekly update once, and have it go everywhere. Right now Sameer writes an update in the group, then I copy it into the sheet, then if the client asks Rohit he writes it a third time.</v>
+
+00:04:05.900 --> 00:04:11.600
+<v Ashika Panigrahi>Three times. Okay. Who should be allowed to publish an update to a client?</v>
+
+00:04:12.100 --> 00:04:24.800
+<v Rohit Menon>Anything the client sees, I want to see it first. I've been burned on that. A supervisor once told a client a date that was three weeks optimistic and we spent two months apologising for it.</v>
+
+00:04:25.300 --> 00:04:31.000
+<v Ashika Panigrahi>So every client-facing update routes through you for approval before it goes out.</v>
+
+00:04:31.500 --> 00:04:35.200
+<v Rohit Menon>Yes. Everything client-facing goes through me. That's non-negotiable for me.</v>
+
+00:04:35.700 --> 00:04:42.400
+<v Ashika Panigrahi>Noted. Let's talk about scale — how many projects are live at once, and how many people would use this?</v>
+
+00:04:42.900 --> 00:04:53.600
+<v Priya Nair>Live projects, between eighteen and twenty-five. Internal users maybe fourteen — three PMs, six supervisors, me, Rohit, two in accounts, and the designer.</v>
+
+00:04:54.100 --> 00:05:00.800
+<v Ashika Panigrahi>And budget. I want to be realistic with you about what's buildable, so what range are we working in?</v>
+
+00:05:01.300 --> 00:05:12.900
+<v Rohit Menon>We can't go beyond two lakh for the first phase. I want to see it working with real projects before I spend more than that. If it works, there's more.</v>
+
+00:05:13.400 --> 00:05:18.100
+<v Ashika Panigrahi>That's clear, thank you. And timing — is there a date driving this?</v>
+
+00:05:18.600 --> 00:05:28.300
+<v Rohit Menon>Before Diwali. Our heavy season starts right after and if we go into that season with the current mess we'll have the same year again.</v>
+
+00:05:28.800 --> 00:05:34.500
+<v Ashika Panigrahi>Last question for today. What would make you say, six months from now, that this was worth doing?</v>
+
+00:05:35.000 --> 00:05:44.700
+<v Rohit Menon>If I stop being the switchboard. If clients stop calling me for status and I can go back to doing sales and design.</v>
+
+00:05:45.200 --> 00:05:53.900
+<v Priya Nair>For me it's the sheet. If I never have to reconcile that sheet again on a Sunday night, that's the win.</v>
+
+00:05:54.400 --> 00:05:59.100
+<v Ashika Panigrahi>That's very useful. I'll write this up and come back with a shape for it.</v>

@@ -1,0 +1,18 @@
+node_modules
+.next
+out
+build
+.DS_Store
+*.pem
+
+# local env
+.env
+.env*.local
+
+# local embedded postgres data directory
+.pglite
+
+# test + build output
+coverage
+*.tsbuildinfo
+next-env.d.ts

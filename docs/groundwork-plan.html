@@ -1,0 +1,788 @@
+<title>Groundwork Build Plan</title>
+<style>
+  :root {
+    --ground: #F5F6F3;
+    --surface: #FFFFFF;
+    --surface-2: #ECEEE9;
+    --line: #D8DCD5;
+    --line-soft: #E4E7E1;
+    --ink: #171C1A;
+    --ink-2: #3B443F;
+    --muted: #626D67;
+    --accent: #14655A;
+    --accent-soft: #E0EEE9;
+    --flag: #A02E22;
+    --flag-soft: #F6E4E1;
+    --gap: #8A6410;
+    --gap-soft: #F5EBD6;
+    --shadow: 0 1px 2px rgba(23,28,26,.05), 0 8px 24px -16px rgba(23,28,26,.28);
+
+    --serif: ui-serif, "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+    --sans: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, "SF Mono", SFMono-Regular, "Cascadia Code", Menlo, Consolas, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #111614;
+      --surface: #191F1D;
+      --surface-2: #212925;
+      --line: #2E3835;
+      --line-soft: #262F2C;
+      --ink: #E7EBE8;
+      --ink-2: #C2CAC6;
+      --muted: #94A09B;
+      --accent: #4FBFA5;
+      --accent-soft: #16332D;
+      --flag: #E2857A;
+      --flag-soft: #35201D;
+      --gap: #D8AE59;
+      --gap-soft: #322915;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 28px -18px rgba(0,0,0,.8);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground: #111614;
+    --surface: #191F1D;
+    --surface-2: #212925;
+    --line: #2E3835;
+    --line-soft: #262F2C;
+    --ink: #E7EBE8;
+    --ink-2: #C2CAC6;
+    --muted: #94A09B;
+    --accent: #4FBFA5;
+    --accent-soft: #16332D;
+    --flag: #E2857A;
+    --flag-soft: #35201D;
+    --gap: #D8AE59;
+    --gap-soft: #322915;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 28px -18px rgba(0,0,0,.8);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    margin: 0;
+    padding: 0 24px 96px;
+  }
+
+  .shell {
+    max-width: 1120px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  @media (min-width: 1000px) {
+    .shell { grid-template-columns: 200px minmax(0, 1fr); gap: 64px; }
+    .rail { display: block; }
+  }
+
+  /* ---- rail ---- */
+  .rail { display: none; }
+  .rail-inner {
+    position: sticky;
+    top: 40px;
+    padding-top: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    border-left: 1px solid var(--line);
+  }
+  .rail a {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 5px 0 5px 14px;
+    margin-left: -1px;
+    border-left: 1px solid transparent;
+    line-height: 1.4;
+  }
+  .rail a:hover, .rail a:focus-visible { color: var(--accent); border-left-color: var(--accent); }
+
+  /* ---- masthead ---- */
+  header.masthead { padding: 72px 0 40px; border-bottom: 1px solid var(--line); }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 18px;
+  }
+  h1 {
+    font-family: var(--serif);
+    font-size: clamp(38px, 6vw, 60px);
+    line-height: 1.02;
+    letter-spacing: -.02em;
+    font-weight: 600;
+    margin: 0 0 18px;
+    text-wrap: balance;
+  }
+  .standfirst {
+    font-size: 19px;
+    line-height: 1.55;
+    color: var(--ink-2);
+    max-width: 62ch;
+    margin: 0 0 28px;
+  }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .04em;
+    color: var(--ink-2);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 5px 9px;
+  }
+
+  /* ---- sections ---- */
+  section { padding-top: 64px; scroll-margin-top: 32px; }
+  h2 {
+    font-family: var(--serif);
+    font-size: 30px;
+    line-height: 1.2;
+    letter-spacing: -.015em;
+    font-weight: 600;
+    margin: 0 0 8px;
+    text-wrap: balance;
+  }
+  h2 .num {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: .08em;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 10px;
+  }
+  h3 {
+    font-family: var(--sans);
+    font-size: 15px;
+    font-weight: 650;
+    letter-spacing: .005em;
+    margin: 36px 0 10px;
+  }
+  h4 {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+    margin: 0 0 12px;
+  }
+  p { margin: 0 0 16px; max-width: 70ch; }
+  .lede { color: var(--ink-2); font-size: 17px; max-width: 68ch; margin-bottom: 28px; }
+  strong { font-weight: 650; }
+  em { font-style: italic; }
+  a { color: var(--accent); }
+
+  ul, ol { margin: 0 0 16px; padding-left: 20px; max-width: 70ch; }
+  li { margin-bottom: 7px; }
+  li::marker { color: var(--muted); }
+
+  code {
+    font-family: var(--mono);
+    font-size: .86em;
+    background: var(--surface-2);
+    border: 1px solid var(--line-soft);
+    border-radius: 3px;
+    padding: 1px 5px;
+  }
+
+  /* ---- tables ---- */
+  .table-wrap { overflow-x: auto; margin: 0 0 20px; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; font-size: 14.5px; min-width: 560px; }
+  th {
+    text-align: left;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--line);
+    background: var(--surface-2);
+    white-space: nowrap;
+  }
+  td { padding: 12px 14px; border-bottom: 1px solid var(--line-soft); vertical-align: top; line-height: 1.5; }
+  tr:last-child td { border-bottom: none; }
+  td.num, th.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+  /* ---- cards ---- */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 22px 24px;
+    box-shadow: var(--shadow);
+    margin-bottom: 16px;
+  }
+  .card > :last-child { margin-bottom: 0; }
+  .card-title { font-family: var(--sans); font-size: 16px; font-weight: 650; margin: 0 0 8px; }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr; gap: 16px; margin-bottom: 20px; }
+  @media (min-width: 760px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
+
+  /* ---- callout ---- */
+  .callout {
+    background: var(--accent-soft);
+    border: 1px solid var(--accent);
+    border-radius: 4px;
+    padding: 20px 22px;
+    margin: 24px 0;
+  }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout h4 { color: var(--accent); }
+
+  /* ---- pipeline stages ---- */
+  .stage {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 18px;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .stage:last-of-type { border-bottom: none; }
+  .stage-num {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    border-radius: 3px;
+    height: 26px;
+    width: 32px;
+    display: grid;
+    place-items: center;
+    margin-top: 2px;
+  }
+  .stage h3 { margin: 0 0 6px; font-size: 16px; }
+  .stage p { margin-bottom: 8px; font-size: 15px; }
+  .stage-out {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--muted);
+    letter-spacing: .01em;
+  }
+
+  /* ---- state pills ---- */
+  .pill {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+  .pill.verified { background: var(--accent-soft); color: var(--accent); border: 1px solid var(--accent); }
+  .pill.conflict { background: var(--flag-soft); color: var(--flag); border: 1px solid var(--flag); }
+  .pill.gapp { background: var(--gap-soft); color: var(--gap); border: 1px solid var(--gap); }
+  .pill.must { background: var(--surface-2); color: var(--ink-2); border: 1px solid var(--line); }
+
+  /* ---- day plan ---- */
+  .day {
+    display: grid;
+    grid-template-columns: 78px 1fr;
+    gap: 20px;
+    padding: 18px 0;
+    border-top: 1px solid var(--line-soft);
+  }
+  .day:first-of-type { border-top: 1px solid var(--line); }
+  .day-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    padding-top: 3px;
+  }
+  .day h3 { margin: 0 0 6px; font-size: 15.5px; }
+  .day ul { margin-bottom: 0; font-size: 14.5px; }
+
+  /* ---- demo script ---- */
+  .beat {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px dashed var(--line);
+  }
+  .beat:last-child { border-bottom: none; }
+  .beat-time {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    padding-top: 2px;
+  }
+  .beat p { margin: 0; font-size: 15px; }
+
+  hr.rule { border: none; border-top: 1px solid var(--line); margin: 56px 0 0; }
+
+  footer {
+    padding-top: 40px;
+    color: var(--muted);
+    font-size: 13.5px;
+    font-family: var(--mono);
+  }
+
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+
+<div class="shell">
+  <nav class="rail" aria-label="Contents">
+    <div class="rail-inner">
+      <a href="#brief">The real brief</a>
+      <a href="#gap">Market gap</a>
+      <a href="#product">The product</a>
+      <a href="#edge">What stands out</a>
+      <a href="#demo">Demo script</a>
+      <a href="#arch">Architecture</a>
+      <a href="#backend">Backend proof</a>
+      <a href="#scoring">Criteria map</a>
+      <a href="#scope">Scope</a>
+      <a href="#plan">7-day plan</a>
+      <a href="#risk">Risks</a>
+      <a href="#ship">Deliverables</a>
+    </div>
+  </nav>
+
+  <main>
+    <header class="masthead">
+      <p class="eyebrow">Build plan · WSI ALM candidate assignment</p>
+      <h1>Groundwork</h1>
+      <p class="standfirst">Turn a pile of transcripts, WhatsApp threads, PDFs and screenshots into a business brief where every single claim can be clicked back to the sentence a human actually said — then into a working prototype.</p>
+      <div class="chips">
+        <span class="chip">7 days · solo</span>
+        <span class="chip">Next.js 15 · TypeScript</span>
+        <span class="chip">Postgres · Drizzle</span>
+        <span class="chip">Claude Opus 5</span>
+        <span class="chip">Multi-tenant · JWT + RBAC</span>
+        <span class="chip">Vercel</span>
+      </div>
+    </header>
+
+    <section id="brief">
+      <h2><span class="num">01</span>What they are actually asking for</h2>
+      <p class="lede">The PDF and the job description are two different tests handed to you in the same envelope. Almost every candidate will answer only the first one. The winning move is to answer both with a single artifact.</p>
+
+      <div class="grid-2">
+        <div class="card">
+          <p class="card-title">Test one — the assignment PDF</p>
+          <p>Read by someone in a business role. They want to know: can you take an open, messy, under-specified problem and turn it into a clear point of view? The PDF says it outright — <em>“We want to understand how you approach an open business problem.”</em> The five numbered requirements are the rubric: take mixed inputs, understand the need, propose a better process, outline a solution, build a POC.</p>
+        </div>
+        <div class="card">
+          <p class="card-title">Test two — the job description</p>
+          <p>Read by an engineer. Multi-tenant SaaS on Next.js, Vercel and Google Cloud. Strict data isolation between customers. JWT and RBAC. Data modelling and SQL for multi-tenant systems. Pagination and batching. Automated testing. Dev, staging and prod. CI/CD. And a line that reads like a warning label: <em>“You rely on AI without understanding the output”</em> is listed under Not A Fit.</p>
+        </div>
+      </div>
+
+      <p>Two things follow from reading them together, and they shape every decision below.</p>
+
+      <h3>The app must be a multi-tenant SaaS, not a demo script</h3>
+      <p>The obvious build for this assignment is an upload box wired to a language model. That answers test one at a C+ and test two not at all. Instead we build a real product: organisations, members, roles, tenant-scoped data, an audit trail, a client-facing read-only view. The AI discovery workflow is the <em>domain</em>; multi-tenant SaaS is the <em>architecture</em>. Reviewers get to see both without us writing a word of filler.</p>
+
+      <h3>The product's core mechanic should answer their fear about AI</h3>
+      <p>“Relies on AI without understanding the output” is the trait they are screening against. So the headline feature of the tool is a machine that refuses to trust its own output: every claim the model makes must carry a verbatim quote from a named source, and the server checks that the quote genuinely exists in that document before the claim is allowed to display as trusted. The product embodies the exact discipline the job ad is asking for. That is not a coincidence you have to explain — reviewers will feel it.</p>
+
+      <div class="callout">
+        <h4>The one-line pitch</h4>
+        <p><strong>Groundwork is a discovery workspace for consultants that turns scattered client inputs into a verifiable requirements brief, an improved process, a solution outline and a clickable prototype — with a chain of custody from every recommendation back to the source it came from.</strong></p>
+      </div>
+    </section>
+
+    <section id="gap">
+      <h2><span class="num">02</span>The gap we are aiming at</h2>
+      <p class="lede">I surveyed the tools that overlap this problem. Every category stops one step short of the assignment, and no product covers the whole chain. That is the opening.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Category</th><th>Examples</th><th>Where it stops</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>AI requirements &amp; PRD tools</td>
+              <td>ChatPRD, Userdoc, Notion AI</td>
+              <td>They start from a clean human-written brief. Someone has already read the mess and summarised it. No source ingestion, no evidence links.</td>
+            </tr>
+            <tr>
+              <td>Requirement quality analysers</td>
+              <td>ScopeMaster, Jama Connect Advisor</td>
+              <td>Excellent at finding ambiguity and missing scope — but only in requirements that already exist in structured form. Analysis only, no generation.</td>
+            </tr>
+            <tr>
+              <td>Meeting intelligence</td>
+              <td>Fireflies, Otter, Fathom, tl;dv</td>
+              <td>One meeting at a time. They summarise a call; they do not synthesise across ten sources, and they produce nothing a developer can build from.</td>
+            </tr>
+            <tr>
+              <td>Research repositories</td>
+              <td>Dovetail, Marvin</td>
+              <td>They nail evidence traceability — click an insight, see the exact quote. But the output is UX insight, not requirements, process design or a build.</td>
+            </tr>
+            <tr>
+              <td>Prompt-to-app builders</td>
+              <td>Lovable, Bolt, v0, Replit Agent</td>
+              <td>They build fast from a good spec and produce nonsense from a bad one. They assume the thinking is already done.</td>
+            </tr>
+            <tr>
+              <td>Consulting practice</td>
+              <td>Discovery workshops, as-is/to-be maps, MoSCoW</td>
+              <td>The right artifacts exist — but they are produced manually, and reconciling contradictory stakeholder input is still a documented, unautomated pain.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>Nobody owns the bridge: <strong>messy inputs → verified understanding → interrogation of gaps and contradictions → specification → build</strong>. Groundwork is that bridge, and it borrows the one proven idea from each neighbour — Dovetail's evidence links, ScopeMaster's missing-scope detection, consulting's artifact vocabulary, v0's generation — into a single chain.</p>
+    </section>
+
+    <section id="product">
+      <h2><span class="num">03</span>The product</h2>
+      <p class="lede">Five stages, mapping one-to-one onto the five numbered requirements in the assignment. Running underneath all of them is a single shared spine: the Evidence Ledger.</p>
+
+      <h3>The spine: the Evidence Ledger</h3>
+      <p>Every uploaded file is parsed into normalised text and split into addressable spans — a WhatsApp message, a transcript turn with its timestamp, a PDF paragraph with its page number, an OCR region of a screenshot. Each span gets a stable ID. Nothing downstream is ever allowed to be a free-floating assertion: findings, requirements, pain points and process steps all hold a foreign key to the spans that justify them. This single design decision is what makes stages 2 through 5 defensible rather than decorative.</p>
+
+      <div class="stage">
+        <div class="stage-num">01</div>
+        <div>
+          <h3>Intake</h3>
+          <p>Six input types, all genuinely parsed rather than pasted: meeting transcripts (Teams <code>.vtt</code>, Zoom, plain text), WhatsApp <code>.txt</code> chat exports, PDFs, DOCX process documents, screenshots of the client's current system, and a website URL. Each lands in the ledger with type, participants, date range and a preview.</p>
+          <p class="stage-out">Output → source list with per-file parse quality and extracted span count</p>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="stage-num">02</div>
+        <div>
+          <h3>Understand</h3>
+          <p>One long-context synthesis pass produces the Discovery Brief: the client's real goal, the as-is process, pain points ranked by how often and how strongly they surface, requirements, and constraints. Every item carries citations and a confidence tier — <span class="pill verified">Explicit</span> stated directly, <span class="pill must">Inferred</span> derived from evidence, <span class="pill gapp">Assumed</span> filled by the model and collected into a visible assumptions register.</p>
+          <p class="stage-out">Output → Discovery Brief · Conflict Radar · Blind-Spot Register</p>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="stage-num">03</div>
+        <div>
+          <h3>Improve</h3>
+          <p>The as-is process and a proposed to-be process render side by side as flow diagrams, with changed steps highlighted and each change annotated with what it removes — a manual re-entry step, a two-day approval wait, a WhatsApp handoff with no record. Practical and legible, which is what the brief asks for.</p>
+          <p class="stage-out">Output → as-is / to-be diff with per-change rationale and effort tag</p>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="stage-num">04</div>
+        <div>
+          <h3>Specify</h3>
+          <p>The solution outline: features as a MoSCoW table (Must / Should / Could / Won't-this-phase), user roles with permissions, screens and modules, and the end-to-end flow. Every feature row cites the evidence that justifies it and shows whether it rests on a verified quote or an assumption — so the client can argue with the spec at the level of individual claims.</p>
+          <p class="stage-out">Output → roles · modules · MoSCoW feature table · system flow</p>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="stage-num">05</div>
+        <div>
+          <h3>Prototype</h3>
+          <p>The approved outline compiles into a clickable prototype: a self-contained page with three to five working screens, real navigation, and seeded data drawn from the client's actual entities and vocabulary — their project names, their roles, their statuses. Rendered inside a locked-down sandbox and shareable with the client on a read-only link.</p>
+          <p class="stage-out">Output → clickable prototype + shareable client preview link</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="edge">
+      <h2><span class="num">04</span>The three things that will be remembered</h2>
+      <p class="lede">Stages 1–5 satisfy the brief. These three make it memorable. All are cheap to build because they are properties of the data model rather than new subsystems.</p>
+
+      <div class="card">
+        <p class="card-title">Verified grounding <span class="pill verified">core mechanic</span></p>
+        <p>The model must return, for every claim, the source ID plus a short verbatim quote. The server then checks that quote actually occurs in the stored text of that source, normalising whitespace and smart quotes, and stores the character offsets on success. Claims that pass render as trusted with a citation chip that opens the source with the passage highlighted. Claims that fail render flagged as unverified. The brief header carries a <strong>grounding score</strong> — “46 of 49 claims verified against source.”</p>
+        <p>This is a genuine hallucination tripwire, not a UI flourish, and it is the single strongest answer to the job ad's “strong validation and ownership” requirement. It also happens to demo beautifully: seed one document that has been edited after ingestion and watch a claim go red.</p>
+      </div>
+
+      <div class="card">
+        <p class="card-title">Conflict Radar <span class="pill conflict">differentiator</span></p>
+        <p>A dedicated cross-source pass looks for contradictions between what different people said in different places, and surfaces each as a pair of quotes side by side: the WhatsApp message saying the budget is under two lakh next to the transcript line saying about five. Each conflict gets a resolution action — pick one, mark superseded by date, or push it into the question pack. Nothing else in the market does this for client discovery; contradiction detection in requirements is still an open research problem, which is exactly why doing a credible version of it lands.</p>
+      </div>
+
+      <div class="card">
+        <p class="card-title">Blind-Spot Register <span class="pill gapp">differentiator</span></p>
+        <p>A fixed completeness checklist — budget, timeline, users and roles, integrations, data migration, auth, success metrics, compliance, support model — scored against the evidence. Anything unevidenced becomes an open question, and the open questions compile into a client-ready message you can paste straight into WhatsApp or email. The assignment explicitly asks for “any missing or unclear information”; making it a first-class, actionable artifact rather than a bullet list shows you read the brief properly and understand how consultants actually work.</p>
+      </div>
+    </section>
+
+    <section id="demo">
+      <h2><span class="num">05</span>The demo</h2>
+      <p class="lede">Everything above is worth nothing if the four-minute walkthrough doesn't land. So the scenario gets designed first, with the conflicts and gaps deliberately seeded, and the build is aimed at making this script true.</p>
+
+      <h3>The scenario: Nova Interiors</h3>
+      <p>A 40-person interior fit-out firm in Pune running client projects on WhatsApp, email and a shared spreadsheet. They want “some kind of portal.” The six inputs mirror the assignment's own example scenario:</p>
+      <ul>
+        <li>Kickoff call transcript (founder + ops head + our consultant, 38 min)</li>
+        <li>Follow-up call transcript two weeks later, where the scope quietly grows</li>
+        <li>WhatsApp export from the site-coordination group, 400+ messages</li>
+        <li>Their existing “Project Handover SOP” as a PDF</li>
+        <li>Three screenshots: the tracking spreadsheet, their invoicing tool, a client email thread</li>
+        <li>Their public website URL</li>
+      </ul>
+      <p>Seeded into that material: a budget stated two different ways, an approval-authority disagreement between the founder and the ops head, a module that appears only in call two, and four genuinely unanswered questions (data migration, who owns client login, what happens to the old spreadsheet, GST invoicing rules).</p>
+
+      <h3>Four-minute script</h3>
+      <div>
+        <div class="beat"><div class="beat-time">0:00</div><p>Log in as the consultant. Project already contains the six sources; show the ledger — parsed span counts per file, the WhatsApp thread rendered as actual messages with senders and dates, not a wall of text.</p></div>
+        <div class="beat"><div class="beat-time">0:30</div><p>Hit Generate Brief. Sections stream in live. Land on the goal statement, click its citation chip, and the source panel opens on the founder's exact sentence in the kickoff transcript, highlighted.</p></div>
+        <div class="beat"><div class="beat-time">1:15</div><p>Grounding score in the header. Point at the one unverified claim and say plainly what it means: the model asserted something it could not back with a quote, and the system refuses to present it as fact.</p></div>
+        <div class="beat"><div class="beat-time">1:45</div><p>Conflict Radar. The budget contradiction with both quotes side by side. Resolve it by marking the later call as superseding — the brief updates, and the requirement it fed into updates with it.</p></div>
+        <div class="beat"><div class="beat-time">2:15</div><p>Blind-Spot Register. Four open questions; hit Compose and read out the generated client message. This is the moment a business reviewer recognises their own job.</p></div>
+        <div class="beat"><div class="beat-time">2:45</div><p>As-is and to-be process diagrams side by side, changed steps highlighted, with the two-day approval wait annotated as removed.</p></div>
+        <div class="beat"><div class="beat-time">3:15</div><p>Solution outline: roles, modules, MoSCoW table with citations on the Must rows.</p></div>
+        <div class="beat"><div class="beat-time">3:40</div><p>Generate Prototype. A four-screen clickable app appears, seeded with Nova's real project names and roles. Open the client share link in a second browser as the client user, and show that they see the brief and prototype read-only and cannot reach the other tenant's project.</p></div>
+      </div>
+
+      <p>That last beat closes both loops at once: the business story ends in a working POC, and the engineering story ends in demonstrated tenant isolation.</p>
+    </section>
+
+    <section id="arch">
+      <h2><span class="num">06</span>Architecture</h2>
+      <p class="lede">Chosen for the job description first and convenience second — every line of this stack is something they said they work in.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Layer</th><th>Choice</th><th>Why this one</th></tr></thead>
+          <tbody>
+            <tr><td>Framework</td><td>Next.js 15 App Router, TypeScript strict</td><td>Their stack, named first in the job ad. Route handlers for the REST surface, server components for the reading views.</td></tr>
+            <tr><td>Hosting</td><td>Vercel, Fluid compute, <code>maxDuration = 300</code></td><td>Their stack. 300s is comfortably enough per generation stage because the four artifacts are separate sequential calls, each streamed.</td></tr>
+            <tr><td>Database</td><td>Neon Postgres via the Vercel integration</td><td>Serverless Postgres with an HTTP driver, so no connection-pool exhaustion. Branching gives us a real staging environment for free.</td></tr>
+            <tr><td>ORM</td><td>Drizzle</td><td>Typed SQL rather than a query-builder abstraction, which lets me show the actual indexes and query plans in the README. Fast cold starts.</td></tr>
+            <tr><td>AI</td><td>Official <code>@anthropic-ai/sdk</code></td><td>Direct access to prompt caching, native PDF document blocks and structured outputs. Avoids a wrapper library mid-major-version churn during a one-week build.</td></tr>
+            <tr><td>Models</td><td><code>claude-opus-5</code> for synthesis, <code>claude-haiku-4-5</code> for per-document normalisation</td><td>Opus for the reasoning that carries the product; Haiku for the cheap per-file summary and metadata pass at ingest.</td></tr>
+            <tr><td>Auth</td><td>Hand-rolled JWT with <code>jose</code>, HTTP-only cookies</td><td>The ad asks for JWT and RBAC understanding. A hundred readable lines demonstrates it; a library hides it. Edge-middleware compatible.</td></tr>
+            <tr><td>Files</td><td>Vercel Blob</td><td>Originals retained so a citation can always be re-verified against the file as uploaded.</td></tr>
+            <tr><td>UI</td><td>Tailwind + shadcn/ui, Mermaid for diagrams</td><td>Clean and fast. The brief says explicitly not to focus on visual design, so the UI aims at legible and information-dense, not decorative.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>The AI layer, specifically</h3>
+      <ul>
+        <li><strong>Long context, not RAG.</strong> Six to fifteen documents is roughly 50–200K tokens, which fits inside the context window with room to spare. Retrieval here would add a vector store, chunking heuristics and retrieval-failure modes in order to make cross-document synthesis <em>worse</em>. I'll say so explicitly in the README, because knowing when not to reach for RAG is itself a signal.</li>
+        <li><strong>Prompt caching across the four artifact calls.</strong> The document set is a byte-stable prefix with a cache breakpoint; the artifact-specific instruction goes after it. Calls two through four then read the cache at roughly a tenth of the input cost. The README shows the measured <code>cache_read_input_tokens</code> to prove it.</li>
+        <li><strong>Structured output with Zod schemas</strong> per artifact, citations required by the schema, then server-side quote verification before anything is persisted as trusted.</li>
+        <li><strong>Diagram generation with a validate-and-retry loop.</strong> Generated Mermaid is parsed server-side; on a syntax error the parser message is fed back for one repair attempt before falling back to an editable source view.</li>
+        <li><strong>Prototype sandboxing.</strong> Generated markup renders in an iframe with <code>sandbox="allow-scripts"</code> and deliberately without <code>allow-same-origin</code>, so the generated code runs but has no access to cookies, storage or the parent document. I want to be asked about this in the interview.</li>
+      </ul>
+    </section>
+
+    <section id="backend">
+      <h2><span class="num">07</span>Proving the backend claims</h2>
+      <p class="lede">The job ad lists a dozen specific competencies. Rather than hoping they show through, each gets a deliberate, visible home in the codebase.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Their requirement</th><th>Where it lives in Groundwork</th></tr></thead>
+          <tbody>
+            <tr><td>Multi-tenant architecture</td><td><code>organizations</code> as the tenant root; every domain table carries <code>org_id</code>; a single tenant-scoped query helper that every read path must go through.</td></tr>
+            <tr><td>Strict data isolation</td><td>Two independent layers: application-level scoping, plus Postgres row-level security policies keyed to a session variable set per request. Belt and braces, and a test that proves tenant B cannot read tenant A's project by ID.</td></tr>
+            <tr><td>Auth &amp; authorisation (JWT, RBAC)</td><td>Signed JWT in an HTTP-only cookie; roles <code>owner</code>, <code>consultant</code>, <code>client</code>; middleware gate plus a re-check inside every mutating route handler, because middleware is convenience and not a security boundary.</td></tr>
+            <tr><td>API design</td><td>REST resources — <code>/api/projects</code>, <code>/api/projects/:id/sources</code>, <code>/api/projects/:id/artifacts</code> — with consistent error envelopes and a documented status-code contract.</td></tr>
+            <tr><td>Data modelling for multi-tenant systems</td><td>Nine tables including the span-level evidence store, with the schema and its reasoning drawn out in the README.</td></tr>
+            <tr><td>SQL, indexing, query optimisation</td><td>Composite indexes led by <code>org_id</code>; a short README section showing an <code>EXPLAIN</code> before and after on the evidence lookup.</td></tr>
+            <tr><td>Pagination &amp; batching</td><td>Cursor pagination on sources and evidence spans; ingestion batched per file with per-file status rather than one blocking request.</td></tr>
+            <tr><td>Automated testing</td><td>Vitest unit tests on the parsers and the quote verifier — the two places where correctness is objectively checkable — plus one integration test for tenant isolation and one Playwright end-to-end run of the demo path.</td></tr>
+            <tr><td>Multiple environments</td><td>Neon branches for dev and staging against Vercel preview deployments; production on main.</td></tr>
+            <tr><td>CI/CD</td><td>GitHub Actions running typecheck, lint and tests on every PR; Vercel preview per branch.</td></tr>
+            <tr><td>Preventing bugs, not just fixing them</td><td>TypeScript strict mode, Zod validation at every API boundary, and the quote verifier itself — a runtime guard against the failure mode this whole class of product is prone to.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="scoring">
+      <h2><span class="num">08</span>Criteria map</h2>
+      <p class="lede">The PDF names six things they will look at. Each one gets a specific, pointable answer.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>What they look at</th><th>What we point to</th></tr></thead>
+          <tbody>
+            <tr><td>Understanding of the business problem</td><td>The Discovery Brief's structure follows real consulting artifacts — as-is process, ranked pain points, MoSCoW, open questions — rather than a generic summary. The Blind-Spot Register shows we understand that discovery is mostly about finding what nobody said.</td></tr>
+            <tr><td>How practical the proposed solution is</td><td>The to-be process names what each change removes and tags it by effort. The question pack is something a consultant can send today. Nothing in the output requires the client to adopt a methodology.</td></tr>
+            <tr><td>How you use AI</td><td>Long-context synthesis with a stated reason for rejecting RAG; prompt caching with measured savings; structured outputs; and a verification layer that treats model output as untrusted until checked.</td></tr>
+            <tr><td>How frontend and backend work together</td><td>Streamed generation with per-section progress; optimistic resolution actions on conflicts; the client-facing read-only view rendered from the same tenant-scoped API the consultant view uses.</td></tr>
+            <tr><td>Integrations &amp; engineering approach</td><td>Six real parsers, not a paste box. Row-level security, cursor pagination, indexed queries, CI, tests, environments.</td></tr>
+            <tr><td>How clearly you explain your work</td><td>A README written as a decision log — what I chose, what I rejected, and what I would do next with more than a week — plus this plan and a recorded walkthrough.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="scope">
+      <h2><span class="num">09</span>Scope, prioritised the way the product prioritises</h2>
+      <p class="lede">Using MoSCoW on our own build is both the honest way to protect a seven-day timeline and a small piece of evidence that we mean what the tool outputs.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Priority</th><th>Scope</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="pill must">Must</span></td>
+              <td>Auth with two roles and tenant isolation · four parsers (transcript, WhatsApp, PDF, image) · the Evidence Ledger · Discovery Brief with citations, confidence tiers and quote verification · Blind-Spot Register with question pack · solution outline with MoSCoW · README and deployed demo.</td>
+            </tr>
+            <tr>
+              <td><span class="pill must">Should</span></td>
+              <td>Conflict Radar with resolution actions · as-is/to-be diagrams · generated clickable prototype · client read-only share link · DOCX and website parsers.</td>
+            </tr>
+            <tr>
+              <td><span class="pill must">Could</span></td>
+              <td>Chronological requirement-drift timeline · grounded chat over the evidence · artifact version history with diffs · export to PDF or DOCX.</td>
+            </tr>
+            <tr>
+              <td><span class="pill must">Won't (this phase)</span></td>
+              <td>Live Teams or WhatsApp integrations — the brief explicitly permits exports · real-time collaboration · billing · headless-browser scraping of JavaScript-rendered sites.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>If day five runs long, Conflict Radar is protected and the prototype generator degrades to exporting a high-quality build prompt instead of generating the screens itself. The demo still closes.</p>
+    </section>
+
+    <section id="plan">
+      <h2><span class="num">10</span>Seven days</h2>
+      <p class="lede">Demo data gets written on day one, not day six — the scenario is the specification.</p>
+
+      <div class="day">
+        <div class="day-label">Day 1</div>
+        <div>
+          <h3>Foundation and fixtures</h3>
+          <ul>
+            <li>Next.js + TypeScript + Tailwind scaffold, Neon and Drizzle, schema and first migration</li>
+            <li>JWT auth with <code>jose</code>, org/member/role model, tenant-scoped query helper, RLS policies</li>
+            <li>Write the full Nova Interiors fixture set — both transcripts, the WhatsApp export, the SOP PDF, the screenshots — with conflicts and gaps deliberately planted</li>
+          </ul>
+        </div>
+      </div>
+      <div class="day">
+        <div class="day-label">Day 2</div>
+        <div>
+          <h3>Ingestion</h3>
+          <ul>
+            <li>Upload to Blob, type detection, per-file parse pipeline with status</li>
+            <li>VTT and transcript parser, WhatsApp parser (both iOS and Android formats, multi-line continuation, media placeholders), PDF text extraction, image handling</li>
+            <li>Span segmentation into the Evidence Ledger; source list UI with parse quality</li>
+            <li>Unit tests on every parser against the fixtures</li>
+          </ul>
+        </div>
+      </div>
+      <div class="day">
+        <div class="day-label">Day 3</div>
+        <div>
+          <h3>Understanding</h3>
+          <ul>
+            <li>Synthesis call with the document set as a cached prefix; Zod schema for the Discovery Brief including citations and confidence</li>
+            <li>Quote verification service with offset storage and normalisation; grounding score</li>
+            <li>Streamed generation over SSE; brief UI with citation chips and the source panel</li>
+          </ul>
+        </div>
+      </div>
+      <div class="day">
+        <div class="day-label">Day 4</div>
+        <div>
+          <h3>Interrogation</h3>
+          <ul>
+            <li>Conflict Radar pass, side-by-side quote UI, resolution actions that propagate</li>
+            <li>Blind-Spot Register against the completeness checklist; question-pack composer</li>
+          </ul>
+        </div>
+      </div>
+      <div class="day">
+        <div class="day-label">Day 5</div>
+        <div>
+          <h3>Proposal and specification</h3>
+          <ul>
+            <li>To-be process generation; Mermaid validate-and-retry; side-by-side diff view</li>
+            <li>Solution outline: roles, modules, MoSCoW table with citations, system flow</li>
+          </ul>
+        </div>
+      </div>
+      <div class="day">
+        <div class="day-label">Day 6</div>
+        <div>
+          <h3>Prototype and the client view</h3>
+          <ul>
+            <li>Prototype generation from the outline; sandboxed iframe render; regenerate and revise</li>
+            <li>Client role read-only views and share links; the isolation integration test</li>
+            <li>GitHub Actions, staging branch, production deploy</li>
+          </ul>
+        </div>
+      </div>
+      <div class="day">
+        <div class="day-label">Day 7</div>
+        <div>
+          <h3>Explain it</h3>
+          <ul>
+            <li>README as a decision log, with the schema, the API contract, the caching numbers, and an honest limitations section</li>
+            <li>Playwright end-to-end run of the demo path; rehearse the four-minute script twice</li>
+            <li>Record the walkthrough; final polish on whatever the rehearsal exposes</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="risk">
+      <h2><span class="num">11</span>Risks</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Risk</th><th>Mitigation</th></tr></thead>
+          <tbody>
+            <tr><td>Prototype generation is the least predictable feature and sits on day six.</td><td>Single self-contained page rather than a multi-file React project — the format models generate most reliably. Fallback is exporting a build prompt, which still closes the demo.</td></tr>
+            <tr><td>Quote verification fails on legitimate quotes because of smart quotes, whitespace or PDF extraction artefacts.</td><td>Normalise both sides before comparing, cap quote length in the schema, and verify against exactly the stored text the UI displays. Fuzzy match as a second pass, surfaced as “verified (approximate)”.</td></tr>
+            <tr><td>Generated Mermaid fails to parse.</td><td>Syntax rules in the prompt, server-side parse, one repair retry with the parser error, then an editable source fallback.</td></tr>
+            <tr><td>Long generations approach the function time limit.</td><td>Four separate sequential calls rather than one; everything streamed; <code>maxDuration</code> raised.</td></tr>
+            <tr><td>Scope creep swallows the README and the rehearsal.</td><td>Day seven is protected. The Could column is genuinely optional and gets cut without discussion.</td></tr>
+            <tr><td>The demo depends on fixtures that feel synthetic.</td><td>Fixtures written on day one with real texture — misspellings, voice-note placeholders, off-topic chatter, someone joining the group late.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="ship">
+      <h2><span class="num">12</span>What gets submitted</h2>
+      <ul>
+        <li><strong>Source code</strong> on GitHub with a clean commit history, CI green, and the demo seed data included so a reviewer can run the whole flow locally</li>
+        <li><strong>A live deployment</strong> with a pre-seeded Nova Interiors project and two demo logins, consultant and client</li>
+        <li><strong>A README written as a decision log</strong> — the problem as I read it, the architecture, the reasoning behind each significant choice, what I deliberately did not build, and what I would do with a second week</li>
+        <li><strong>A recorded four-minute walkthrough</strong>, so the demo lands even if nobody opens the deployment</li>
+        <li><strong>This plan</strong>, which doubles as evidence of how the problem was approached before any code was written</li>
+      </ul>
+      <hr class="rule">
+      <footer>Groundwork · build plan v1 · 16 Aug 2026</footer>
+    </section>
+  </main>
+</div>
