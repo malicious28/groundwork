@@ -58,6 +58,8 @@ export const parseStatus = pgEnum("parse_status", [
 
 export const artifactKind = pgEnum("artifact_kind", [
   "brief", // stage 2 — the discovery brief
+  "conflicts", // stage 2 — contradictions between sources
+  "questions", // stage 2 — the blind-spot register
   "process", // stage 3 — as-is / to-be
   "outline", // stage 4 — roles, modules, MoSCoW
   "prototype", // stage 5 — the generated clickable POC
@@ -622,6 +624,7 @@ export type NewSource = typeof sources.$inferInsert;
 export type EvidenceSpan = typeof evidenceSpans.$inferSelect;
 export type NewEvidenceSpan = typeof evidenceSpans.$inferInsert;
 export type Artifact = typeof artifacts.$inferSelect;
+export type ArtifactKind = (typeof artifactKind.enumValues)[number];
 export type Claim = typeof claims.$inferSelect;
 export type Citation = typeof citations.$inferSelect;
 export type Conflict = typeof conflicts.$inferSelect;

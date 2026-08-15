@@ -1,25 +1,45 @@
+import Link from "next/link";
 import { and, eq } from "drizzle-orm";
 import { requireSession } from "@/lib/auth/session";
 import { withTenant } from "@/db/tenant";
-import { projects } from "@/db/schema";
+import { artifacts, projects } from "@/db/schema";
 import { AppHeader } from "@/components/app-header";
 
 /**
- * The client-facing surface. It reads through the same tenant-scoped path as
- * the consultant views — the difference is role, not a separate data path, so
- * there is no second place for an isolation bug to hide.
+ * The client-facing surface.
  *
- * The read-only brief and prototype land here once those artifacts exist.
+ * It reads through the same tenant-scoped path as the consultant views — the
+ * difference is role, not a separate data path, so there is no second place for
+ * an isolation bug to hide.
  */
 export default async function SharedPage() {
   const session = await requireSession("client");
 
-  const rows = await withTenant(session.orgId, (tx) =>
-    tx
-      .select({ id: projects.id, name: projects.name, summary: projects.summary })
+  const rows = await withTenant(session.orgId, async (tx) => {
+    const found = await tx
+      .select({
+        id: projects.id,
+        name: projects.name,
+        summary: projects.summary,
+      })
       .from(projects)
-      .where(and(eq(projects.orgId, session.orgId))),
-  );
+      .where(eq(projects.orgId, session.orgId));
+
+    return Promise.all(
+      found.map(async (project) => {
+        const published = await tx
+          .selectDistinct({ kind: artifacts.kind })
+          .from(artifacts)
+          .where(
+            and(
+              eq(artifacts.orgId, session.orgId),
+              eq(artifacts.projectId, project.id),
+            ),
+          );
+        return { ...project, published: published.map((p) => p.kind) };
+      }),
+    );
+  });
 
   return (
     <>
@@ -29,7 +49,7 @@ export default async function SharedPage() {
           Shared with you
         </h1>
         <p className="mb-8 text-ink-2">
-          Read-only view of what your consultant has published.
+          What your consultant has published so far.
         </p>
 
         {rows.map((project) => (
@@ -41,10 +61,20 @@ export default async function SharedPage() {
             {project.summary ? (
               <p className="mt-2 text-sm text-ink-2">{project.summary}</p>
             ) : null}
-            <p className="mt-3 font-mono text-[11px] text-muted">
-              Nothing published yet — the brief appears here once your
-              consultant shares it.
-            </p>
+
+            {project.published.length > 0 ? (
+              <Link
+                href={`/shared/${project.id}`}
+                className="mt-4 inline-block rounded bg-accent px-3 py-1.5 text-sm font-medium text-white"
+              >
+                Open
+              </Link>
+            ) : (
+              <p className="mt-3 font-mono text-[11px] text-muted">
+                Nothing published yet — this appears once your consultant shares
+                their findings.
+              </p>
+            )}
           </article>
         ))}
       </main>
