@@ -1,0 +1,34 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "nextjs",
+  "buildCommand": "npm run db:migrate && next build",
+  "regions": ["bom1"],
+  "functions": {
+    "src/app/api/projects/[id]/generate/route.ts": {
+      "maxDuration": 300
+    },
+    "src/app/api/projects/[id]/sources/route.ts": {
+      "maxDuration": 120
+    },
+    "src/app/api/projects/[id]/sources/url/route.ts": {
+      "maxDuration": 60
+    }
+  },
+  "headers": [
+    {
+      "source": "/s/(.*)",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow" },
+        { "key": "Referrer-Policy", "value": "no-referrer" }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+      ]
+    }
+  ]
+}
