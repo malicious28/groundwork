@@ -35,10 +35,59 @@ export type LoadedArtifact<T> = {
   evidence: Map<string, ClaimEvidence>;
 };
 
+export type ArtifactVersion = {
+  version: number;
+  createdAt: Date;
+  grounding: GroundingSummary | null;
+  model: string | null;
+};
+
+/**
+ * Every version of an artifact, newest first.
+ *
+ * Regenerating never overwrites, so a consultant can point at what a brief said
+ * before a contradiction was settled and show the client what changed — which
+ * is the difference between a tool that produces documents and one that keeps a
+ * record.
+ */
+export async function listArtifactVersions(
+  orgId: string,
+  projectId: string,
+  kind: ArtifactKind,
+): Promise<ArtifactVersion[]> {
+  return withTenant(orgId, async (tx) => {
+    const rows = await tx
+      .select({
+        version: artifacts.version,
+        createdAt: artifacts.createdAt,
+        grounding: artifacts.grounding,
+        usage: artifacts.usage,
+      })
+      .from(artifacts)
+      .where(
+        and(
+          eq(artifacts.orgId, orgId),
+          eq(artifacts.projectId, projectId),
+          eq(artifacts.kind, kind),
+        ),
+      )
+      .orderBy(desc(artifacts.version));
+
+    return rows.map((row) => ({
+      version: row.version,
+      createdAt: row.createdAt,
+      grounding: row.grounding,
+      model: row.usage?.model ?? null,
+    }));
+  });
+}
+
 export async function loadArtifact<T>(
   orgId: string,
   projectId: string,
   kind: ArtifactKind,
+  /** Omit for the latest. */
+  version?: number,
 ): Promise<LoadedArtifact<T> | null> {
   return withTenant(orgId, async (tx) => {
     const [artifact] = await tx
@@ -49,6 +98,7 @@ export async function loadArtifact<T>(
           eq(artifacts.orgId, orgId),
           eq(artifacts.projectId, projectId),
           eq(artifacts.kind, kind),
+          ...(version ? [eq(artifacts.version, version)] : []),
         ),
       )
       .orderBy(desc(artifacts.version))

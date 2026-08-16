@@ -1,5 +1,6 @@
 import { requireSession } from "@/lib/auth/session";
-import { loadArtifact } from "@/lib/artifacts";
+import { listArtifactVersions, loadArtifact } from "@/lib/artifacts";
+import { ArtifactVersions } from "@/components/artifact-versions";
 import type { Brief } from "@/lib/ai/schemas";
 import {
   CitationList,
@@ -10,20 +11,35 @@ import { GroundingScore } from "@/components/grounding-score";
 
 export default async function BriefPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ v?: string }>;
 }) {
   const session = await requireSession("consultant");
   const { id } = await params;
-  const artifact = await loadArtifact<Brief>(session.orgId, id, "brief");
+  const { v } = await searchParams;
+  const requested = v ? Number(v) : undefined;
+  const artifact = await loadArtifact<Brief>(
+    session.orgId,
+    id,
+    "brief",
+    Number.isFinite(requested) ? requested : undefined,
+  );
 
   if (!artifact) return <EmptyStage what="The discovery brief" />;
+  const versions = await listArtifactVersions(session.orgId, id, "brief");
 
   const brief = artifact.content;
   const at = (path: string) => artifact.evidence.get(path);
 
   return (
     <article className="flex flex-col gap-8">
+      <ArtifactVersions
+        basePath={`/projects/${id}/brief`}
+        versions={versions}
+        current={artifact.version}
+      />
       <header>
         <p className="max-w-prose font-serif text-xl leading-snug text-balance">
           {brief.headline}
