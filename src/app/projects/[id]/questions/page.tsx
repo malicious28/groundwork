@@ -4,6 +4,7 @@ import { withTenant } from "@/db/tenant";
 import { openQuestions, projects } from "@/db/schema";
 import { EmptyStage } from "@/components/empty-stage";
 import { QuestionPack } from "@/components/question-pack";
+import { QuestionActions } from "@/components/question-actions";
 
 const CATEGORY_LABELS: Record<string, string> = {
   budget: "Budget",
@@ -50,45 +51,102 @@ export default async function QuestionsPage({
     return <EmptyStage what="The questions nobody has answered" />;
   }
 
+  const outstanding = questions.filter(
+    (question) => question.status === "open" || question.status === "asked",
+  );
+  const closed = questions.filter(
+    (question) => question.status === "answered" || question.status === "dismissed",
+  );
+
   return (
     <>
       <h2 className="mb-1 font-serif text-xl font-semibold">
         Blind-spot register
       </h2>
       <p className="mb-6 max-w-prose text-sm text-muted">
-        Checked against what a delivery team needs before starting. These are
-        the places the sources are silent or ambiguous — the gaps that turn into
-        change requests if nobody asks now.
+        Checked against what a delivery team needs before starting. These are the
+        places the sources are silent or ambiguous. An answer recorded here is
+        carried into the next discovery run, so the brief stops treating it as a
+        gap.
       </p>
 
-      <ul className="mb-8 flex flex-col gap-3">
-        {questions.map((question) => (
-          <li
-            key={question.id}
-            className="rounded border border-line bg-surface p-4"
-          >
-            <div className="flex flex-wrap items-baseline gap-2">
-              <span className="rounded border border-gap bg-gap-soft px-1.5 py-0.5 font-mono text-[10px] tracking-wide text-gap uppercase">
-                {CATEGORY_LABELS[question.category] ?? question.category}
-              </span>
-              {question.priority === 3 ? (
-                <span className="font-mono text-[10px] text-flag uppercase">
-                  Blocks the build
-                </span>
-              ) : null}
-            </div>
-            <p className="mt-2 max-w-prose font-medium">{question.question}</p>
-            <p className="mt-1.5 max-w-prose text-sm text-muted">
-              {question.whyItMatters}
-            </p>
-          </li>
-        ))}
-      </ul>
+      {outstanding.length > 0 ? (
+        <>
+          <h3 className="mb-3 font-mono text-[11px] tracking-[0.1em] text-gap uppercase">
+            Outstanding · {outstanding.length}
+          </h3>
+          <ul className="mb-8 flex flex-col gap-3">
+            {outstanding.map((question) => (
+              <li
+                key={question.id}
+                className="rounded border border-line bg-surface p-4"
+              >
+                <div className="flex flex-wrap items-baseline gap-2">
+                  <span className="rounded border border-gap bg-gap-soft px-1.5 py-0.5 font-mono text-[10px] tracking-wide text-gap uppercase">
+                    {CATEGORY_LABELS[question.category] ?? question.category}
+                  </span>
+                  {question.priority === 3 ? (
+                    <span className="font-mono text-[10px] text-flag uppercase">
+                      Blocks the build
+                    </span>
+                  ) : null}
+                </div>
+                <p className="mt-2 max-w-prose font-medium">
+                  {question.question}
+                </p>
+                <p className="mt-1.5 max-w-prose text-sm text-muted">
+                  {question.whyItMatters}
+                </p>
+                <QuestionActions
+                  projectId={id}
+                  questionId={question.id}
+                  status={question.status}
+                  answer={question.answer}
+                />
+              </li>
+            ))}
+          </ul>
+        </>
+      ) : (
+        <p className="mb-8 rounded border border-accent bg-accent-soft px-4 py-3 text-sm text-accent">
+          Every question has been answered or set aside.
+        </p>
+      )}
 
-      <QuestionPack
-        clientName={project?.clientName ?? "the client"}
-        questions={questions.map((q) => q.question)}
-      />
+      {outstanding.length > 0 ? (
+        <div className="mb-8">
+          <QuestionPack
+            clientName={project?.clientName ?? "the client"}
+            questions={outstanding.map((question) => question.question)}
+          />
+        </div>
+      ) : null}
+
+      {closed.length > 0 ? (
+        <>
+          <h3 className="mb-3 font-mono text-[11px] tracking-[0.1em] text-muted uppercase">
+            Closed · {closed.length}
+          </h3>
+          <ul className="flex flex-col gap-3">
+            {closed.map((question) => (
+              <li
+                key={question.id}
+                className="rounded border border-line bg-surface p-4"
+              >
+                <p className="max-w-prose text-sm font-medium">
+                  {question.question}
+                </p>
+                <QuestionActions
+                  projectId={id}
+                  questionId={question.id}
+                  status={question.status}
+                  answer={question.answer}
+                />
+              </li>
+            ))}
+          </ul>
+        </>
+      ) : null}
     </>
   );
 }
