@@ -2,6 +2,10 @@ import { requireSession } from "@/lib/auth/session";
 import { loadArtifact } from "@/lib/artifacts";
 import type { Prototype } from "@/lib/ai/schemas";
 import { EmptyStage } from "@/components/empty-stage";
+import { ShareLink } from "@/components/share-link";
+import { withTenant } from "@/db/tenant";
+import { projects } from "@/db/schema";
+import { and, eq } from "drizzle-orm";
 
 export default async function PrototypePage({
   params,
@@ -14,6 +18,13 @@ export default async function PrototypePage({
     session.orgId,
     id,
     "prototype",
+  );
+
+  const [project] = await withTenant(session.orgId, (tx) =>
+    tx
+      .select({ shareToken: projects.shareToken })
+      .from(projects)
+      .where(and(eq(projects.orgId, session.orgId), eq(projects.id, id))),
   );
 
   if (!artifact) return <EmptyStage what="A clickable prototype" />;
@@ -55,10 +66,12 @@ export default async function PrototypePage({
         />
       </div>
 
-      <p className="mt-3 max-w-prose font-mono text-[11px] text-muted">
+      <p className="mt-3 mb-6 max-w-prose font-mono text-[11px] text-muted">
         Rendered in a sandboxed frame with no network access and no same-origin
         privileges — the generated code cannot reach this application.
       </p>
+
+      <ShareLink projectId={id} initialToken={project?.shareToken ?? null} />
     </>
   );
 }
