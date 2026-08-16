@@ -1,5 +1,6 @@
 import { requireSession } from "@/lib/auth/session";
-import { loadArtifact } from "@/lib/artifacts";
+import { listArtifactVersions, loadArtifact } from "@/lib/artifacts";
+import { ArtifactVersions } from "@/components/artifact-versions";
 import type { ProcessArtifact } from "@/lib/ai/schemas";
 import {
   CitationList,
@@ -16,22 +17,33 @@ const EFFORT_STYLE: Record<string, string> = {
 
 export default async function ProcessPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ v?: string }>;
 }) {
   const session = await requireSession("consultant");
   const { id } = await params;
+  const { v } = await searchParams;
+  const requested = v ? Number(v) : undefined;
   const artifact = await loadArtifact<ProcessArtifact>(
     session.orgId,
     id,
     "process",
+    Number.isFinite(requested) ? requested : undefined,
   );
 
   if (!artifact) return <EmptyStage what="The improved process" />;
+  const versions = await listArtifactVersions(session.orgId, id, "process");
   const process = artifact.content;
 
   return (
     <>
+      <ArtifactVersions
+        basePath={`/projects/${id}/process`}
+        versions={versions}
+        current={artifact.version}
+      />
       <h2 className="mb-1 font-serif text-xl font-semibold">
         How it runs today, and how it could run
       </h2>

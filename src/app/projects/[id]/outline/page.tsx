@@ -1,5 +1,6 @@
 import { requireSession } from "@/lib/auth/session";
-import { loadArtifact } from "@/lib/artifacts";
+import { listArtifactVersions, loadArtifact } from "@/lib/artifacts";
+import { ArtifactVersions } from "@/components/artifact-versions";
 import type { Outline } from "@/lib/ai/schemas";
 import {
   CitationList,
@@ -26,18 +27,33 @@ const MOSCOW_LABEL: Record<string, string> = {
 
 export default async function OutlinePage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ v?: string }>;
 }) {
   const session = await requireSession("consultant");
   const { id } = await params;
-  const artifact = await loadArtifact<Outline>(session.orgId, id, "outline");
+  const { v } = await searchParams;
+  const requested = v ? Number(v) : undefined;
+  const artifact = await loadArtifact<Outline>(
+    session.orgId,
+    id,
+    "outline",
+    Number.isFinite(requested) ? requested : undefined,
+  );
 
   if (!artifact) return <EmptyStage what="The solution outline" />;
+  const versions = await listArtifactVersions(session.orgId, id, "outline");
   const outline = artifact.content;
 
   return (
     <>
+      <ArtifactVersions
+        basePath={`/projects/${id}/outline`}
+        versions={versions}
+        current={artifact.version}
+      />
       <h2 className="mb-1 font-serif text-xl font-semibold">Solution outline</h2>
       <p className="mb-6 max-w-prose text-sm text-muted">
         Roles, modules and a prioritised feature list. Every feature shows the
