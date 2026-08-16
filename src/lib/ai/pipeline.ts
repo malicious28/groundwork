@@ -223,16 +223,38 @@ export async function persistConflicts(
   artifact: Conflicts,
   sources: SourceLookup,
 ): Promise<number> {
+  // Only unresolved conflicts are replaced. A decision the consultant has
+  // already recorded is work, and a regeneration must not silently discard it —
+  // those decisions are fed back into the next run's corpus instead.
   await tx
     .delete(conflictsTable)
     .where(
       and(
         eq(conflictsTable.orgId, scope.orgId),
         eq(conflictsTable.projectId, scope.projectId),
+        eq(conflictsTable.status, "open"),
       ),
     );
 
+  const settled = await tx
+    .select({ summary: conflictsTable.summary })
+    .from(conflictsTable)
+    .where(
+      and(
+        eq(conflictsTable.orgId, scope.orgId),
+        eq(conflictsTable.projectId, scope.projectId),
+      ),
+    );
+  const alreadyDecided = new Set(
+    settled.map((row) => row.summary.trim().toLowerCase()),
+  );
+
+  let inserted = 0;
   for (const conflict of artifact.conflicts) {
+    // The model was told about settled decisions, but if it raises one again
+    // anyway, do not resurrect it as open.
+    if (alreadyDecided.has(conflict.summary.trim().toLowerCase())) continue;
+    inserted += 1;
     const [row] = await tx
       .insert(conflictsTable)
       .values({
@@ -284,7 +306,7 @@ export async function persistConflicts(
     }
   }
 
-  return artifact.conflicts.length;
+  return inserted;
 }
 
 export async function persistQuestions(

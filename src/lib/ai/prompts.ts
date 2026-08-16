@@ -26,9 +26,24 @@ Ground rules, in order of importance:
 
 Write for a reader who is busy and technical. Be specific and concrete. Skip preamble.`;
 
-/** Renders the corpus. Source order must be stable for caching to hold. */
+export type Decision = {
+  topic: string;
+  summary: string;
+  resolution: string;
+};
+
+/**
+ * Renders the corpus. Source order must be stable for caching to hold.
+ *
+ * `decisions` carries anything the consultant has since settled — a
+ * contradiction they took back to the client and got an answer on. Including it
+ * is what stops a regenerated brief from dutifully re-raising a question that
+ * was answered last week. It changes the cached prefix, which is correct: the
+ * context genuinely changed.
+ */
 export function buildCorpus(
   sources: Array<Pick<Source, "ref" | "kind" | "label" | "rawText" | "meta">>,
+  decisions: Decision[] = [],
 ): string {
   const blocks = sources
     .filter((source) => (source.rawText ?? "").trim().length > 0)
@@ -46,6 +61,25 @@ ${source.rawText}
 </source>`;
     });
 
+  const decisionBlock =
+    decisions.length === 0
+      ? ""
+      : `
+
+Since these sources were gathered, the following has been settled with the client. Treat each as more current than anything in the sources that contradicts it, and do not re-raise it as an open question or a conflict.
+
+<decisions>
+${decisions
+  .map(
+    (decision) =>
+      `<decision topic="${decision.topic}">
+Was in dispute: ${decision.summary}
+Now settled: ${decision.resolution}
+</decision>`,
+  )
+  .join("\n")}
+</decisions>`;
+
   return `Here is everything the client has given us.
 
 Each source has a \`ref\`. Cite by that ref, never by its label or filename.
@@ -54,7 +88,7 @@ Lines in transcripts and chat exports are prefixed with a timestamp and speaker 
 
 <sources>
 ${blocks.join("\n\n")}
-</sources>`;
+</sources>${decisionBlock}`;
 }
 
 export const BRIEF_INSTRUCTION = `Produce the discovery brief.

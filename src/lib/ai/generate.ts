@@ -3,6 +3,7 @@ import type { Db } from "@/db";
 import { withTenant } from "@/db/tenant";
 import {
   artifacts,
+  conflicts as conflictsTable,
   sources as sourcesTable,
   type ArtifactKind,
   type ModelUsage,
@@ -144,7 +145,37 @@ export async function runDiscovery(
     return;
   }
 
-  const corpus = buildCorpus(sources);
+  // Anything the consultant has already settled travels with the sources, so a
+  // regenerated brief does not re-open a question the client has answered.
+  const settled = await withTenant(ctx.orgId, (tx) =>
+    tx
+      .select({
+        topic: conflictsTable.topic,
+        summary: conflictsTable.summary,
+        resolution: conflictsTable.resolution,
+      })
+      .from(conflictsTable)
+      .where(
+        and(
+          eq(conflictsTable.orgId, ctx.orgId),
+          eq(conflictsTable.projectId, projectId),
+          eq(conflictsTable.status, "resolved"),
+        ),
+      ),
+  );
+
+  const corpus = buildCorpus(
+    sources,
+    settled
+      .filter((row): row is typeof row & { resolution: string } =>
+        Boolean(row.resolution),
+      )
+      .map((row) => ({
+        topic: row.topic,
+        summary: row.summary,
+        resolution: row.resolution,
+      })),
+  );
   const lookup = indexSources(sources);
 
   async function stage<T>(
