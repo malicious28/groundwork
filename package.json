@@ -15,7 +15,8 @@
     "db:migrate": "tsx scripts/migrate.ts",
     "db:seed": "tsx scripts/seed.ts",
     "db:reset": "rm -rf .pglite && npm run db:migrate && npm run db:seed",
-    "setup": "npm run db:migrate && npm run db:seed"
+    "setup": "npm run db:migrate && npm run db:seed",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.117.1",
@@ -36,6 +37,7 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@playwright/test": "^1.62.1",
     "@tailwindcss/postcss": "^4.3.3",
     "@types/bcryptjs": "^2.4.6",
     "@types/jsdom": "^30.0.0",
