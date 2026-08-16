@@ -17,6 +17,7 @@ export function SourceUpload({ projectId }: { projectId: string }) {
   const [busy, setBusy] = useState(false);
   const [result, setResult] = useState<Ingested[] | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [url, setUrl] = useState("");
 
   async function upload(files: FileList) {
     setBusy(true);
@@ -45,6 +46,31 @@ export function SourceUpload({ projectId }: { projectId: string }) {
     if (input.current) input.current.value = "";
   }
 
+  async function addUrl(target: string) {
+    setBusy(true);
+    setError(null);
+    setResult(null);
+
+    const response = await fetch(`/api/projects/${projectId}/sources/url`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ url: target }),
+    });
+    const data = (await response.json().catch(() => ({}))) as {
+      sources?: Ingested[];
+      error?: string;
+    };
+
+    if (!response.ok) {
+      setError(data.error ?? "That page could not be read.");
+    } else {
+      setResult(data.sources ?? []);
+      setUrl("");
+      router.refresh();
+    }
+    setBusy(false);
+  }
+
   return (
     <div className="mb-6 rounded border border-dashed border-line bg-surface p-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -52,7 +78,8 @@ export function SourceUpload({ projectId }: { projectId: string }) {
           <p className="text-sm font-medium">Add sources</p>
           <p className="mt-0.5 text-xs text-muted">
             Transcripts (.vtt), WhatsApp exports (.txt), PDFs, Word documents,
-            screenshots. The format is detected from the file itself.
+            screenshots — or a link to the client&apos;s website. The format is
+            detected from the file itself, not its name.
           </p>
         </div>
         <label className="cursor-pointer rounded border border-accent px-3 py-1.5 text-sm font-medium text-accent hover:bg-accent-soft">
@@ -69,6 +96,29 @@ export function SourceUpload({ projectId }: { projectId: string }) {
           />
         </label>
       </div>
+
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
+          if (url.trim()) addUrl(url.trim());
+        }}
+        className="mt-3 flex flex-wrap gap-2 border-t border-line-soft pt-3"
+      >
+        <input
+          type="url"
+          value={url}
+          onChange={(event) => setUrl(event.target.value)}
+          placeholder="https://the-client.example/about"
+          className="min-w-0 flex-1 rounded border border-line bg-surface px-3 py-1.5 text-sm"
+        />
+        <button
+          type="submit"
+          disabled={busy || !url.trim()}
+          className="rounded border border-line px-3 py-1.5 text-sm hover:border-accent hover:text-accent disabled:opacity-50"
+        >
+          Read page
+        </button>
+      </form>
 
       {result ? (
         <ul className="mt-3 flex flex-col gap-1">
