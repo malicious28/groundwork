@@ -314,30 +314,52 @@ export async function persistQuestions(
   scope: { orgId: string; projectId: string },
   artifact: Questions,
 ): Promise<number> {
-  // Answered questions survive a regeneration; only the open ones are replaced,
-  // so re-running the analysis never discards work the consultant has done.
-  await tx
-    .delete(openQuestions)
+  const existing = await tx
+    .select({
+      id: openQuestions.id,
+      question: openQuestions.question,
+      status: openQuestions.status,
+    })
+    .from(openQuestions)
     .where(
       and(
         eq(openQuestions.orgId, scope.orgId),
         eq(openQuestions.projectId, scope.projectId),
-        eq(openQuestions.status, "open"),
       ),
     );
 
-  if (artifact.questions.length === 0) return 0;
+  const key = (text: string) => text.trim().toLowerCase();
+  const seen = new Map(existing.map((row) => [key(row.question), row]));
+  const raisedNow = new Set(artifact.questions.map((q) => key(q.question)));
 
-  await tx.insert(openQuestions).values(
-    artifact.questions.map((question) => ({
-      orgId: scope.orgId,
-      projectId: scope.projectId,
-      category: question.category,
-      question: question.question,
-      whyItMatters: question.whyItMatters,
-      priority: question.priority,
-    })),
+  // Add only what is genuinely new. A question the consultant has already sent,
+  // answered or set aside must not come back as a fresh gap, and one still open
+  // keeps its row so its id and any reading order stay stable.
+  const fresh = artifact.questions.filter((q) => !seen.has(key(q.question)));
+
+  if (fresh.length > 0) {
+    await tx.insert(openQuestions).values(
+      fresh.map((question) => ({
+        orgId: scope.orgId,
+        projectId: scope.projectId,
+        category: question.category,
+        question: question.question,
+        whyItMatters: question.whyItMatters,
+        priority: question.priority,
+      })),
+    );
+  }
+
+  // Retire open questions this run no longer considers a gap — usually because
+  // new evidence answered them. Anything the consultant has touched is left
+  // alone: that is their record, not the model's.
+  const stale = existing.filter(
+    (row) => row.status === "open" && !raisedNow.has(key(row.question)),
   );
+  for (const row of stale) {
+    await tx.delete(openQuestions).where(eq(openQuestions.id, row.id));
+  }
 
-  return artifact.questions.length;
+  return fresh.length;
 }
+

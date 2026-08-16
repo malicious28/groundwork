@@ -4,6 +4,7 @@ import { withTenant } from "@/db/tenant";
 import {
   artifacts,
   conflicts as conflictsTable,
+  openQuestions as questionsTable,
   sources as sourcesTable,
   type ArtifactKind,
   type ModelUsage,
@@ -164,6 +165,23 @@ export async function runDiscovery(
       ),
   );
 
+  const answered = await withTenant(ctx.orgId, (tx) =>
+    tx
+      .select({
+        category: questionsTable.category,
+        question: questionsTable.question,
+        answer: questionsTable.answer,
+      })
+      .from(questionsTable)
+      .where(
+        and(
+          eq(questionsTable.orgId, ctx.orgId),
+          eq(questionsTable.projectId, projectId),
+          eq(questionsTable.status, "answered"),
+        ),
+      ),
+  );
+
   const corpus = buildCorpus(
     sources,
     settled
@@ -174,7 +192,18 @@ export async function runDiscovery(
         topic: row.topic,
         summary: row.summary,
         resolution: row.resolution,
-      })),
+      }))
+      .concat(
+        answered
+          .filter((row): row is typeof row & { answer: string } =>
+            Boolean(row.answer),
+          )
+          .map((row) => ({
+            topic: row.category,
+            summary: row.question,
+            resolution: row.answer,
+          })),
+      ),
   );
   const lookup = indexSources(sources);
 
