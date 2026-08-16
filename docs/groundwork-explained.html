@@ -1,0 +1,731 @@
+<title>Groundwork Explained</title>
+<style>
+  @page {
+    size: A4;
+    margin: 18mm 16mm 20mm;
+    @bottom-center { content: counter(page); }
+  }
+
+  :root {
+    --ink: #1a1f1d;
+    --ink-2: #3d4642;
+    --muted: #6b7570;
+    --line: #d5dad3;
+    --line-soft: #e6e9e4;
+    --paper: #ffffff;
+    --tint: #f4f6f3;
+    --accent: #14655a;
+    --accent-soft: #e2efeb;
+    --flag: #9c2e22;
+    --flag-soft: #f7e6e3;
+    --gap: #85610f;
+    --gap-soft: #f6eeda;
+
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    --mono: "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: 11.2pt;
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page { max-width: 178mm; margin: 0 auto; }
+
+  /* ---------- cover ---------- */
+  .cover {
+    min-height: 232mm;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    page-break-after: always;
+  }
+  .cover .eyebrow {
+    font-family: var(--mono);
+    font-size: 8.5pt;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 14mm;
+  }
+  .cover h1 {
+    font-size: 34pt;
+    line-height: 1.04;
+    letter-spacing: -.02em;
+    font-weight: 600;
+    margin: 0 0 6mm;
+  }
+  .cover .sub {
+    font-size: 13pt;
+    line-height: 1.5;
+    color: var(--ink-2);
+    max-width: 120mm;
+    margin: 0 0 14mm;
+  }
+  .cover dl {
+    display: grid;
+    grid-template-columns: 34mm 1fr;
+    gap: 2.5mm 6mm;
+    margin: 0;
+    border-top: 1px solid var(--line);
+    padding-top: 6mm;
+    font-family: var(--sans);
+    font-size: 9.5pt;
+  }
+  .cover dt { color: var(--muted); font-family: var(--mono); font-size: 8pt; text-transform: uppercase; letter-spacing: .1em; padding-top: 1mm; }
+  .cover dd { margin: 0; color: var(--ink-2); }
+
+  /* ---------- structure ---------- */
+  h2 {
+    font-size: 19pt;
+    line-height: 1.18;
+    letter-spacing: -.012em;
+    font-weight: 600;
+    margin: 0 0 3mm;
+    padding-top: 2mm;
+    page-break-after: avoid;
+  }
+  h2 .n {
+    display: block;
+    font-family: var(--mono);
+    font-size: 8pt;
+    font-weight: 400;
+    letter-spacing: .14em;
+    color: var(--accent);
+    margin-bottom: 2.5mm;
+  }
+  h3 {
+    font-family: var(--sans);
+    font-size: 11.5pt;
+    font-weight: 650;
+    margin: 8mm 0 2mm;
+    page-break-after: avoid;
+  }
+  h4 {
+    font-family: var(--mono);
+    font-size: 8pt;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    color: var(--muted);
+    font-weight: 500;
+    margin: 0 0 2mm;
+  }
+
+  section { page-break-before: always; padding-bottom: 4mm; }
+  section.flow { page-break-before: auto; }
+
+  p { margin: 0 0 3.5mm; }
+  .lede { font-size: 12pt; color: var(--ink-2); margin-bottom: 6mm; }
+  strong { font-weight: 650; }
+
+  ul, ol { margin: 0 0 4mm; padding-left: 6mm; }
+  li { margin-bottom: 1.8mm; }
+  li::marker { color: var(--muted); }
+
+  code {
+    font-family: var(--mono);
+    font-size: .85em;
+    background: var(--tint);
+    border: 1px solid var(--line-soft);
+    border-radius: 2px;
+    padding: 0 1mm;
+  }
+
+  /* ---------- devices ---------- */
+  .box {
+    border: 1px solid var(--line);
+    border-radius: 2mm;
+    background: var(--tint);
+    padding: 5mm 6mm;
+    margin: 0 0 5mm;
+    page-break-inside: avoid;
+  }
+  .box > :last-child { margin-bottom: 0; }
+
+  .key {
+    border: 1px solid var(--accent);
+    background: var(--accent-soft);
+    border-radius: 2mm;
+    padding: 5mm 6mm;
+    margin: 0 0 5mm;
+    page-break-inside: avoid;
+  }
+  .key > :last-child { margin-bottom: 0; }
+  .key h4 { color: var(--accent); }
+
+  .warn {
+    border: 1px solid var(--gap);
+    background: var(--gap-soft);
+    border-radius: 2mm;
+    padding: 5mm 6mm;
+    margin: 0 0 5mm;
+    page-break-inside: avoid;
+  }
+  .warn > :last-child { margin-bottom: 0; }
+  .warn h4 { color: var(--gap); }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--sans);
+    font-size: 9.5pt;
+    margin: 0 0 5mm;
+    page-break-inside: avoid;
+  }
+  th {
+    text-align: left;
+    font-family: var(--mono);
+    font-size: 7.5pt;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: var(--muted);
+    font-weight: 500;
+    border-bottom: 1px solid var(--line);
+    padding: 2mm 3mm 2mm 0;
+    vertical-align: bottom;
+  }
+  td {
+    padding: 2.5mm 3mm 2.5mm 0;
+    border-bottom: 1px solid var(--line-soft);
+    vertical-align: top;
+    line-height: 1.45;
+  }
+  tr:last-child td { border-bottom: none; }
+  td:last-child, th:last-child { padding-right: 0; }
+
+  .step {
+    display: grid;
+    grid-template-columns: 9mm 1fr;
+    gap: 4mm;
+    padding: 3.5mm 0;
+    border-bottom: 1px solid var(--line-soft);
+    page-break-inside: avoid;
+  }
+  .step:last-child { border-bottom: none; }
+  .step .num {
+    font-family: var(--mono);
+    font-size: 8pt;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    border-radius: 1mm;
+    height: 6mm;
+    display: grid;
+    place-items: center;
+    margin-top: .5mm;
+  }
+  .step h3 { margin: 0 0 1mm; font-size: 10.5pt; }
+  .step p { margin: 0 0 1.5mm; font-size: 10.5pt; }
+  .step .out {
+    font-family: var(--mono);
+    font-size: 7.5pt;
+    color: var(--muted);
+  }
+
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; margin-bottom: 5mm; }
+  .split > div {
+    border: 1px solid var(--line);
+    border-radius: 2mm;
+    padding: 4mm 5mm;
+    page-break-inside: avoid;
+  }
+  .split h4 { margin-bottom: 2mm; }
+  .split p { font-size: 10pt; margin-bottom: 0; }
+
+  .analogy {
+    border-left: 2px solid var(--accent);
+    padding-left: 5mm;
+    margin: 0 0 4mm;
+    color: var(--ink-2);
+    font-style: italic;
+  }
+
+  .diagram {
+    font-family: var(--mono);
+    font-size: 8pt;
+    line-height: 1.5;
+    background: var(--tint);
+    border: 1px solid var(--line);
+    border-radius: 2mm;
+    padding: 5mm;
+    margin: 0 0 5mm;
+    white-space: pre;
+    overflow-x: hidden;
+    page-break-inside: avoid;
+  }
+
+  .pill {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 7.5pt;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    padding: .4mm 1.6mm;
+    border-radius: 1mm;
+    white-space: nowrap;
+  }
+  .pill.ok { background: var(--accent-soft); color: var(--accent); border: 1px solid var(--accent); }
+  .pill.no { background: var(--flag-soft); color: var(--flag); border: 1px solid var(--flag); }
+  .pill.part { background: var(--gap-soft); color: var(--gap); border: 1px solid var(--gap); }
+
+  footer.end {
+    margin-top: 10mm;
+    padding-top: 4mm;
+    border-top: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 8pt;
+    color: var(--muted);
+  }
+</style>
+
+<div class="page">
+
+<!-- ============ COVER ============ -->
+<header class="cover">
+  <p class="eyebrow">WSI ALM · candidate assignment · AI Business Discovery to POC</p>
+  <h1>Groundwork</h1>
+  <p class="sub">A tool that turns a client's scattered messages, calls and documents into a plan you can build from — and can prove where every sentence of that plan came from.</p>
+  <dl>
+    <dt>What it is</dt><dd>A working web application, built end to end</dd>
+    <dt>Built by</dt><dd>Ashika Panigrahi</dd>
+    <dt>Time taken</dt><dd>One week</dd>
+    <dt>Size</dt><dd>~110 files · 100 automated tests · 9 browser tests</dd>
+    <dt>Status</dt><dd>Complete and running locally; ready to deploy</dd>
+    <dt>This document</dt><dd>Explains the whole thing in plain language</dd>
+  </dl>
+</header>
+
+<!-- ============ 1 ============ -->
+<section class="flow">
+  <h2><span class="n">Part 1</span>What the company asked for</h2>
+
+  <p class="lede">The assignment describes a problem that consultants live with every day, and asks you to solve it with software.</p>
+
+  <p>Their brief said this. When a client hires you, their requirements never arrive as one clean document. They arrive as two recorded meetings, a WhatsApp group full of messages and photos, a PDF someone wrote two years ago, screenshots of the spreadsheet they currently use, and a website.</p>
+
+  <p>A consultant reads all of it, works out what the client actually needs, spots what is going wrong today, suggests a better way of working, and then builds a small demo to show what the fix could look like.</p>
+
+  <p>WSI ALM asked for an application that does that. Their five requirements were:</p>
+
+  <table>
+    <tr><td style="width:8mm"><strong>1</strong></td><td><strong>Take client inputs.</strong> At least three different kinds — transcripts, chat exports, PDFs, documents, screenshots, a website.</td></tr>
+    <tr><td><strong>2</strong></td><td><strong>Understand the business need.</strong> The main goal, how things work today, what hurts, what is required, and what nobody has told you yet.</td></tr>
+    <tr><td><strong>3</strong></td><td><strong>Suggest a better process.</strong> Practical and easy to understand.</td></tr>
+    <tr><td><strong>4</strong></td><td><strong>Create a solution outline.</strong> Features, user roles, screens, and how it all flows together.</td></tr>
+    <tr><td><strong>5</strong></td><td><strong>Create a basic POC.</strong> A small working demo of the idea.</td></tr>
+  </table>
+
+  <p>They also said what they would judge: how well you understand the business problem, how practical your solution is, how you use AI, how the frontend and backend work together, your engineering quality, and how clearly you can explain your work.</p>
+
+  <h3>The second, hidden assignment</h3>
+
+  <p>Alongside the brief came a job description, and it asks for something quite different. It wants someone who can build <em>multi-tenant SaaS</em> — software where many separate customers use the same application, and none of them can ever see another's data. It lists strict data isolation, login and permissions, database design, testing, and continuous integration.</p>
+
+  <p>And under a heading called <strong>Not A Fit If</strong>, it says: <em>"You rely on AI without understanding the output."</em></p>
+
+  <div class="key">
+    <h4>The decision that shaped everything</h4>
+    <p>Most people answering this brief would build an upload box connected to an AI. That answers the first assignment and completely ignores the second.</p>
+    <p>So Groundwork is built as a <strong>real multi-tenant product</strong> — with organisations, user roles, and database-enforced separation between customers. And its single most important feature is a mechanism that <strong>refuses to trust the AI's output</strong> without checking it first. That is a direct answer to the line they used to screen people out.</p>
+  </div>
+</section>
+
+<!-- ============ 2 ============ -->
+<section>
+  <h2><span class="n">Part 2</span>What Groundwork does</h2>
+
+  <p class="lede">In one sentence: you give it the mess, and it gives you a plan where every claim can be traced back to the exact sentence somebody actually said.</p>
+
+  <p>Here is the whole thing as a picture.</p>
+
+  <div class="diagram">   TRANSCRIPTS   WHATSAPP   PDFs   DOCUMENTS   SCREENSHOTS   WEBSITE
+        │           │        │        │            │            │
+        └───────────┴────────┴────┬───┴────────────┴────────────┘
+                                  │
+                       ┌──────────▼──────────┐
+                       │  THE EVIDENCE       │   every message, every
+                       │  LEDGER             │   sentence, individually
+                       └──────────┬──────────┘   numbered and addressable
+                                  │
+     ┌────────────┬───────────────┼───────────────┬────────────┐
+     ▼            ▼               ▼               ▼            ▼
+  BRIEF      CONFLICTS       QUESTIONS        PROCESS      PROTOTYPE
+  what they  where they      what nobody      how to do    a clickable
+  need       contradict      answered         it better    demo app
+     │            │               │               │            │
+     └────────────┴───────────────┴───────────────┴────────────┘
+                                  │
+                      every single line above is
+                      checked against the sources
+                      before you are allowed to see
+                      it as a fact</div>
+
+  <p>The five stages below match the company's five requirements exactly, one for one.</p>
+
+  <div class="step">
+    <div class="num">1</div>
+    <div>
+      <h3>Take the inputs</h3>
+      <p>You drag in files, or paste a website address. It works out what each file is by looking inside it, not by trusting the file name — because people rename things, and a WhatsApp export usually arrives called <code>_chat.txt</code>.</p>
+      <p class="out">Handles: Teams and Zoom transcripts · WhatsApp exports · PDFs · Word documents · screenshots · websites</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="num">2</div>
+    <div>
+      <h3>Understand what they need</h3>
+      <p>It reads everything and writes a discovery brief: the real goal, who the people are and what each one cares about, how the work happens today step by step, where it hurts, what is required, and what the client has explicitly ruled out.</p>
+      <p class="out">Also produces: contradictions between sources · the questions nobody answered</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="num">3</div>
+    <div>
+      <h3>Suggest a better way</h3>
+      <p>Two diagrams side by side — how it works now, and how it could work. Every proposed change says exactly what waste it removes, in the client's own words.</p>
+      <p class="out">Example: "removes the day-long round trip that starts every time a client rings the founder"</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="num">4</div>
+    <div>
+      <h3>Outline the solution</h3>
+      <p>Who the users are and what each can do, what screens exist, and a feature list sorted into Must have, Should have, Could have, and Won't do yet.</p>
+      <p class="out">Every feature shows the evidence behind it — or admits it was the tool's own idea</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="num">5</div>
+    <div>
+      <h3>Build a demo</h3>
+      <p>A small clickable app you can show the client, filled with <em>their</em> project names, <em>their</em> people, <em>their</em> terminology — not fake placeholder data.</p>
+      <p class="out">Shareable with a link the client can open without an account</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3 ============ -->
+<section>
+  <h2><span class="n">Part 3</span>The one idea that matters most</h2>
+
+  <p class="lede">AI tools make things up. This is the well-known problem with them, and it is the reason the job description says "not a fit if you rely on AI without understanding the output."</p>
+
+  <p>Groundwork's answer is a rule the software enforces on itself:</p>
+
+  <div class="key">
+    <h4>The rule</h4>
+    <p><strong>The AI is not allowed to state anything unless it also provides the exact sentence, copied word for word, from the document it came from. The software then goes and checks that the sentence really is in that document. If it is not there, the claim is shown to you in red as unsupported.</strong></p>
+  </div>
+
+  <h3>Why this is unusual</h3>
+
+  <p>Most AI tools give you an answer and you either trust it or you don't. There is no way to check without re-reading everything yourself, which defeats the point of the tool.</p>
+
+  <div class="analogy">Think of it like a school essay where every sentence must have a footnote — and a teacher who actually opens each book to confirm the quote is real before marking it.</div>
+
+  <p>In Groundwork, every claim carries a small tag showing which source it came from. Click the tag and a panel slides open showing that document with the exact sentence highlighted in place. You can check any statement in about two seconds.</p>
+
+  <h3>The score, and why it is not 100%</h3>
+
+  <p>At the top of the brief is a number. In the demo it reads:</p>
+
+  <div class="box">
+    <p style="font-size:15pt;margin-bottom:2mm"><strong>83%</strong> — 24 of 29 claims verified against source</p>
+    <p style="margin-bottom:0;color:var(--ink-2)">5 could not be traced to a quote — including 4 marked as assumptions.</p>
+  </div>
+
+  <p>A perfect score would actually be suspicious. Here is what the missing 17% is made of:</p>
+
+  <ul>
+    <li><strong>Four are assumptions the AI declared itself.</strong> Things it had to guess because nobody said them — like "we assume the accounting system has a way to read payment status." It flags these openly instead of hiding them inside confident-sounding sentences.</li>
+    <li><strong>One is a deliberate trap.</strong> I planted a fake requirement that cites a sentence appearing in none of the documents. It shows up in red with a cross, and the panel says the quote could not be located.</li>
+  </ul>
+
+  <div class="warn">
+    <h4>Why the trap is there</h4>
+    <p>A safety check that has never been seen failing is not proof of anything. The planted claim means anyone can watch the mechanism catch a lie — and the automated tests check both halves: that all the real citations pass, <em>and</em> that the fake one still fails. If someone accidentally breaks the checking, the tests go red immediately.</p>
+  </div>
+
+  <h3>Being forgiving without being fooled</h3>
+
+  <p>The check has to be sensible. AI models often change a curly apostrophe to a straight one while copying, or reflow a sentence that was split across two lines. That is still an honest copy, and rejecting it would flag good work as fake.</p>
+
+  <table>
+    <tr><th>How it matched</th><th>What that means</th><th>Counted as verified?</th></tr>
+    <tr><td>Exact</td><td>Character for character identical</td><td><span class="pill ok">Yes</span></td></tr>
+    <tr><td>Normalised</td><td>Same words; punctuation or spacing differs</td><td><span class="pill ok">Yes</span></td></tr>
+    <tr><td>Approximate</td><td>Nearly the same sentence, a word or two off</td><td><span class="pill part">No — shown as approximate</span></td></tr>
+    <tr><td>Not found</td><td>This sentence is not in that document</td><td><span class="pill no">No — shown as unsupported</span></td></tr>
+  </table>
+
+  <p>Forgiving about punctuation, unforgiving about wording. A model that <em>reworded</em> a sentence has not quoted it, so that never counts as verified.</p>
+</section>
+
+<!-- ============ 4 ============ -->
+<section>
+  <h2><span class="n">Part 4</span>Walking through it, as a user would</h2>
+
+  <p class="lede">The demo uses a realistic invented client: Nova Interiors, a 40-person interior design firm in Pune that runs every project through WhatsApp groups and one shared spreadsheet.</p>
+
+  <p>Their inputs are two recorded consultant calls, a WhatsApp group with 69 real-looking messages, their internal process document as a Word file, a vendor terms PDF, and a screenshot of their tracking spreadsheet.</p>
+
+  <p>Hidden inside that material, on purpose, are the kinds of problems a real engagement has: a budget stated as two lakh by the founder and five lakh by the operations head two weeks later; an argument about who is allowed to approve messages to clients; a whole module that only appears in the second call; and several important questions nobody thought to ask.</p>
+
+  <h3>What happens when you press the button</h3>
+
+  <div class="box">
+    <p><strong>You press "Run discovery."</strong> Six stages appear one after another as they finish, so you watch the work arrive rather than staring at a spinner:</p>
+    <p style="font-family:var(--mono);font-size:9pt;line-height:1.7;margin:3mm 0 0">
+      ✓ brief &nbsp;&nbsp;&nbsp;&nbsp; 24 of 29 claims verified against source (83%)<br>
+      ✓ conflicts &nbsp;3 contradictions found<br>
+      ✓ questions &nbsp;7 open questions<br>
+      ✓ process &nbsp;&nbsp;5 changes proposed<br>
+      ✓ outline &nbsp;&nbsp;9 features, 5 must-have<br>
+      ✓ prototype 4 screens
+    </p>
+  </div>
+
+  <h3>The three moments worth showing anyone</h3>
+
+  <p><strong>One. Click any claim and see the proof.</strong> The brief says the founder is acting as a switchboard between clients and site teams. Click the tag beside it and you see the transcript, with his actual words highlighted: <em>"If I stop being the switchboard."</em></p>
+
+  <p><strong>Two. The contradiction, side by side.</strong> The Conflicts screen shows the budget disagreement with both quotes next to each other — the founder saying two lakh on the 12th, the operations head reporting five lakh on the 26th. You choose which one stands, add a note, and it is recorded as a decision.</p>
+
+  <p><strong>Three. Questions you can actually send.</strong> The tool lists what nobody answered, then composes them into a message you can paste straight into WhatsApp or email. Not a list of gaps — a message ready to send.</p>
+
+  <div class="key">
+    <h4>The thing that surprises people</h4>
+    <p>Decisions and answers are not just stored — they are fed back in. When you run the analysis a second time, the tool already knows the budget was settled at five lakh and stops raising it as a problem. The engagement <strong>accumulates knowledge</strong> instead of starting from zero every time.</p>
+  </div>
+
+  <h3>And what the client sees</h3>
+
+  <p>You create a link and send it. The client opens it with no account, no app, no password — and can forward it to their spouse or their accountant, which is exactly what this fictional client asked for.</p>
+
+  <p>They see the goal, the problems, the proposed new process and the demo. They deliberately do <strong>not</strong> see the contradictions (which quote their own staff disagreeing with each other) or the assumptions list. Those are your working notes, not theirs.</p>
+</section>
+
+<!-- ============ 5 ============ -->
+<section>
+  <h2><span class="n">Part 5</span>Why there is one repository, not two</h2>
+
+  <p class="lede">You asked about this specifically, and it is a fair question — many companies do split frontend and backend into separate codebases.</p>
+
+  <h3>First, what those two words mean</h3>
+
+  <div class="split">
+    <div>
+      <h4>Frontend</h4>
+      <p>Everything you see and click. Buttons, pages, the panel that slides open when you click a citation. It runs in your web browser.</p>
+    </div>
+    <div>
+      <h4>Backend</h4>
+      <p>Everything you don't see. Reading files, talking to the database, checking passwords, calling the AI, verifying quotes. It runs on a server.</p>
+    </div>
+  </div>
+
+  <p>Groundwork has both. It has a full backend: a database with twelve tables, login and permissions, file processing, six AI calls, and the verification engine. And it has a full frontend: a dozen screens with live updates, sliding panels, diagrams and forms.</p>
+
+  <p><strong>They live in one repository because the framework this is built on — Next.js — is designed to hold both.</strong> This is not a shortcut. It is how the company itself builds software.</p>
+
+  <div class="key">
+    <h4>The direct answer</h4>
+    <p>The WSI ALM job description asks for <strong>"a multi-tenant SaaS architecture using Next.js, Vercel and Google Cloud."</strong> Next.js is a framework where the frontend and backend live together by design, and Vercel is the company that makes Next.js. Splitting them into two repositories would mean working against the exact tool they named.</p>
+  </div>
+
+  <h3>How they are separated inside the one repository</h3>
+
+  <p>One repository does not mean one jumbled pile. The code is clearly divided by what each part is responsible for:</p>
+
+  <table>
+    <tr><th>Folder</th><th>What lives there</th><th>Runs where</th></tr>
+    <tr><td><code>src/app/api/</code></td><td>The backend API. Login, file upload, generating the analysis, sharing links.</td><td>Server</td></tr>
+    <tr><td><code>src/db/</code></td><td>Database structure and the rules that keep customers separated.</td><td>Server</td></tr>
+    <tr><td><code>src/lib/</code></td><td>The engine room: file readers, the quote verifier, the AI layer.</td><td>Server</td></tr>
+    <tr><td><code>src/components/</code></td><td>The interface — buttons, panels, diagrams.</td><td>Browser</td></tr>
+    <tr><td><code>src/app/**/page.tsx</code></td><td>The screens themselves.</td><td>Both</td></tr>
+  </table>
+
+  <p>The backend still exposes a proper API that anything could call. You can talk to it with plain web requests, and I tested it that way throughout — logging in, uploading a PDF, running the analysis, all without opening a browser.</p>
+
+  <h3>What splitting them would have cost</h3>
+
+  <ul>
+    <li><strong>Two deployments instead of one.</strong> Two things to set up, two to keep in sync, two to break.</li>
+    <li><strong>Duplicate type definitions.</strong> The shape of a "project" or a "citation" would have to be written twice and manually kept identical. Here it is written once, and the computer catches any mismatch instantly.</li>
+    <li><strong>Slower pages.</strong> Screens can currently ask the database directly while rendering. Split apart, every screen would need an extra network round trip.</li>
+    <li><strong>Working against the framework and against the job spec.</strong></li>
+  </ul>
+
+  <p>A split makes sense when separate teams own each half, or when several different applications share one backend. Neither is true here — and if it became true later, the API layer is already cleanly separated and could be lifted out.</p>
+</section>
+
+<!-- ============ 6 ============ -->
+<section>
+  <h2><span class="n">Part 6</span>How it is built, explained simply</h2>
+
+  <p class="lede">This section covers the technical decisions and why each one was made. Every term is explained the first time it appears.</p>
+
+  <h3>Keeping customers apart — the most important engineering problem</h3>
+
+  <p>Multi-tenant means many companies use the same application. Meridian Digital and Northwind Studio both have accounts. Neither must ever see the other's work — not by accident, not by guessing a web address, not because a developer forgot something.</p>
+
+  <p>Groundwork does this <strong>twice, in two independent places</strong>:</p>
+
+  <div class="split">
+    <div>
+      <h4>Layer 1 — in the code</h4>
+      <p>Every request for data says which company is asking. Every database question includes "…and only for this company."</p>
+    </div>
+    <div>
+      <h4>Layer 2 — in the database</h4>
+      <p>The database itself has rules built in. Even if the code forgets to ask correctly, the database returns nothing rather than someone else's data.</p>
+    </div>
+  </div>
+
+  <div class="analogy">Layer 1 is a receptionist who checks your badge. Layer 2 is a lock on every door that only opens for that badge. You want both, because receptionists have off days.</div>
+
+  <div class="warn">
+    <h4>A real bug this caught, worth telling you about</h4>
+    <p>When I first wrote the database rules, I also wrote tests to prove they worked. <strong>All five tests failed.</strong> Every company could see every other company's data.</p>
+    <p>The reason is a genuine trap in this technology: database rules are skipped for the account that <em>owns</em> the tables — which is exactly the account applications normally connect as. The rules existed, looked correct, and did nothing.</p>
+    <p>The fix is that the application now drops to a restricted, lower-privilege identity before touching any data. This is the kind of mistake that ships to production looking perfectly fine. It is now covered by tests that would fail loudly if anyone undid it.</p>
+  </div>
+
+  <h3>The database, and why setup takes two commands</h3>
+
+  <p>Normally, running someone else's project means installing a database server first — a fiddly step that stops many reviewers before they start.</p>
+
+  <p>Groundwork uses <strong>PGlite</strong>: a real PostgreSQL database compiled to run inside the application itself, storing everything in a local folder. No server to install. <code>npm install</code>, then <code>npm run setup</code>, then it runs.</p>
+
+  <p>For real deployment it switches to a hosted database (Neon) by setting one configuration value. Same structure, same rules, same everything — only the connection changes.</p>
+
+  <h3>Login and permissions</h3>
+
+  <p>When you sign in, the server gives your browser a <em>signed token</em> — like a wristband at a venue that cannot be forged because it carries a cryptographic seal only the server can produce.</p>
+
+  <p>There are three roles: <strong>owner</strong>, <strong>consultant</strong> and <strong>client</strong>. A client is bounced out of the consultant screens automatically.</p>
+
+  <p>I wrote this by hand rather than installing a login library, because the job description asks specifically for understanding of tokens and permissions. A library would have hidden exactly the thing they wanted to see. It is around a hundred readable lines.</p>
+
+  <h3>How the AI part works</h3>
+
+  <p>Six separate calls to Claude, one per stage, rather than one giant call. This matters for three reasons: each one finishes comfortably within time limits, a failure at the last stage does not destroy the work already done, and you can watch progress arrive.</p>
+
+  <p>All six calls read the same documents. Sending those documents six times would be slow and expensive, so the system uses <strong>prompt caching</strong> — the documents are sent once and remembered, and the later five calls reuse them at roughly a tenth of the cost.</p>
+
+  <div class="box">
+    <h4>A decision I made deliberately, and why</h4>
+    <p>There is a popular technique called RAG, where documents are chopped into fragments and only the "relevant" pieces are fetched for each question. It is the fashionable answer.</p>
+    <p><strong>I did not use it, on purpose.</strong> These documents total roughly 50,000 to 200,000 words — small enough to give the AI all of it at once. RAG would have added a lot of machinery in order to make the result <em>worse</em>, because understanding a client means noticing that something said in a call contradicts a WhatsApp message three weeks later. Chopping documents into fragments is precisely how you lose that.</p>
+    <p>Knowing when <em>not</em> to use a fashionable technique is itself an engineering judgement, so it is documented rather than silently omitted.</p>
+  </div>
+
+  <h3>Screenshots</h3>
+
+  <p>A screenshot is turned into text the moment it is uploaded, not when the analysis runs. That ordering is deliberate: it means anything the tool says about a screenshot can be quoted and verified just like a transcript. Feeding images straight into the analysis would put that content outside the checking system — the one place this product cannot afford a blind spot.</p>
+
+  <h3>Testing</h3>
+
+  <table>
+    <tr><th>Kind</th><th>Count</th><th>What it protects</th></tr>
+    <tr><td>Automated tests</td><td>100</td><td>File readers, the quote verifier, customer separation, share links, decisions surviving a re-run</td></tr>
+    <tr><td>Browser tests</td><td>9</td><td>The actual demo, clicked through automatically start to finish</td></tr>
+  </table>
+
+  <p>The browser tests are the demo itself, performed by a robot. They sign in, run the analysis, click a citation, check the highlighted sentence appears, confirm the planted fake claim still shows as unsupported, and confirm the other company still gets a "not found" page. If any part of the story breaks, it is caught automatically rather than discovered live in front of someone.</p>
+
+  <h3>Two security decisions worth naming</h3>
+
+  <p><strong>The generated demo runs in a locked box.</strong> The prototype is code an AI wrote, so it is displayed inside a sealed frame with no access to the main application, its data, or the network. One browser test checks the exact security setting, so nobody can weaken it later to silence a warning.</p>
+
+  <p><strong>The website reader cannot be turned against us.</strong> Letting users give the server a web address to fetch is a classic security hole — someone could point it at internal systems. Private and internal addresses are refused, and the address is looked up and re-checked before anything is fetched.</p>
+</section>
+
+<!-- ============ 7 ============ -->
+<section>
+  <h2><span class="n">Part 7</span>How the work was organised</h2>
+
+  <p class="lede">Each feature was built on its own branch and merged separately, so the history reads as a sequence of decisions rather than one enormous dump of code.</p>
+
+  <table>
+    <tr><th>Branch</th><th>What it added</th></tr>
+    <tr><td><code>feat/share-links</code></td><td>Client links that work without an account and can be revoked</td></tr>
+    <tr><td><code>feat/conflict-resolution</code></td><td>Deciding a contradiction, and feeding that decision into the next run</td></tr>
+    <tr><td><code>feat/website-ingestion</code></td><td>Reading a client's website, with protection against misuse</td></tr>
+    <tr><td><code>feat/screenshot-vision</code></td><td>Turning screenshots into quotable evidence</td></tr>
+    <tr><td><code>test/e2e-playwright</code></td><td>Robot browser tests over the whole demo</td></tr>
+    <tr><td><code>feat/question-workflow</code></td><td>Working a question through to a recorded answer</td></tr>
+    <tr><td><code>feat/artifact-versions</code></td><td>Seeing every previous run and comparing their scores</td></tr>
+    <tr><td><code>chore/deployment-config</code></td><td>Deployment settings and security headers</td></tr>
+    <tr><td><code>docs/submission</code></td><td>Documentation brought up to date</td></tr>
+  </table>
+
+  <p>Every commit message explains the reasoning, including what broke. Three genuine bugs were found and fixed this way:</p>
+
+  <ul>
+    <li><strong>Re-running destroyed your decisions.</strong> Running the analysis a second time deleted every contradiction — including ones already decided. Hours of a consultant's work, gone silently.</li>
+    <li><strong>The same bug in a different shape</strong> in the questions list, which wiped and recreated every open question on each run.</li>
+    <li><strong>Two test systems fighting.</strong> Each passed alone while the combined run failed, which would have turned the build red on the first push.</li>
+  </ul>
+</section>
+
+<!-- ============ 8 ============ -->
+<section>
+  <h2><span class="n">Part 8</span>What is done, and what is not</h2>
+
+  <p class="lede">Being straight about the edges is part of the work. Here is the honest position.</p>
+
+  <h3>Built and working</h3>
+
+  <table>
+    <tr><td style="width:26mm"><span class="pill ok">Done</span></td><td>All five stages the assignment asked for</td></tr>
+    <tr><td><span class="pill ok">Done</span></td><td>Six input types, detected from file contents</td></tr>
+    <tr><td><span class="pill ok">Done</span></td><td>The verification system and its visible score</td></tr>
+    <tr><td><span class="pill ok">Done</span></td><td>Contradiction detection, decisions, and the questions workflow</td></tr>
+    <tr><td><span class="pill ok">Done</span></td><td>Multi-tenant separation, enforced twice and tested</td></tr>
+    <tr><td><span class="pill ok">Done</span></td><td>Login with three roles</td></tr>
+    <tr><td><span class="pill ok">Done</span></td><td>Client share links, revocable</td></tr>
+    <tr><td><span class="pill ok">Done</span></td><td>Version history with comparable scores</td></tr>
+    <tr><td><span class="pill ok">Done</span></td><td>100 automated tests, 9 browser tests, continuous integration</td></tr>
+  </table>
+
+  <h3>Not done, deliberately</h3>
+
+  <table>
+    <tr><td style="width:26mm"><span class="pill part">Pending</span></td><td><strong>Deployment.</strong> All configuration is written; it needs hosting accounts, which is your step.</td></tr>
+    <tr><td><span class="pill part">Choice</span></td><td><strong>A timeline of how requirements changed.</strong> Useful, but the five required stages came first.</td></tr>
+    <tr><td><span class="pill part">Choice</span></td><td><strong>Chat with the evidence.</strong> Same reasoning.</td></tr>
+    <tr><td><span class="pill part">Choice</span></td><td><strong>Export to Word.</strong> Nice to have, not part of the brief.</td></tr>
+  </table>
+
+  <p>Those three were on the plan from day one as optional, and cutting them was the plan working rather than the plan failing. A tight, complete, well-tested story is worth more than a wider one with thin patches — and saying so plainly is itself part of the answer to "how clearly can you explain your work."</p>
+
+  <div class="key">
+    <h4>To run it yourself</h4>
+    <p style="font-family:var(--mono);font-size:9.5pt;line-height:1.8;margin-bottom:2mm">
+      npm install<br>
+      cp .env.example .env<br>
+      npm run setup<br>
+      npm run dev
+    </p>
+    <p style="margin-bottom:0">Then sign in as <code>ashika@meridian.example</code> with the password <code>demo1234</code>. No database to install, no accounts to create. It works without an AI key too — it replays a recorded analysis and says so clearly, and the quote checking still runs for real against the real documents.</p>
+  </div>
+
+  <footer class="end">
+    Groundwork · built for the WSI ALM candidate assignment · August 2026
+  </footer>
+</section>
+
+</div>
