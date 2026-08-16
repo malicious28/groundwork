@@ -16,7 +16,8 @@
     "db:seed": "tsx scripts/seed.ts",
     "db:reset": "rm -rf .pglite && npm run db:migrate && npm run db:seed",
     "setup": "npm run db:migrate && npm run db:seed",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "docs:pdf": "tsx scripts/make-pdf.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.117.1",

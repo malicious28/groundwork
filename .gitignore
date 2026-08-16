@@ -13,6 +13,10 @@ build
 .pglite
 .pglite-e2e
 
+# The explainer PDF is a build output of docs/groundwork-explained.html.
+# Committed deliberately anyway: it is the thing being handed over, and a
+# reviewer should not have to build it to read it.
+
 # test + build output
 coverage
 test-results
