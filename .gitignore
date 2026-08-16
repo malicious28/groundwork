@@ -11,8 +11,11 @@ build
 
 # local embedded postgres data directory
 .pglite
+.pglite-e2e
 
 # test + build output
 coverage
+test-results
+playwright-report
 *.tsbuildinfo
 next-env.d.ts
