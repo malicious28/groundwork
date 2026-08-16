@@ -43,7 +43,13 @@ export function useEvidencePanel(): PanelContext {
   return context;
 }
 
-type Loaded = { label: string; filename: string | null; text: string };
+type Loaded = {
+  label: string;
+  filename: string | null;
+  text: string;
+  imageData: string | null;
+  mimeType: string | null;
+};
 
 export function EvidenceProvider({
   projectId,
@@ -138,13 +144,29 @@ export function EvidenceProvider({
             ) : !source ? (
               <p className="text-sm text-muted">Loading…</p>
             ) : (
-              <Highlighted
-                text={source.text}
-                start={target.charStart}
-                end={target.charEnd}
-                markRef={markRef}
-                verified={target.verified}
-              />
+              <>
+                {source.imageData ? (
+                  <figure className="mb-4">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={`data:${source.mimeType ?? "image/png"};base64,${source.imageData}`}
+                      alt={`Screenshot: ${source.label}`}
+                      className="w-full rounded border border-line"
+                    />
+                    <figcaption className="mt-1.5 font-mono text-[10px] text-muted">
+                      The screenshot itself. The text below is what was read
+                      from it, and what claims are checked against.
+                    </figcaption>
+                  </figure>
+                ) : null}
+                <Highlighted
+                  text={source.text}
+                  start={target.charStart}
+                  end={target.charEnd}
+                  markRef={markRef}
+                  verified={target.verified}
+                />
+              </>
             )}
           </div>
         </aside>
