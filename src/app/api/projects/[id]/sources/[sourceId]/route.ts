@@ -35,6 +35,8 @@ export async function GET(
         kind: sources.kind,
         filename: sources.filename,
         text: sources.rawText,
+        imageData: sources.imageData,
+        mimeType: sources.mimeType,
       })
       .from(sources)
       .where(

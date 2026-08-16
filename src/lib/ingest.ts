@@ -7,6 +7,7 @@ import {
   extractPdf,
   IMAGE_MIME_TYPES,
 } from "@/lib/parsers/documents";
+import { transcribeScreenshot } from "@/lib/ai/vision";
 
 /**
  * One file in, one source plus its evidence spans out.
@@ -16,6 +17,14 @@ import {
  * exports arrive as `_chat.txt`, and a Teams transcript saved from a browser
  * can land as `.txt` too.
  */
+
+/** Falls back to the magic bytes when the browser sends no MIME type. */
+function guessImageType(bytes: Uint8Array): string {
+  if (bytes[0] === 0x89 && bytes[1] === 0x50) return "image/png";
+  if (bytes[0] === 0xff && bytes[1] === 0xd8) return "image/jpeg";
+  if (bytes[0] === 0x47 && bytes[1] === 0x49) return "image/gif";
+  return "image/png";
+}
 
 export type IngestResult = {
   ref: string;
@@ -51,6 +60,7 @@ export async function ingestFile(
 
   let kind: SourceKind;
   let text: string;
+  let imageData: string | null = null;
 
   if (binaryKind === "pdf") {
     kind = "pdf";
@@ -64,10 +74,22 @@ export async function ingestFile(
     notes.push(...extracted.notes);
   } else if (binaryKind === "image" || IMAGE_MIME_TYPES.has(file.type)) {
     kind = "image";
-    text = "";
-    notes.push(
-      "Screenshots are read by the model at generation time rather than extracted to text here.",
+    const mediaType = IMAGE_MIME_TYPES.has(file.type)
+      ? file.type
+      : guessImageType(file.bytes);
+
+    imageData = Buffer.from(file.bytes).toString("base64");
+
+    // Transcribed now rather than at generation time, so that what the model
+    // sees is text every later stage can cite and verify — the same treatment
+    // a transcript gets.
+    const transcription = await transcribeScreenshot(
+      imageData,
+      mediaType,
+      file.name,
     );
+    text = transcription.text;
+    notes.push(...transcription.notes);
   } else {
     text = new TextDecoder().decode(file.bytes);
     kind = detectKind(text, file.name);
@@ -89,8 +111,10 @@ export async function ingestFile(
       mimeType: file.type || null,
       byteSize: file.bytes.byteLength,
       rawText: parsed.text,
-      // An image has no extractable text but is not a parse failure; it is
-      // ready to be used, just by a different route.
+      imageData,
+      // A screenshot with no transcription is stored and viewable but has
+      // nothing citable in it, which is a state worth naming rather than
+      // calling either success or failure.
       parseStatus: parsed.text.trim() || kind === "image" ? "ready" : "failed",
       parseError: parsed.text.trim() || kind === "image"
         ? null

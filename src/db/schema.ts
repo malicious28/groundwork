@@ -227,6 +227,14 @@ export const sources = pgTable(
     byteSize: integer("byte_size"),
     /** Normalised plain text. Every citation offset is relative to this. */
     rawText: text("raw_text"),
+    /**
+     * Base64 image data, for screenshots only. Kept so the evidence panel can
+     * show the reader the actual screen a claim was drawn from — a transcription
+     * alone would make a visual source the one thing you cannot check by eye.
+     * Capped at a few megabytes by the ingest path; larger files belong in blob
+     * storage, which is the obvious next step if this grows.
+     */
+    imageData: text("image_data"),
     parseStatus: parseStatus("parse_status").notNull().default("pending"),
     parseError: text("parse_error"),
     spanCount: integer("span_count").notNull().default(0),
