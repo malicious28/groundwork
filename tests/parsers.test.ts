@@ -38,7 +38,7 @@ describe("VTT transcripts", () => {
 
   it("keeps the utterance and drops the markup", () => {
     const first = doc.spans[0]!;
-    expect(first.speaker).toBe("Ashika Panigrahi");
+    expect(first.speaker).toBe("Ashika");
     expect(first.text).toContain("Thanks for making the time");
     expect(first.text).not.toContain("<v");
   });

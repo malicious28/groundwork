@@ -121,7 +121,7 @@ async function main() {
     .values([
       {
         email: "ashika@meridian.example",
-        name: "Ashika Panigrahi",
+        name: "Ashika",
         passwordHash,
       },
       { email: "rohit@novainteriors.example", name: "Rohit Menon", passwordHash },
