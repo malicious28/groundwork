@@ -120,6 +120,26 @@ async function nextVersion(
 
 const RECORDED_USAGE: ModelUsage = { model: "recorded" };
 
+/**
+ * The source refs the recorded artifacts were written against.
+ *
+ * Recorded output is a stand-in for a live model call so the demo works without
+ * credentials — but it is only *about* the seeded Nova Interiors documents.
+ * Replaying it over somebody else's uploads would produce a confident brief
+ * about a fictional interior-design firm, with every citation failing because
+ * the quoted sentences appear nowhere in their files. That reads as a broken
+ * product rather than an honest one, so it is refused instead.
+ */
+const RECORDED_FOR = new Set([
+  "kickoff-call",
+  "followup-call",
+  "whatsapp-site-group",
+  "handover-sop",
+]);
+
+const recordedOutputFits = (refs: string[]): boolean =>
+  refs.length > 0 && refs.every((ref) => RECORDED_FOR.has(ref));
+
 export async function runDiscovery(
   ctx: TenantContext,
   projectId: string,
@@ -143,6 +163,15 @@ export async function runDiscovery(
 
   if (sources.length === 0) {
     emit({ type: "error", detail: "This project has no readable sources yet." });
+    return;
+  }
+
+  if (!live && !recordedOutputFits(sources.map((source) => source.ref))) {
+    emit({
+      type: "error",
+      detail:
+        "ANTHROPIC_API_KEY is not set. The recorded analysis only describes the seeded demo project, so it cannot be used for these documents — add a key to .env and restart to analyse them for real.",
+    });
     return;
   }
 
