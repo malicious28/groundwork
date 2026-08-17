@@ -154,6 +154,41 @@ export const memberships = pgTable(
   ],
 );
 
+/**
+ * An invitation to join an organization.
+ *
+ * Deliberately a row rather than a signed link with no server-side record: an
+ * invitation must be revocable, must expire, and an owner must be able to see
+ * what is outstanding. A stateless token can do none of those.
+ */
+export const invitations = pgTable(
+  "invitations",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    orgId: uuid("org_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    email: text("email").notNull(),
+    role: memberRole("role").notNull().default("consultant"),
+    /** Random, unguessable, and the only thing the recipient needs. */
+    token: text("token").notNull(),
+    invitedBy: uuid("invited_by").references(() => users.id, {
+      onDelete: "set null",
+    }),
+    expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+    acceptedAt: timestamp("accepted_at", { withTimezone: true }),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [
+    uniqueIndex("invitations_token_key").on(t.token),
+    index("invitations_org_idx").on(t.orgId, t.createdAt),
+    // One outstanding invitation per address per organization.
+    uniqueIndex("invitations_org_email_key").on(t.orgId, t.email),
+  ],
+);
+
 /* -------------------------------------------------------------------------- */
 /* Projects                                                                   */
 /* -------------------------------------------------------------------------- */
@@ -625,6 +660,7 @@ export const openQuestionsRelations = relations(openQuestions, ({ one }) => ({
 export type Organization = typeof organizations.$inferSelect;
 export type User = typeof users.$inferSelect;
 export type Membership = typeof memberships.$inferSelect;
+export type Invitation = typeof invitations.$inferSelect;
 export type MemberRole = (typeof memberRole.enumValues)[number];
 export type Project = typeof projects.$inferSelect;
 export type Source = typeof sources.$inferSelect;
