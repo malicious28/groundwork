@@ -16,6 +16,9 @@ export function AppHeader({
           Groundwork
         </Link>
         <div className="flex items-center gap-4 text-xs text-muted">
+          <Link href="/settings/team" className="font-mono hover:text-accent">
+            Team
+          </Link>
           <span className="font-mono">
             {session.name} · {session.orgSlug} · {session.role}
           </span>

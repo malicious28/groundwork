@@ -59,6 +59,7 @@ declare
   t text;
   tenant_tables text[] := array[
     'memberships',
+    'invitations',
     'projects',
     'sources',
     'evidence_spans',
