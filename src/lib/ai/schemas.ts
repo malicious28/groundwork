@@ -21,10 +21,18 @@ export const Citation = z.object({
     .describe("The `ref` of the source, exactly as given in the corpus."),
   quote: z
     .string()
+    // The floor is a correctness guard, not a style rule: a three-word "quote"
+    // would match almost any source by accident and be reported as verified.
     .min(12)
-    .max(320)
+    // The ceiling is generous on purpose. It was 320, and the API accepts the
+    // keyword but does not hold the model to it — so a single 340-character
+    // quote failed validation and threw away an entire four-minute analysis.
+    // A long quote is not wrong: it still gets located in the source and
+    // checked character by character exactly like a short one. Asking for a
+    // tight span belongs in the description, where missing it costs nothing.
+    .max(2000)
     .describe(
-      "A verbatim span copied from that source. Copy it exactly; do not tidy, join or paraphrase it.",
+      "A verbatim span copied from that source, ideally under 320 characters — the sentence that carries the point, not the paragraph around it. Copy it exactly; do not tidy, join or paraphrase it.",
     ),
 });
 

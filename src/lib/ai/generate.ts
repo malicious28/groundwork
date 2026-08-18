@@ -30,6 +30,13 @@ import {
   PrototypeSchema,
   QuestionsSchema,
 } from "./schemas";
+import type {
+  Conflicts,
+  Outline,
+  ProcessArtifact,
+  Prototype,
+  Questions,
+} from "./schemas";
 import {
   RECORDED_BRIEF,
   RECORDED_CONFLICTS,
@@ -232,39 +239,47 @@ export async function runDiscovery(
   );
   const lookup = indexSources(sources);
 
-  async function stage<T>(
+  /**
+   * Asks the model for one artifact. No database work, so several of these can
+   * be in flight at once.
+   *
+   * 16k output tokens was enough for four documents and is not enough for six:
+   * the brief was being cut off mid-JSON and reported as the model failing to
+   * match the schema. The ceiling costs nothing when it is not reached — output
+   * is billed on what comes back, not on what was allowed.
+   */
+  async function callStage<T>(
     name: Stage,
     instruction: string,
     schema: Parameters<typeof generateStructured>[0]["schema"],
     recorded: T,
-    persist: (tx: Db, output: T, artifactId: string) => Promise<string>,
-    // 16k was enough for four documents and is not enough for six: the brief
-    // was being cut off mid-sentence and surfaced as a JSON parse error. The
-    // ceiling costs nothing when it is not reached — output is billed on what
-    // comes back, not on what was allowed.
     maxTokens = 32000,
+  ): Promise<{ output: T; usage: ModelUsage }> {
+    if (!live) return { output: recorded, usage: RECORDED_USAGE };
+    const result = await generateStructured({
+      system: SYSTEM_PROMPT,
+      corpus,
+      instruction,
+      schema,
+      schemaName: name,
+      maxTokens,
+    });
+    return { output: result.output as T, usage: result.usage };
+  }
+
+  /**
+   * Writes one artifact. Deliberately never run concurrently: PGlite is a
+   * single connection, and `withTenant` opens a transaction that sets the role
+   * and the current organization for its duration. Two of those interleaving on
+   * one connection would put a statement inside the wrong tenant scope, which
+   * is the one mistake this schema exists to make impossible.
+   */
+  async function persistStage<T>(
+    name: Stage,
+    output: T,
+    usage: ModelUsage,
+    persist: (tx: Db, output: T, artifactId: string) => Promise<string>,
   ): Promise<void> {
-    emit({ type: "stage", stage: name, status: "start" });
-
-    let output: T;
-    let usage: ModelUsage;
-
-    if (live) {
-      const result = await generateStructured({
-        system: SYSTEM_PROMPT,
-        corpus,
-        instruction,
-        schema,
-        schemaName: name,
-        maxTokens,
-      });
-      output = result.output as T;
-      usage = result.usage;
-    } else {
-      output = recorded;
-      usage = RECORDED_USAGE;
-    }
-
     const detail = await withTenant(ctx.orgId, async (tx) => {
       const version = await nextVersion(tx, ctx.orgId, projectId, name as ArtifactKind);
       const [row] = await tx
@@ -284,6 +299,20 @@ export async function runDiscovery(
     });
 
     emit({ type: "stage", stage: name, status: "done", detail, usage });
+  }
+
+  /** The sequential path, kept for the brief. */
+  async function stage<T>(
+    name: Stage,
+    instruction: string,
+    schema: Parameters<typeof generateStructured>[0]["schema"],
+    recorded: T,
+    persist: (tx: Db, output: T, artifactId: string) => Promise<string>,
+    maxTokens = 32000,
+  ): Promise<void> {
+    emit({ type: "stage", stage: name, status: "start" });
+    const { output, usage } = await callStage(name, instruction, schema, recorded, maxTokens);
+    await persistStage(name, output, usage, persist);
   }
 
   try {
@@ -309,86 +338,137 @@ export async function runDiscovery(
       },
     );
 
-    await stage(
-      "conflicts",
-      CONFLICTS_INSTRUCTION,
-      ConflictsSchema,
-      RECORDED_CONFLICTS,
-      async (tx, output) => {
-        const count = await persistConflicts(
-          tx,
-          { orgId: ctx.orgId, projectId },
-          output,
-          lookup,
-        );
-        return count === 0
-          ? "No contradictions found"
-          : `${count} contradiction${count === 1 ? "" : "s"} found`;
+    /*
+     * The remaining five run at once.
+     *
+     * Nothing after the brief reads anything the brief produced — every stage
+     * works from the same corpus and its own instruction — so running them in
+     * sequence meant the wall clock was the sum of six calls rather than the
+     * longest one. Measured on the demo corpus that was 18.6 minutes, of which
+     * the model was idle for most of it from any single stage's point of view.
+     *
+     * The model calls overlap; the database writes do not. PGlite is a single
+     * connection and `withTenant` sets the role and the current organization
+     * for the life of a transaction, so two of those interleaving would put a
+     * statement inside the wrong tenant scope. Results are therefore written
+     * one at a time, in the order they arrive.
+     *
+     * `allSettled`, not `all`: a stage that fails should cost only itself. The
+     * brief has already landed by this point, and losing the prototype is not
+     * a reason to throw away the contradictions.
+     */
+    const rest = [
+      {
+        name: "conflicts" as const,
+        run: () =>
+          callStage("conflicts", CONFLICTS_INSTRUCTION, ConflictsSchema, RECORDED_CONFLICTS),
+        persist: async (tx: Db, output: Conflicts) => {
+          const count = await persistConflicts(
+            tx,
+            { orgId: ctx.orgId, projectId },
+            output,
+            lookup,
+          );
+          return count === 0
+            ? "No contradictions found"
+            : `${count} contradiction${count === 1 ? "" : "s"} found`;
+        },
       },
-    );
-
-    await stage(
-      "questions",
-      QUESTIONS_INSTRUCTION,
-      QuestionsSchema,
-      RECORDED_QUESTIONS,
-      async (tx, output) => {
-        const count = await persistQuestions(tx, { orgId: ctx.orgId, projectId }, output);
-        return `${count} open question${count === 1 ? "" : "s"}`;
+      {
+        name: "questions" as const,
+        run: () =>
+          callStage("questions", QUESTIONS_INSTRUCTION, QuestionsSchema, RECORDED_QUESTIONS),
+        persist: async (tx: Db, output: Questions) => {
+          const count = await persistQuestions(tx, { orgId: ctx.orgId, projectId }, output);
+          return `${count} open question${count === 1 ? "" : "s"}`;
+        },
       },
-    );
-
-    await stage(
-      "process",
-      PROCESS_INSTRUCTION,
-      ProcessSchema,
-      RECORDED_PROCESS,
-      async (tx, output, artifactId) => {
-        const grounding = await persistClaims(
-          tx,
-          { orgId: ctx.orgId, projectId, artifactId },
-          collectProcessClaims(output),
-          lookup,
-        );
-        await tx
-          .update(artifacts)
-          .set({ grounding })
-          .where(eq(artifacts.id, artifactId));
-        return `${output.changes.length} changes proposed`;
+      {
+        name: "process" as const,
+        run: () => callStage("process", PROCESS_INSTRUCTION, ProcessSchema, RECORDED_PROCESS),
+        persist: async (tx: Db, output: ProcessArtifact, artifactId: string) => {
+          const grounding = await persistClaims(
+            tx,
+            { orgId: ctx.orgId, projectId, artifactId },
+            collectProcessClaims(output),
+            lookup,
+          );
+          await tx.update(artifacts).set({ grounding }).where(eq(artifacts.id, artifactId));
+          return `${output.changes.length} changes proposed`;
+        },
       },
-    );
-
-    await stage(
-      "outline",
-      OUTLINE_INSTRUCTION,
-      OutlineSchema,
-      RECORDED_OUTLINE,
-      async (tx, output, artifactId) => {
-        const grounding = await persistClaims(
-          tx,
-          { orgId: ctx.orgId, projectId, artifactId },
-          collectOutlineClaims(output),
-          lookup,
-        );
-        await tx
-          .update(artifacts)
-          .set({ grounding })
-          .where(eq(artifacts.id, artifactId));
-
-        const musts = output.features.filter((f) => f.moscow === "must").length;
-        return `${output.features.length} features, ${musts} must-have`;
+      {
+        name: "outline" as const,
+        // Measured at 24k output tokens with a 320-character quote ceiling, and
+        // over 32k once quotes were allowed to run longer. The outline cites
+        // every feature, so its size tracks the number of features found.
+        run: () =>
+          callStage("outline", OUTLINE_INSTRUCTION, OutlineSchema, RECORDED_OUTLINE, 48000),
+        persist: async (tx: Db, output: Outline, artifactId: string) => {
+          const grounding = await persistClaims(
+            tx,
+            { orgId: ctx.orgId, projectId, artifactId },
+            collectOutlineClaims(output),
+            lookup,
+          );
+          await tx.update(artifacts).set({ grounding }).where(eq(artifacts.id, artifactId));
+          const musts = output.features.filter((f) => f.moscow === "must").length;
+          return `${output.features.length} features, ${musts} must-have`;
+        },
       },
-    );
+      {
+        name: "prototype" as const,
+        // The largest by far: it writes a complete working HTML document, and
+        // measured at 28k output tokens before it was cut off at 32k.
+        run: () =>
+          callStage(
+            "prototype",
+            PROTOTYPE_INSTRUCTION,
+            PrototypeSchema,
+            RECORDED_PROTOTYPE,
+            64000,
+          ),
+        persist: async (_tx: Db, output: Prototype) =>
+          `${output.screens.length} screens, ${Math.round(output.html.length / 1024)}KB`,
+      },
+    ];
 
-    await stage(
-      "prototype",
-      PROTOTYPE_INSTRUCTION,
-      PrototypeSchema,
-      RECORDED_PROTOTYPE,
-      async (_tx, output) =>
-        `${output.screens.length} screens, ${Math.round(output.html.length / 1024)}KB`,
-      32000,
-    );
+    for (const spec of rest) emit({ type: "stage", stage: spec.name, status: "start" });
+
+    const settled = await Promise.allSettled(rest.map((spec) => spec.run()));
+
+    let anyFailed = false;
+    for (const [i, result] of settled.entries()) {
+      const spec = rest[i]!;
+      if (result.status === "rejected") {
+        anyFailed = true;
+        const reason = result.reason;
+        emit({
+          type: "stage",
+          stage: spec.name,
+          status: "error",
+          detail:
+            reason instanceof Error ? reason.message : `The ${spec.name} stage failed.`,
+        });
+        continue;
+      }
+      const { output, usage } = result.value;
+      await persistStage(
+        spec.name,
+        output as never,
+        usage,
+        spec.persist as (tx: Db, output: never, artifactId: string) => Promise<string>,
+      );
+    }
+
+    if (anyFailed) {
+      emit({
+        type: "error",
+        detail:
+          "Some stages did not complete. Everything that did has been saved — run discovery again to retry the rest.",
+      });
+      return;
+    }
 
     emit({ type: "done", recorded: !live });
   } catch (error) {
