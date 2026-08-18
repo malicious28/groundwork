@@ -44,7 +44,7 @@ those results, so the demo is honest about what it is. With a key set, the same
 code path calls `claude-sonnet-5` for real.
 
 ```bash
-npm test            # 210 unit tests
+npm test            # 230 unit tests
 npm run test:e2e    # 12 browser tests over the demo walkthrough
 npm run typecheck
 npm run db:reset    # wipe local data and re-seed
@@ -217,9 +217,23 @@ function that selects two ids and nothing else.
   which fits in context with room to spare. Retrieval would add a vector store,
   chunking heuristics and retrieval-failure modes in order to make
   cross-document synthesis *worse*.
-- **Prompt caching across six calls.** The system prompt and corpus are a
-  byte-stable prefix with the cache breakpoint on the last corpus block. Only
-  the first call pays to read the sources.
+- **Prompt caching is set up, and does not currently pay off — measured, not
+  assumed.** The system prompt and corpus are a byte-stable prefix with the
+  cache breakpoint on the last corpus block, and the artifact instruction comes
+  after it. Every stage still reports `cache_read_input_tokens: 0`. Probing the
+  API directly explains why: the structured-output schema sits *ahead* of the
+  system prompt in the cached prefix, so two calls that differ only in their
+  instruction hit the cache, and two that differ in their schema do not. The six
+  stages each need their own schema, so the prefix never repeats.
+
+  The fix would be one schema shared across all six, validated only locally
+  afterwards. That is not worth it here: a guaranteed-shape response is what
+  makes every downstream stage parseable, in a product whose entire claim is
+  that its output can be checked. Output tokens also dominate the bill — the
+  brief alone returns ~24k of them against ~11k of cached input — so the saving
+  is real but small. Left in place, because the day the schemas converge it
+  starts working, and documented here because an efficiency claim nobody
+  verified is worse than no claim.
 - **Six calls, not one.** Each fits inside a function's time budget, a failure
   in the prototype stage does not cost the brief that already succeeded, and the
   reader watches the work arrive over SSE.
@@ -251,7 +265,7 @@ function that selects two ids and nothing else.
 | Teams | Invitations that expire, are single-use and revocable; the last owner cannot be removed |
 | API design | REST resources for sources, URL ingestion, generation (SSE), conflicts, questions and sharing; consistent error envelopes |
 | Data modelling | 13 tables including the span-level evidence store |
-| Automated testing | 210 unit tests + 12 browser tests over the demo walkthrough |
+| Automated testing | 230 unit tests + 12 browser tests over the demo walkthrough |
 | Multiple environments | Neon branching for preview vs production; migrations run at build |
 | CI/CD | GitHub Actions: typecheck, unit tests and build in one job, end-to-end in another |
 | Preventing bugs | TypeScript strict, Zod at every boundary, and the quote verifier itself |

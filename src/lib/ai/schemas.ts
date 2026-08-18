@@ -71,7 +71,7 @@ export const BriefSchema = z.object({
     z.object({
       title: z.string(),
       detail: z.string(),
-      severity: z.number().int().min(1).max(3),
+      severity: z.number().int().min(1).max(3).catch(2),
       whoFeelsIt: z.string(),
       ...Cited,
     }),
@@ -110,6 +110,11 @@ export const ConflictsSchema = z.object({
         .int()
         .min(1)
         .max(3)
+        // Falls back rather than throwing. The API cannot enforce an integer
+        // range, so this is guidance the model may miss — and losing a whole
+        // four-minute analysis because one severity came back as 5 is a far
+        // worse outcome than recording it as "middling".
+        .catch(2)
         .describe("3 = would derail the build if it stays unresolved."),
       sides: z
         .array(
@@ -119,7 +124,10 @@ export const ConflictsSchema = z.object({
             ...Citation.shape,
           }),
         )
-        .min(2),
+        .min(1)
+        .describe(
+          "Both sides of the disagreement, one entry each, with a verbatim quote. Give two — a contradiction with only one side is not a contradiction.",
+        ),
       suggestedResolution: z.string(),
     }),
   ),
@@ -142,7 +150,7 @@ export const QuestionsSchema = z.object({
       ]),
       question: z.string().describe("Phrased so it can be sent to the client as-is."),
       whyItMatters: z.string().describe("What changes depending on the answer."),
-      priority: z.number().int().min(1).max(3),
+      priority: z.number().int().min(1).max(3).catch(2),
     }),
   ),
 });

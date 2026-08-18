@@ -3,11 +3,18 @@ import type { Source } from "@/db/schema";
 /**
  * Prompt construction.
  *
- * The system prompt and the corpus are byte-stable across all four artifact
- * calls, and the artifact-specific instruction goes after the cache breakpoint.
- * That ordering is the entire reason the second, third and fourth calls cost a
- * fraction of the first — prompt caching is a strict prefix match, so anything
- * that varies has to come last.
+ * The system prompt and the corpus are byte-stable across all six artifact
+ * calls, and the artifact-specific instruction goes after the cache breakpoint,
+ * because prompt caching is a strict prefix match and anything that varies has
+ * to come last.
+ *
+ * That ordering is necessary and, on its own, not sufficient. Measured against
+ * the live API, every stage reports zero cache reads: the structured-output
+ * schema is part of the cached prefix and sits ahead of the system prompt, so
+ * six stages with six different schemas never repeat a prefix. Two calls
+ * differing only in their instruction do hit the cache — the arrangement here
+ * is right, and it is the schema that defeats it. See the README for why the
+ * schema stays anyway.
  */
 
 export const SYSTEM_PROMPT = `You are the analyst on a software consulting engagement. You have been given every raw input a client has produced — call transcripts, chat exports, contracts, process documents, screenshots of the systems they actually run on — and your job is to turn it into something a delivery team can build from.
