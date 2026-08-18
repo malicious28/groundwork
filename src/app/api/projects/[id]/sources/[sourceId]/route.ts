@@ -54,3 +54,51 @@ export async function GET(
 
   return Response.json(source);
 }
+
+/**
+ * Removing a source.
+ *
+ * Everything derived from it goes too — its evidence spans by cascade, and any
+ * citation that pointed into it. That is deliberate rather than tidy-up: a
+ * citation whose source no longer exists would render as unverified, which
+ * would read as the model having invented something when in fact a consultant
+ * simply withdrew a document.
+ *
+ * Existing artifacts are left alone. They are a record of what was concluded
+ * from the evidence available at the time, and rewriting history to match the
+ * present is how a record stops being one. Re-running discovery is what
+ * produces a new version without the withdrawn document.
+ */
+export async function DELETE(
+  _request: Request,
+  { params }: { params: Promise<{ id: string; sourceId: string }> },
+) {
+  try {
+    const session = await requireSession("consultant");
+    const { id, sourceId } = await params;
+
+    const removed = await withTenant(session.orgId, async (tx) => {
+      const [row] = await tx
+        .delete(sources)
+        .where(
+          and(
+            eq(sources.orgId, session.orgId),
+            eq(sources.projectId, id),
+            eq(sources.id, sourceId),
+          ),
+        )
+        .returning({ ref: sources.ref });
+      return row ?? null;
+    });
+
+    if (!removed) {
+      return Response.json({ error: "Source not found." }, { status: 404 });
+    }
+    return Response.json({ ok: true, ref: removed.ref });
+  } catch (error) {
+    if (error instanceof AuthError) {
+      return Response.json({ error: error.message }, { status: error.status });
+    }
+    throw error;
+  }
+}

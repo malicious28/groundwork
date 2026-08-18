@@ -5,6 +5,7 @@ import { withTenant } from "@/db/tenant";
 import { evidenceSpans, sources } from "@/db/schema";
 import { SourceKindBadge } from "@/components/source-kind-badge";
 import { SourceUpload } from "@/components/source-upload";
+import { RemoveSource } from "@/components/remove-source";
 
 export default async function SourcesPage({
   params,
@@ -77,6 +78,13 @@ export default async function SourcesPage({
                       : ""}
                   </p>
                 </Link>
+                <div className="mt-1 px-3">
+                  <RemoveSource
+                    projectId={id}
+                    sourceId={source.id}
+                    label={source.label}
+                  />
+                </div>
               </li>
             );
           })}
