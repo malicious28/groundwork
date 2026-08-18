@@ -17,6 +17,7 @@ const TABS = [
   { slug: "process", label: "Process" },
   { slug: "outline", label: "Outline" },
   { slug: "prototype", label: "Prototype" },
+  { slug: "compare", label: "Compare" },
 ];
 
 export function ProjectTabs({ projectId }: { projectId: string }) {
