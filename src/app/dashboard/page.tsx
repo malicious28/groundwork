@@ -182,29 +182,46 @@ export default async function DashboardPage({
               </p>
               <ul className="divide-y divide-line-soft overflow-hidden rounded border border-line bg-surface">
                 {sourceRows.map((source) => (
-                  <li
-                    key={source.id}
-                    className="flex flex-wrap items-center justify-between gap-2 px-4 py-2.5"
-                  >
-                    <div className="flex min-w-0 items-center gap-2.5">
-                      <SourceKindBadge kind={source.kind} />
-                      <Link
-                        href={`/projects/${selected.id}?source=${source.ref}`}
-                        className="truncate text-sm hover:text-accent"
-                      >
-                        {source.label}
-                      </Link>
+                  <li key={source.id} className="px-4 py-2.5">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <div className="flex min-w-0 items-center gap-2.5">
+                        <SourceKindBadge kind={source.kind} />
+                        <Link
+                          href={`/projects/${selected.id}?source=${source.ref}`}
+                          className="truncate text-sm hover:text-accent"
+                        >
+                          {source.label}
+                        </Link>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <span
+                          className={`font-mono text-[11px] tabular-nums ${
+                            source.spanCount === 0 ? "text-gap" : "text-muted"
+                          }`}
+                        >
+                          {source.spanCount} {source.meta?.unitLabel ?? "spans"}
+                        </span>
+                        <RemoveSource
+                          projectId={selected.id}
+                          sourceId={source.id}
+                          label={source.label}
+                        />
+                      </div>
                     </div>
-                    <div className="flex items-center gap-3">
-                      <span className="font-mono text-[11px] text-muted tabular-nums">
-                        {source.spanCount} {source.meta?.unitLabel ?? "spans"}
-                      </span>
-                      <RemoveSource
-                        projectId={selected.id}
-                        sourceId={source.id}
-                        label={source.label}
-                      />
-                    </div>
+
+                    {/* A source with nothing quotable in it contributes nothing
+                        to the plan, and the reason was buried on another page.
+                        Saying it here is the difference between "the tool is
+                        broken" and "that file needs a key, or is a picture of
+                        nothing". */}
+                    {source.spanCount === 0 ? (
+                      <p className="mt-1.5 rounded border border-gap bg-gap-soft px-2.5 py-1.5 text-xs text-gap">
+                        Nothing citable was read from this.{" "}
+                        {source.meta?.notes?.length
+                          ? source.meta.notes.join(" ")
+                          : "Nothing in the plan can cite it until it is replaced."}
+                      </p>
+                    ) : null}
                   </li>
                 ))}
               </ul>

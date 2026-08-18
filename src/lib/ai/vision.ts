@@ -1,5 +1,5 @@
 import Anthropic from "@anthropic-ai/sdk";
-import { FAST_MODEL, hasApiKey } from "./client";
+import { FAST_MODEL, hasApiKey, apiKey } from "./client";
 
 /**
  * Reading screenshots.
@@ -61,7 +61,7 @@ export async function transcribeScreenshot(
     };
   }
 
-  const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+  const client = new Anthropic({ apiKey: apiKey() });
 
   const message = await client.messages.create({
     model: FAST_MODEL,

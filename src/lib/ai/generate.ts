@@ -166,7 +166,7 @@ export async function runDiscovery(
     emit({
       type: "error",
       detail:
-        "ANTHROPIC_API_KEY is not set. The recorded analysis only describes the seeded demo project, so it cannot be used for these documents — add a key to .env and restart to analyse them for real.",
+        "No ANTHROPIC_API_KEY is set, and the recorded analysis only describes the seeded demo project, so it cannot be used for these documents. Put the key in .env as ANTHROPIC_API_KEY=sk-ant-… with nothing after the equals sign left blank and no quotes around it, then restart the dev server — .env is read once at startup, so a key added while it is running has no effect until it restarts.",
     });
     return;
   }
