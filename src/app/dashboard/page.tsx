@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { asc, desc, eq, sql } from "drizzle-orm";
-import { requireSession } from "@/lib/auth/session";
+import { requireSessionPage } from "@/lib/auth/session";
 import { withTenant } from "@/db/tenant";
 import { artifacts, openQuestions, projects, sources } from "@/db/schema";
 import { AppHeader } from "@/components/app-header";
@@ -31,7 +31,7 @@ export default async function DashboardPage({
 }: {
   searchParams: Promise<{ project?: string }>;
 }) {
-  const session = await requireSession("consultant");
+  const session = await requireSessionPage("consultant");
   const { project: requested } = await searchParams;
 
   const data = await withTenant(session.orgId, async (tx) => {

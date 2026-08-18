@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { and, eq } from "drizzle-orm";
-import { requireSession } from "@/lib/auth/session";
+import { requireSessionPage } from "@/lib/auth/session";
 import { withTenant } from "@/db/tenant";
 import { projects } from "@/db/schema";
 import { AppHeader } from "@/components/app-header";
@@ -16,7 +16,7 @@ export default async function ProjectLayout({
   children: React.ReactNode;
   params: Promise<{ id: string }>;
 }) {
-  const session = await requireSession("consultant");
+  const session = await requireSessionPage("consultant");
   const { id } = await params;
 
   const [project] = await withTenant(session.orgId, (tx) =>

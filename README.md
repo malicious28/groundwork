@@ -44,7 +44,7 @@ those results, so the demo is honest about what it is. With a key set, the same
 code path calls `claude-opus-5` for real.
 
 ```bash
-npm test            # 136 unit tests
+npm test            # 159 unit tests
 npm run test:e2e    # 12 browser tests over the demo walkthrough
 npm run typecheck
 npm run db:reset    # wipe local data and re-seed
@@ -250,7 +250,7 @@ function that selects two ids and nothing else.
 | Teams | Invitations that expire, are single-use and revocable; the last owner cannot be removed |
 | API design | REST resources for sources, URL ingestion, generation (SSE), conflicts, questions and sharing; consistent error envelopes |
 | Data modelling | 13 tables including the span-level evidence store |
-| Automated testing | 136 unit tests + 12 browser tests over the demo walkthrough |
+| Automated testing | 159 unit tests + 12 browser tests over the demo walkthrough |
 | Multiple environments | Neon branching for preview vs production; migrations run at build |
 | CI/CD | GitHub Actions: typecheck, unit tests and build in one job, end-to-end in another |
 | Preventing bugs | TypeScript strict, Zod at every boundary, and the quote verifier itself |

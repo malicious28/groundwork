@@ -1,5 +1,5 @@
 import { and, asc, desc, eq } from "drizzle-orm";
-import { requireSession } from "@/lib/auth/session";
+import { requireSessionPage } from "@/lib/auth/session";
 import { withTenant } from "@/db/tenant";
 import { conflicts, conflictSides } from "@/db/schema";
 import { CitationChip } from "@/components/evidence/citation-chip";
@@ -20,7 +20,7 @@ export default async function ConflictsPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const session = await requireSession("consultant");
+  const session = await requireSessionPage("consultant");
   const { id } = await params;
 
   const rows = await withTenant(session.orgId, async (tx) => {

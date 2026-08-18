@@ -1,4 +1,4 @@
-import { requireSession } from "@/lib/auth/session";
+import { requireSessionPage } from "@/lib/auth/session";
 import { listMembers, listPendingInvites } from "@/lib/team";
 import { AppHeader } from "@/components/app-header";
 import { TeamManager } from "@/components/team-manager";
@@ -11,7 +11,7 @@ import { TeamManager } from "@/components/team-manager";
  * by hiding buttons.
  */
 export default async function TeamPage() {
-  const session = await requireSession("consultant");
+  const session = await requireSessionPage("consultant");
 
   const [members, invites] = await Promise.all([
     listMembers(session.orgId),
