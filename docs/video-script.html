@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Groundwork — video script</title>
+<style>
+  :root{
+    --ink:#0d1b2e; --ink-2:#33475f; --muted:#5f7089;
+    --line:#cfdcee; --line-soft:#e3ebf6; --paper:#ffffff; --tint:#f4f7fc;
+    --accent:#1d4ed8; --accent-soft:#e7eefc;
+    --note:#8a5a08; --note-soft:#fbf0da;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    --mono:"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
+       font-size:11pt;line-height:1.5;-webkit-font-smoothing:antialiased}
+
+  .cover{padding:6mm 0 10mm;border-bottom:2px solid var(--accent);margin-bottom:9mm}
+  .eyebrow{font-family:var(--mono);font-size:8.5pt;letter-spacing:.14em;
+           text-transform:uppercase;color:var(--accent);margin:0 0 3mm}
+  h1{font-family:var(--serif);font-size:30pt;line-height:1.05;margin:0 0 4mm;
+     letter-spacing:-.01em;text-wrap:balance}
+  .standfirst{font-family:var(--serif);font-size:12.5pt;color:var(--ink-2);
+              max-width:150mm;margin:0 0 6mm}
+  .facts{display:flex;flex-wrap:wrap;gap:0 10mm;font-family:var(--mono);
+         font-size:9pt;color:var(--muted)}
+  .facts b{color:var(--ink);font-weight:600}
+
+  .scene{margin:0 0 9mm;page-break-inside:avoid}
+  .scene-head{display:flex;align-items:baseline;gap:4mm;
+              border-bottom:1px solid var(--line);padding-bottom:2mm;margin-bottom:4mm}
+  .num{font-family:var(--mono);font-size:9pt;color:var(--accent);
+       font-weight:600;letter-spacing:.06em}
+  .scene-head h2{font-family:var(--serif);font-size:15pt;margin:0;flex:1;font-weight:600}
+  .clock{font-family:var(--mono);font-size:9pt;color:var(--muted);
+         font-variant-numeric:tabular-nums}
+
+  .show{background:var(--note-soft);border-left:3px solid var(--note);
+        padding:2.5mm 4mm;margin:0 0 4mm;font-size:9.5pt;color:var(--note);
+        page-break-inside:avoid}
+  .show b{font-family:var(--mono);font-size:8pt;letter-spacing:.1em;
+          text-transform:uppercase;display:block;margin-bottom:1mm;font-weight:600}
+
+  .say{font-family:var(--serif);font-size:12pt;line-height:1.62;color:var(--ink);
+       margin:0 0 3.5mm;padding-left:5mm;border-left:2px solid var(--accent-soft)}
+  .say strong{background:var(--accent-soft);padding:0 1mm;font-weight:600}
+  .say em{color:var(--ink-2)}
+
+  .beat{font-family:var(--mono);font-size:8.5pt;color:var(--accent);
+        letter-spacing:.06em;text-transform:uppercase;margin:0 0 3mm;padding-left:5mm}
+
+  .panel{background:var(--tint);border:1px solid var(--line);
+         padding:5mm 6mm;margin:0 0 7mm;page-break-inside:avoid}
+  .panel h3{font-family:var(--serif);font-size:12.5pt;margin:0 0 3mm}
+  .panel ul{margin:0;padding-left:5mm}
+  .panel li{margin-bottom:1.6mm;font-size:10pt}
+  .panel li b{font-variant-numeric:tabular-nums}
+
+  .warn{background:#fdeceb;border:1px solid #b42318;color:#7d1a12}
+  .warn h3{color:#b42318}
+
+  @page{size:A4;margin:0}
+  @media print{ body{padding:0} .page{break-after:page} }
+  .wrap{max-width:170mm;margin:0 auto;padding:0 2mm}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="cover">
+    <p class="eyebrow">Recording script</p>
+    <h1>Groundwork</h1>
+    <p class="standfirst">A six-minute walkthrough, built around the one idea that makes this
+      different: the AI writes the plan, but it does not get to be believed.</p>
+    <div class="facts">
+      <span>Runtime <b>6:00</b></span>
+      <span>Account <b>ashika@meridian.example</b></span>
+      <span>Password <b>demo1234</b></span>
+      <span>Score on screen <b>84%</b></span>
+    </div>
+  </header>
+
+  <section class="scene">
+    <div class="scene-head"><span class="num">01</span><h2>The problem</h2><span class="clock">0:00 – 0:45</span></div>
+    <p class="show"><b>On screen</b>The login page.</p>
+    <p class="say">When a client tells you what they need, it never arrives as one clean document.</p>
+    <p class="say">It comes as a recorded call. A WhatsApp thread. A PDF of their vendor terms. A screenshot of the spreadsheet they actually run on. And a paragraph in an email.</p>
+    <p class="say">Somebody has to read all of that and turn it into a plan you can build from. That takes days, and it goes wrong in a very specific way: <strong>details get lost, and the gaps get filled in with guesses.</strong> Six months later the client says <em>we never asked for that</em> — and nobody can prove otherwise.</p>
+    <p class="say">This is Groundwork. It does that reading, and — this is the important part — <strong>it shows its working.</strong></p>
+  </section>
+
+  <section class="scene">
+    <div class="scene-head"><span class="num">02</span><h2>What goes in</h2><span class="clock">0:45 – 1:30</span></div>
+    <p class="show"><b>On screen</b>Sign in. Land on the dashboard. Scroll slowly down the six sources.</p>
+    <p class="say">Here is a real engagement — an interior fit-out firm in Pune.</p>
+    <p class="say">Six documents, in five different formats. Two recorded calls. A WhatsApp export, sixty-nine messages. Their vendor contract as a PDF. A Word document. And a screenshot of their master tracker.</p>
+    <p class="say">That last one matters. <strong>A screenshot is not a document you can search</strong> — so the moment it is uploaded, an AI reads the image and turns it into text. From then on it is treated exactly like a phone call: quotable, and checkable.</p>
+    <p class="say">Altogether that is a hundred and ninety-seven separate pieces of evidence the tool can point at.</p>
+  </section>
+
+  <section class="scene">
+    <div class="scene-head"><span class="num">03</span><h2>The six AI calls</h2><span class="clock">1:30 – 2:15</span></div>
+    <p class="show"><b>On screen</b>Click <b style="display:inline">Run discovery</b>. Let the stages appear one by one.</p>
+    <p class="say">Now watch. This is not one big request to an AI — it is <strong>six separate ones</strong>.</p>
+    <p class="say">The first writes the brief: what they actually need. The second hunts for places their own documents contradict each other. The third finds the questions nobody has answered. The fourth designs a better process. The fifth specifies what to build. And the sixth builds a working demo of it.</p>
+    <p class="say">Six, not one, for a reason. Each is a different job, and <strong>one giant request does every part of it worse.</strong> They also fail independently — if the demo comes back broken, you still have everything else.</p>
+    <p class="say">Each one is told the exact shape of answer it must return, so what comes back is structured data rather than paragraphs I have to guess my way through.</p>
+  </section>
+
+  <section class="scene">
+    <div class="scene-head"><span class="num">04</span><h2>The idea that matters most</h2><span class="clock">2:15 – 3:30</span></div>
+    <p class="beat">Slow right down here. This is the whole video.</p>
+    <p class="show"><b>On screen</b>Open the Brief tab. Point at the grounding score.</p>
+    <p class="say">Here is the part I would want judged hardest.</p>
+    <p class="say">AI makes things up. Everyone knows that. So in this tool, <strong>the AI writes the plan, but it does not get to be believed.</strong></p>
+    <p class="say">Every statement it produces has to come with a direct quote from a source document. And after it answers, the app goes back to the original file and checks that quote is really there — <strong>character by character.</strong></p>
+    <p class="show"><b>On screen</b>Click a green citation chip. The evidence panel opens with the sentence highlighted.</p>
+    <p class="say">So I can click any line and see the exact sentence somebody said it in. Not a summary of it. The sentence.</p>
+    <p class="show"><b>On screen</b>Close the panel. Point at the score.</p>
+    <p class="say">And it is scored, at the top. <strong>Eighty-four percent. Twenty-seven of thirty-two statements verified.</strong></p>
+    <p class="say">Now — <strong>it is deliberately not a hundred percent</strong>, and that is the whole point.</p>
+    <p class="show"><b>On screen</b>Scroll to the red chip on the Tally claim.</p>
+    <p class="say">Four of those are honest assumptions, marked as assumptions. And this one is a claim I planted on purpose — it cites a sentence that appears in no document anywhere. <strong>It comes up red, every time.</strong></p>
+    <p class="say">That is the proof the check can actually fail, rather than always saying yes. A tool that scores itself a hundred percent every time is telling you nothing.</p>
+  </section>
+
+  <section class="scene">
+    <div class="scene-head"><span class="num">05</span><h2>Catching what a person misses</h2><span class="clock">3:30 – 4:15</span></div>
+    <p class="show"><b>On screen</b>Conflicts tab.</p>
+    <p class="say">Second thing the AI does that people often miss. Different people at the client say different things.</p>
+    <p class="say">Here the founder says the first-phase budget is two lakh. Two weeks later the head of operations says five. <strong>Both are in the notes.</strong> Nobody noticed — and a plan built on the wrong number is a plan that fails.</p>
+    <p class="say">It shows both sides with a quote each, and it does not pick a winner, because that is the client's decision and not the software's. I record what they decide, and the next run stops raising it.</p>
+    <p class="show"><b>On screen</b>Questions tab.</p>
+    <p class="say">And this is the list of things <strong>nobody has answered yet</strong> — budget, timeline, what happens to eight months of spreadsheet history on the day this goes live. Each written so it can be pasted straight into an email.</p>
+    <p class="say">An unanswered question is a finding. Most tools quietly guess and move on.</p>
+  </section>
+
+  <section class="scene">
+    <div class="scene-head"><span class="num">06</span><h2>The demo it builds</h2><span class="clock">4:15 – 5:00</span></div>
+    <p class="show"><b>On screen</b>Prototype tab. Let the frame load.</p>
+    <p class="say">Last of the six, and my favourite. It does not just describe what to build. <strong>It builds a working demo of it.</strong></p>
+    <p class="say">This is not a picture. It is a real tool, filled with their own project names and their own people.</p>
+    <p class="show"><b>On screen</b>Post an update as the supervisor, then switch to the client view and show it appear.</p>
+    <p class="say">Watch — I post an update as the site supervisor, and it appears on the client's screen. <strong>A real consequence, on a different screen.</strong></p>
+    <p class="say">And if I post something that mentions a cost, it stops in the founder's approval queue instead — because that is the rule the plan proposes.</p>
+    <p class="say">So the client does not just read the idea. <strong>They can test it</strong>, and tell me it is wrong before anybody writes production code.</p>
+  </section>
+
+  <section class="scene">
+    <div class="scene-head"><span class="num">07</span><h2>How it is built</h2><span class="clock">5:00 – 5:40</span></div>
+    <p class="show"><b>On screen</b>Back to the dashboard, or the Skills page.</p>
+    <p class="say">Briefly, how it is put together.</p>
+    <p class="say">It is <strong>one application</strong>. The server reads the database and sends back finished pages, so the browser is never handed data it is not allowed to see — the filtering happens before anything leaves the server.</p>
+    <p class="say">Separation between customers is enforced <strong>twice</strong>: once in the code, and again inside the database, which refuses to hand over another company's rows even if the code asks wrongly. There are tests that try to break it.</p>
+    <p class="say">Generating a plan takes minutes, so the server <strong>streams progress</strong> as each stage lands, instead of a spinner that might have died.</p>
+    <p class="say">And there are <strong>two hundred and thirty automated tests</strong>, plus twelve that drive a real browser through this exact walkthrough.</p>
+  </section>
+
+  <section class="scene">
+    <div class="scene-head"><span class="num">08</span><h2>Close</h2><span class="clock">5:40 – 6:00</span></div>
+    <p class="say">The honest summary: AI does the reading here, and it is genuinely good at it.</p>
+    <p class="say">But <strong>every claim it makes is quoted, checked and scored</strong> — and where it guessed, it says so.</p>
+    <p class="say">That is the difference between a tool that sounds confident, and one a consultant can actually put their name on.</p>
+  </section>
+
+  <div class="panel">
+    <h3>Numbers you can quote</h3>
+    <ul>
+      <li><b>6</b> documents, <b>5</b> formats, <b>197</b> pieces of evidence</li>
+      <li><b>84%</b> grounded — <b>27 of 32</b> verified (the demo, identical on every run)</li>
+      <li><b>89%</b> — <b>40 of 45</b> (a full live run against the real model)</li>
+      <li><b>3</b> contradictions and <b>15</b> open questions, found without being asked</li>
+      <li><b>230</b> automated tests and <b>12</b> browser tests</li>
+      <li>A full live run takes about <b>11 minutes</b> — it was 18 and a half before the five independent stages were made to run at the same time</li>
+    </ul>
+  </div>
+
+  <div class="panel">
+    <h3>Before you press record</h3>
+    <ul>
+      <li>Run <code>npm run db:reset</code> — the demo will then match this script exactly</li>
+      <li>Zoom the browser to about 110%, and close the developer tools panel</li>
+      <li>Sign in as <code>ashika@meridian.example</code> / <code>demo1234</code></li>
+      <li>Pause before "it is deliberately not a hundred percent". It is the strongest line in the video and it goes past too fast if you rush it</li>
+    </ul>
+  </div>
+
+  <div class="panel warn">
+    <h3>One thing not to claim</h3>
+    <ul>
+      <li>Do not say prompt caching saves money. It was measured, and it never gets a cache hit, because each of the six stages sends a different schema.</li>
+      <li>If efficiency comes up, that is a strong answer rather than a weak one: <em>"we measured it, it does not hit, here is exactly why, and here is why we kept the schema anyway."</em> It lands far better than a claim that collapses under one question.</li>
+    </ul>
+  </div>
+
+</div>
+</body>
+</html>

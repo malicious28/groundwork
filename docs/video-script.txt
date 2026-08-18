@@ -1,0 +1,212 @@
+GROUNDWORK — VIDEO SCRIPT
+Runtime 6:00  ·  ashika@meridian.example / demo1234  ·  score on screen: 84%
+========================================================================
+
+01 · THE PROBLEM   (0:00 – 0:45)
+------------------------------------------------------------------------
+  [ ON SCREEN: The login page. ]
+
+  When a client tells you what they need, it never arrives as one clean
+  document.
+
+  It comes as a recorded call. A WhatsApp thread. A PDF of their vendor
+  terms. A screenshot of the spreadsheet they actually run on. And a
+  paragraph in an email.
+
+  Somebody has to read all of that and turn it into a plan you can build
+  from. That takes days, and it goes wrong in a very specific way:
+  details get lost, and the gaps get filled in with guesses. Six months
+  later the client says we never asked for that — and nobody can prove
+  otherwise.
+
+  This is Groundwork. It does that reading, and — this is the important
+  part — it shows its working.
+
+
+02 · WHAT GOES IN   (0:45 – 1:30)
+------------------------------------------------------------------------
+  [ ON SCREEN: Sign in. Land on the dashboard. Scroll slowly down the six sources. ]
+
+  Here is a real engagement — an interior fit-out firm in Pune.
+
+  Six documents, in five different formats. Two recorded calls. A
+  WhatsApp export, sixty-nine messages. Their vendor contract as a PDF.
+  A Word document. And a screenshot of their master tracker.
+
+  That last one matters. A screenshot is not a document you can search —
+  so the moment it is uploaded, an AI reads the image and turns it into
+  text. From then on it is treated exactly like a phone call: quotable,
+  and checkable.
+
+  Altogether that is a hundred and ninety-seven separate pieces of
+  evidence the tool can point at.
+
+
+03 · THE SIX AI CALLS   (1:30 – 2:15)
+------------------------------------------------------------------------
+  [ ON SCREEN: Click Run discovery. Let the stages appear one by one. ]
+
+  Now watch. This is not one big request to an AI — it is six separate
+  ones.
+
+  The first writes the brief: what they actually need. The second hunts
+  for places their own documents contradict each other. The third finds
+  the questions nobody has answered. The fourth designs a better
+  process. The fifth specifies what to build. And the sixth builds a
+  working demo of it.
+
+  Six, not one, for a reason. Each is a different job, and one giant
+  request does every part of it worse. They also fail independently — if
+  the demo comes back broken, you still have everything else.
+
+  Each one is told the exact shape of answer it must return, so what
+  comes back is structured data rather than paragraphs I have to guess
+  my way through.
+
+
+04 · THE IDEA THAT MATTERS MOST   (2:15 – 3:30)
+------------------------------------------------------------------------
+  ** Slow right down here. This is the whole video. **
+  [ ON SCREEN: Open the Brief tab. Point at the grounding score. ]
+
+  Here is the part I would want judged hardest.
+
+  AI makes things up. Everyone knows that. So in this tool, the AI
+  writes the plan, but it does not get to be believed.
+
+  Every statement it produces has to come with a direct quote from a
+  source document. And after it answers, the app goes back to the
+  original file and checks that quote is really there — character by
+  character.
+  [ ON SCREEN: Click a green citation chip. The evidence panel opens with the sentence highlighted. ]
+
+  So I can click any line and see the exact sentence somebody said it
+  in. Not a summary of it. The sentence.
+  [ ON SCREEN: Close the panel. Point at the score. ]
+
+  And it is scored, at the top. Eighty-four percent. Twenty-seven of
+  thirty-two statements verified.
+
+  Now — it is deliberately not a hundred percent, and that is the whole
+  point.
+  [ ON SCREEN: Scroll to the red chip on the Tally claim. ]
+
+  Four of those are honest assumptions, marked as assumptions. And this
+  one is a claim I planted on purpose — it cites a sentence that appears
+  in no document anywhere. It comes up red, every time.
+
+  That is the proof the check can actually fail, rather than always
+  saying yes. A tool that scores itself a hundred percent every time is
+  telling you nothing.
+
+
+05 · CATCHING WHAT A PERSON MISSES   (3:30 – 4:15)
+------------------------------------------------------------------------
+  [ ON SCREEN: Conflicts tab. ]
+
+  Second thing the AI does that people often miss. Different people at
+  the client say different things.
+
+  Here the founder says the first-phase budget is two lakh. Two weeks
+  later the head of operations says five. Both are in the notes. Nobody
+  noticed — and a plan built on the wrong number is a plan that fails.
+
+  It shows both sides with a quote each, and it does not pick a winner,
+  because that is the client's decision and not the software's. I record
+  what they decide, and the next run stops raising it.
+  [ ON SCREEN: Questions tab. ]
+
+  And this is the list of things nobody has answered yet — budget,
+  timeline, what happens to eight months of spreadsheet history on the
+  day this goes live. Each written so it can be pasted straight into an
+  email.
+
+  An unanswered question is a finding. Most tools quietly guess and move
+  on.
+
+
+06 · THE DEMO IT BUILDS   (4:15 – 5:00)
+------------------------------------------------------------------------
+  [ ON SCREEN: Prototype tab. Let the frame load. ]
+
+  Last of the six, and my favourite. It does not just describe what to
+  build. It builds a working demo of it.
+
+  This is not a picture. It is a real tool, filled with their own
+  project names and their own people.
+  [ ON SCREEN: Post an update as the supervisor, then switch to the client view and show it appear. ]
+
+  Watch — I post an update as the site supervisor, and it appears on the
+  client's screen. A real consequence, on a different screen.
+
+  And if I post something that mentions a cost, it stops in the
+  founder's approval queue instead — because that is the rule the plan
+  proposes.
+
+  So the client does not just read the idea. They can test it, and tell
+  me it is wrong before anybody writes production code.
+
+
+07 · HOW IT IS BUILT   (5:00 – 5:40)
+------------------------------------------------------------------------
+  [ ON SCREEN: Back to the dashboard, or the Skills page. ]
+
+  Briefly, how it is put together.
+
+  It is one application. The server reads the database and sends back
+  finished pages, so the browser is never handed data it is not allowed
+  to see — the filtering happens before anything leaves the server.
+
+  Separation between customers is enforced twice: once in the code, and
+  again inside the database, which refuses to hand over another
+  company's rows even if the code asks wrongly. There are tests that try
+  to break it.
+
+  Generating a plan takes minutes, so the server streams progress as
+  each stage lands, instead of a spinner that might have died.
+
+  And there are two hundred and thirty automated tests, plus twelve that
+  drive a real browser through this exact walkthrough.
+
+
+08 · CLOSE   (5:40 – 6:00)
+------------------------------------------------------------------------
+
+  The honest summary: AI does the reading here, and it is genuinely good
+  at it.
+
+  But every claim it makes is quoted, checked and scored — and where it
+  guessed, it says so.
+
+  That is the difference between a tool that sounds confident, and one a
+  consultant can actually put their name on.
+
+
+NUMBERS YOU CAN QUOTE
+------------------------------------------------------------------------
+  - 6 documents, 5 formats, 197 pieces of evidence
+  - 84% grounded — 27 of 32 verified (the demo, identical on every run)
+  - 89% — 40 of 45 (a full live run against the real model)
+  - 3 contradictions and 15 open questions, found without being asked
+  - 230 automated tests and 12 browser tests
+  - A full live run takes about 11 minutes — it was 18 and a half before
+    the five independent stages were made to run at the same time
+
+BEFORE YOU PRESS RECORD
+------------------------------------------------------------------------
+  - Run npm run db:reset — the demo will then match this script exactly
+  - Zoom the browser to about 110%, and close the developer tools panel
+  - Sign in as ashika@meridian.example / demo1234
+  - Pause before "it is deliberately not a hundred percent". It is the
+    strongest line in the video and it goes past too fast if you rush it
+
+ONE THING NOT TO CLAIM
+------------------------------------------------------------------------
+  - Do not say prompt caching saves money. It was measured, and it never
+    gets a cache hit, because each of the six stages sends a different
+    schema.
+  - If efficiency comes up, that is a strong answer rather than a weak
+    one: "we measured it, it does not hit, here is exactly why, and here
+    is why we kept the schema anyway." It lands far better than a claim
+    that collapses under one question.
+
