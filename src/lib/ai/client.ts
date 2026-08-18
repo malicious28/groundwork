@@ -123,6 +123,55 @@ export class GenerationError extends Error {
  * JSON Schema export does not do the second by default, so it is enforced here
  * rather than repeated across six schema definitions.
  */
+/**
+ * Range keywords the structured-output API rejects outright.
+ *
+ * The API refuses two of them and accepts the rest, which was worth finding out
+ * rather than assuming:
+ *
+ *   integer minimum/maximum   refused — "properties maximum, minimum are not
+ *                             supported"
+ *   array minItems            refused above 1 — "values other than 0 or 1 are
+ *                             not supported"
+ *   string minLength/maxLength   accepted
+ *   enum                         accepted
+ *
+ * That distinction matters more than it looks. Stripping the string lengths as
+ * well — which is what a cautious first pass did — meant nothing stopped the
+ * model returning a 340-character "quote", and Zod then rejected the entire
+ * brief after four minutes of work over one field. Left in place, the API
+ * holds the model to the limit while it writes, which is the only place the
+ * rule can be enforced cheaply.
+ *
+ * What genuinely cannot be sent moves into the field's description, where the
+ * model still reads it, and is re-checked here when the answer comes back.
+ */
+const RANGE_KEYWORDS = [
+  "minimum",
+  "maximum",
+  "exclusiveMinimum",
+  "exclusiveMaximum",
+  "multipleOf",
+  "minItems",
+  "maxItems",
+] as const;
+
+/** Says the constraint in the words the model will actually read. */
+function describeRange(schema: Record<string, unknown>): string | null {
+  const n = (key: string): number | null =>
+    typeof schema[key] === "number" ? (schema[key] as number) : null;
+
+  const min = n("minimum") ?? n("minItems");
+  const max = n("maximum") ?? n("maxItems");
+  if (min === null && max === null) return null;
+
+  const unit = schema.type === "array" ? " items" : "";
+
+  if (min !== null && max !== null) return `Must be between ${min} and ${max}${unit}.`;
+  if (min !== null) return `Must be at least ${min}${unit}.`;
+  return `Must be at most ${max}${unit}.`;
+}
+
 function tighten(node: unknown): unknown {
   if (Array.isArray(node)) return node.map(tighten);
   if (node === null || typeof node !== "object") return node;
@@ -132,6 +181,14 @@ function tighten(node: unknown): unknown {
     schema[key] = tighten(schema[key]);
   }
 
+  const sentence = describeRange(schema);
+  if (sentence) {
+    const existing =
+      typeof schema.description === "string" ? schema.description.trim() : "";
+    schema.description = existing ? `${existing} ${sentence}` : sentence;
+  }
+  for (const keyword of RANGE_KEYWORDS) delete schema[keyword];
+
   if (schema.type === "object" && schema.properties) {
     schema.additionalProperties = false;
     schema.required = Object.keys(schema.properties as object);
@@ -140,6 +197,9 @@ function tighten(node: unknown): unknown {
   delete schema.$schema;
   return schema;
 }
+
+/** Exported for the test that walks every schema this app sends. */
+export { tighten as tightenForApi };
 
 export type GenerateArgs<T extends z.ZodType> = {
   system: string;
@@ -161,7 +221,7 @@ export async function generateStructured<T extends z.ZodType>({
   instruction,
   schema,
   schemaName,
-  maxTokens = 16000,
+  maxTokens = 32000,
   effort = "high",
 }: GenerateArgs<T>): Promise<GenerateResult<z.infer<T>>> {
   if (!hasApiKey()) {
@@ -197,7 +257,12 @@ export async function generateStructured<T extends z.ZodType>({
     ],
     output_config: {
       effort,
-      format: { type: "json_schema", schema: jsonSchema, name: schemaName },
+      // No `name` here: the API refuses it outright with "output_config.format
+      // .name: Extra inputs are not permitted". The name is still worth having
+      // in this process — it is what makes a validation failure say which of
+      // the six stages produced it — so it stays a parameter and is used in
+      // the error below, not sent over the wire.
+      format: { type: "json_schema", schema: jsonSchema },
     },
     messages: [
       {
@@ -227,6 +292,18 @@ export async function generateStructured<T extends z.ZodType>({
     throw new GenerationError(
       "The model declined this request. If the sources contain sensitive material, remove it and try again.",
       "refusal",
+    );
+  }
+
+  // Running out of room mid-answer also arrives as a success, and the JSON is
+  // cut off wherever it happened to be. Left to the parser below it reads as
+  // "the model returned output that did not match the schema", which blames
+  // the model for a budget this code set.
+  if (message.stop_reason === "max_tokens") {
+    throw new GenerationError(
+      `The ${schemaName} answer was cut off after ${maxTokens} tokens, so it could not be read. ` +
+        `This corpus needs more room than that stage allows.`,
+      "invalid_output",
     );
   }
 

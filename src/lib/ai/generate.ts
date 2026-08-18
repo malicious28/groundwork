@@ -238,7 +238,11 @@ export async function runDiscovery(
     schema: Parameters<typeof generateStructured>[0]["schema"],
     recorded: T,
     persist: (tx: Db, output: T, artifactId: string) => Promise<string>,
-    maxTokens = 16000,
+    // 16k was enough for four documents and is not enough for six: the brief
+    // was being cut off mid-sentence and surfaced as a JSON parse error. The
+    // ceiling costs nothing when it is not reached — output is billed on what
+    // comes back, not on what was allowed.
+    maxTokens = 32000,
   ): Promise<void> {
     emit({ type: "stage", stage: name, status: "start" });
 
