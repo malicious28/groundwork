@@ -65,7 +65,7 @@ export function NewProjectForm({ first }: { first: boolean }) {
             name="clientName"
             required
             maxLength={160}
-            placeholder="Nova Interiors"
+            placeholder="The client’s name"
             className={field}
           />
         </label>
@@ -77,7 +77,7 @@ export function NewProjectForm({ first }: { first: boolean }) {
         <input
           name="summary"
           maxLength={600}
-          placeholder="40-person interior fit-out firm running projects on WhatsApp and a spreadsheet"
+          placeholder="What they do, and how they run today"
           className={field}
         />
       </label>
