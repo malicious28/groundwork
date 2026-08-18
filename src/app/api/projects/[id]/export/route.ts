@@ -1,5 +1,6 @@
 import { and, eq } from "drizzle-orm";
 import { getSession } from "@/lib/auth/session";
+import { isUuid } from "@/lib/ids";
 import { withTenant } from "@/db/tenant";
 import { projects } from "@/db/schema";
 import { loadArtifact } from "@/lib/artifacts";
@@ -27,6 +28,9 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> },
 ) {
   const { id } = await params;
+  if (!isUuid(id)) {
+    return Response.json({ error: "That could not be found." }, { status: 404 });
+  }
   const url = new URL(request.url);
   const token = url.searchParams.get("token");
   const requestedVersion = url.searchParams.get("v");

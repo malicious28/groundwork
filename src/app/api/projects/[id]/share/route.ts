@@ -1,5 +1,6 @@
 import { and, eq } from "drizzle-orm";
 import { requireSession, AuthError } from "@/lib/auth/session";
+import { isUuid } from "@/lib/ids";
 import { withTenant } from "@/db/tenant";
 import { projects } from "@/db/schema";
 import { issueShareToken, revokeShareToken } from "@/lib/share";
@@ -24,6 +25,9 @@ export async function POST(
 ) {
   try {
     const { id } = await params;
+    if (!isUuid(id)) {
+      return Response.json({ error: "That could not be found." }, { status: 404 });
+    }
     const { session, project } = await authorise(id);
     if (!project) {
       return Response.json({ error: "Project not found." }, { status: 404 });
@@ -45,6 +49,9 @@ export async function DELETE(
 ) {
   try {
     const { id } = await params;
+    if (!isUuid(id)) {
+      return Response.json({ error: "That could not be found." }, { status: 404 });
+    }
     const { session, project } = await authorise(id);
     if (!project) {
       return Response.json({ error: "Project not found." }, { status: 404 });

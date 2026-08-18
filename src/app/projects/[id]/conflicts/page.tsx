@@ -1,6 +1,8 @@
+import { notFound } from "next/navigation";
 import { and, asc, desc, eq } from "drizzle-orm";
 import { requireSessionPage } from "@/lib/auth/session";
 import { withTenant } from "@/db/tenant";
+import { isUuid } from "@/lib/ids";
 import { conflicts, conflictSides } from "@/db/schema";
 import { CitationChip } from "@/components/evidence/citation-chip";
 import { ConflictActions } from "@/components/conflict-actions";
@@ -22,6 +24,7 @@ export default async function ConflictsPage({
 }) {
   const session = await requireSessionPage("consultant");
   const { id } = await params;
+  if (!isUuid(id)) notFound();
 
   const rows = await withTenant(session.orgId, async (tx) => {
     const found = await tx

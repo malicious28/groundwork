@@ -1,3 +1,4 @@
+import { notFound } from "next/navigation";
 import { requireSessionPage } from "@/lib/auth/session";
 import { listArtifactVersions, loadArtifact } from "@/lib/artifacts";
 import { ArtifactVersions } from "@/components/artifact-versions";
@@ -5,6 +6,7 @@ import type { Prototype } from "@/lib/ai/schemas";
 import { EmptyStage } from "@/components/empty-stage";
 import { ShareLink } from "@/components/share-link";
 import { withTenant } from "@/db/tenant";
+import { isUuid } from "@/lib/ids";
 import { projects } from "@/db/schema";
 import { and, eq } from "drizzle-orm";
 
@@ -17,6 +19,7 @@ export default async function PrototypePage({
 }) {
   const session = await requireSessionPage("consultant");
   const { id } = await params;
+  if (!isUuid(id)) notFound();
   const { v } = await searchParams;
   const requested = v ? Number(v) : undefined;
   const artifact = await loadArtifact<Prototype>(

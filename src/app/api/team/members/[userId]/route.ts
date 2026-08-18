@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { requireSession, AuthError } from "@/lib/auth/session";
+import { isUuid } from "@/lib/ids";
 import { changeRole, removeMember, TeamError } from "@/lib/team";
 
 export const runtime = "nodejs";
@@ -13,6 +14,9 @@ export async function POST(
   try {
     const session = await requireSession("owner");
     const { userId } = await params;
+    if (!isUuid(userId)) {
+      return Response.json({ error: "That could not be found." }, { status: 404 });
+    }
     const parsed = Input.safeParse(await request.json().catch(() => null));
     if (!parsed.success) {
       return Response.json({ error: "Pick a valid role." }, { status: 400 });
@@ -38,6 +42,9 @@ export async function DELETE(
   try {
     const session = await requireSession("owner");
     const { userId } = await params;
+    if (!isUuid(userId)) {
+      return Response.json({ error: "That could not be found." }, { status: 404 });
+    }
     await removeMember(session.orgId, userId);
     return Response.json({ ok: true });
   } catch (error) {

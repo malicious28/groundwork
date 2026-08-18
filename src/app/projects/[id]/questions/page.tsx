@@ -1,6 +1,8 @@
+import { notFound } from "next/navigation";
 import { and, desc, eq } from "drizzle-orm";
 import { requireSessionPage } from "@/lib/auth/session";
 import { withTenant } from "@/db/tenant";
+import { isUuid } from "@/lib/ids";
 import { openQuestions, projects } from "@/db/schema";
 import { EmptyStage } from "@/components/empty-stage";
 import { QuestionPack } from "@/components/question-pack";
@@ -26,6 +28,7 @@ export default async function QuestionsPage({
 }) {
   const session = await requireSessionPage("consultant");
   const { id } = await params;
+  if (!isUuid(id)) notFound();
 
   const { questions, project } = await withTenant(session.orgId, async (tx) => {
     const questions = await tx

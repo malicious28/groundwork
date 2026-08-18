@@ -5,6 +5,7 @@ import { requireSessionPage } from "@/lib/auth/session";
 import { withTenant } from "@/db/tenant";
 import { projects } from "@/db/schema";
 import { AppHeader } from "@/components/app-header";
+import { isUuid } from "@/lib/ids";
 import { EvidenceProvider } from "@/components/evidence/evidence-panel";
 import { ProjectTabs } from "@/components/project-tabs";
 import { GenerateButton } from "@/components/generate-button";
@@ -18,6 +19,10 @@ export default async function ProjectLayout({
 }) {
   const session = await requireSessionPage("consultant");
   const { id } = await params;
+
+  // Before the query, not after it: Postgres rejects a non-uuid with a type
+  // error rather than an empty result, which reached the reader as a crash.
+  if (!isUuid(id)) notFound();
 
   const [project] = await withTenant(session.orgId, (tx) =>
     tx

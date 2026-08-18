@@ -1,7 +1,9 @@
+import { notFound } from "next/navigation";
 import Link from "next/link";
 import { asc, eq } from "drizzle-orm";
 import { requireSessionPage } from "@/lib/auth/session";
 import { withTenant } from "@/db/tenant";
+import { isUuid } from "@/lib/ids";
 import { evidenceSpans, sources } from "@/db/schema";
 import { SourceKindBadge } from "@/components/source-kind-badge";
 import { SourceUpload } from "@/components/source-upload";
@@ -16,6 +18,7 @@ export default async function SourcesPage({
 }) {
   const session = await requireSessionPage("consultant");
   const { id } = await params;
+  if (!isUuid(id)) notFound();
   const { source: selectedRef } = await searchParams;
 
   const { sourceRows, selected, spans } = await withTenant(

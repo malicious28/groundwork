@@ -1,5 +1,6 @@
 import { and, eq } from "drizzle-orm";
 import { requireSession, AuthError } from "@/lib/auth/session";
+import { isUuid } from "@/lib/ids";
 import { withTenant } from "@/db/tenant";
 import { projects, sources } from "@/db/schema";
 import { ingestFile, refFromFilename, type IngestResult } from "@/lib/ingest";
@@ -25,8 +26,20 @@ export async function POST(
   }
 
   const { id } = await params;
+  if (!isUuid(id)) {
+    return Response.json({ error: "That could not be found." }, { status: 404 });
+  }
 
-  const form = await request.formData();
+  // Throws outright on a body that is not multipart, rather than returning
+  // something empty — uncaught, that is a 500 with no body, which tells an
+  // uploader nothing about what went wrong.
+  const form = await request.formData().catch(() => null);
+  if (!form) {
+    return Response.json(
+      { error: "That upload was not readable. Choose the files again." },
+      { status: 400 },
+    );
+  }
   const files = form.getAll("files").filter((f): f is File => f instanceof File);
 
   if (files.length === 0) {
