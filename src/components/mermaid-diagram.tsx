@@ -29,9 +29,19 @@ export function MermaidDiagram({
       mermaid.initialize({
         startOnLoad: false,
         securityLevel: "strict",
-        theme: window.matchMedia("(prefers-color-scheme: dark)").matches
-          ? "dark"
-          : "neutral",
+        // The app is light-only, so the diagram is too — asking the OS here
+        // would draw a dark diagram onto a white page.
+        theme: "base",
+        themeVariables: {
+          background: "#ffffff",
+          primaryColor: "#e7eefc",
+          primaryBorderColor: "#1d4ed8",
+          primaryTextColor: "#0d1b2e",
+          lineColor: "#5f7089",
+          secondaryColor: "#eaf0f9",
+          tertiaryColor: "#f4f7fc",
+          fontFamily: "ui-sans-serif, -apple-system, system-ui, sans-serif",
+        },
         flowchart: { curve: "basis", useMaxWidth: true },
       });
 
