@@ -1,31 +1,39 @@
 @import "tailwindcss";
 
 /*
- * The palette is shared with the project's written plan so the whole submission
- * reads as one piece of work: a cool paper ground, verdigris as the single
- * accent, and semantic colours reserved for the three states that carry meaning
- * in this product — a verified claim, a contradiction, and a gap.
+ * White, and shades of blue.
+ *
+ * One hue carries the whole interface: the ground, the borders, the ink and the
+ * accent are all the same blue at different strengths, which is what stops a
+ * single-hue palette from looking flat — the relationships between the shades
+ * do the work that a second colour would otherwise do.
+ *
+ * Two colours are deliberately outside that family. A contradiction and an
+ * unanswered question are the two things in this product a reader must be able
+ * to spot without reading a word, and if they were blue they would disappear
+ * into the furniture. They are not brand colours; they are warnings, and they
+ * are allowed to look like it.
  */
 @theme {
-  --color-ground: #f5f6f3;
+  --color-ground: #f4f7fc;
   --color-surface: #ffffff;
-  --color-surface-2: #eceee9;
-  --color-line: #d8dcd5;
-  --color-line-soft: #e4e7e1;
-  --color-ink: #171c1a;
-  --color-ink-2: #3b443f;
-  --color-muted: #626d67;
+  --color-surface-2: #eaf0f9;
+  --color-line: #cfdcee;
+  --color-line-soft: #e3ebf6;
+  --color-ink: #0d1b2e;
+  --color-ink-2: #33475f;
+  --color-muted: #5f7089;
 
-  --color-accent: #14655a;
-  --color-accent-soft: #e0eee9;
+  /* Blue 700. Dark enough to carry white text on a button and to pass contrast
+     as body-weight text on white, which the lighter blues do not. */
+  --color-accent: #1d4ed8;
+  --color-accent-soft: #e7eefc;
+  --color-accent-line: #b9cdf7;
 
-  /* Semantic, and deliberately not the accent: a conflict is not a brand
-     colour, and a reader must be able to tell the three states apart at a
-     glance without reading a word. */
-  --color-flag: #a02e22;
-  --color-flag-soft: #f6e4e1;
-  --color-gap: #8a6410;
-  --color-gap-soft: #f5ebd6;
+  --color-flag: #b42318;
+  --color-flag-soft: #fdeceb;
+  --color-gap: #8a5a08;
+  --color-gap-soft: #fbf0da;
 
   --font-sans: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI",
     Helvetica, Arial, sans-serif;
@@ -35,28 +43,14 @@
     Consolas, monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  @theme {
-    --color-ground: #111614;
-    --color-surface: #191f1d;
-    --color-surface-2: #212925;
-    --color-line: #2e3835;
-    --color-line-soft: #262f2c;
-    --color-ink: #e7ebe8;
-    --color-ink-2: #c2cac6;
-    --color-muted: #94a09b;
-
-    --color-accent: #4fbfa5;
-    --color-accent-soft: #16332d;
-    --color-flag: #e2857a;
-    --color-flag-soft: #35201d;
-    --color-gap: #d8ae59;
-    --color-gap-soft: #322915;
-  }
-}
-
+/*
+ * Light only, on purpose. This is a document tool — briefs, quotes, citations,
+ * a printable proposal — and the whole design rests on ink on paper. Following
+ * the operating system into dark mode would hand back a screen this palette was
+ * not drawn for, so the preference is declined rather than half-supported.
+ */
 html {
-  color-scheme: light dark;
+  color-scheme: light;
 }
 
 body {
@@ -66,8 +60,6 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Keyboard focus must always be visible; the default ring disappears against
-   the accent on buttons that use it as a background. */
 :focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
