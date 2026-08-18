@@ -22,13 +22,20 @@ npm run setup             # migrate + seed the demo project
 npm run dev
 ```
 
-Open <http://localhost:3000>. Every demo account uses the password `demo1234`:
+Open <http://localhost:3000>. The sign-in screen explains the product and
+carries these credentials, so there is nothing to look up. Every demo account
+uses the password `demo1234`:
 
 | Email | Role | What they see |
 | --- | --- | --- |
-| `ashika@meridian.example` | owner / consultant | The Nova Interiors engagement, all five stages |
+| `ashika@meridian.example` | owner / consultant | The Nova Interiors engagement, all six documents and all five stages |
 | `rohit@novainteriors.example` | client | The published brief and prototype, read-only |
 | `dev@northwind.example` | owner of a second tenant | Their own project — and a 404 on Meridian's, even by direct URL |
+
+Or create your own workspace at `/signup`. It starts genuinely empty: no
+project, no documents, nothing copied from the demo. The demo material exists
+in one account and only there, which is what makes it possible to tell what the
+tool read from *your* documents.
 
 **`ANTHROPIC_API_KEY` is optional.** Without it, *Run discovery* replays recorded
 model output and labels the result as such. Every citation is still verified
@@ -37,8 +44,8 @@ those results, so the demo is honest about what it is. With a key set, the same
 code path calls `claude-opus-5` for real.
 
 ```bash
-npm test            # 129 unit tests
-npm run test:e2e    # 10 browser tests over the demo walkthrough
+npm test            # 136 unit tests
+npm run test:e2e    # 12 browser tests over the demo walkthrough
 npm run typecheck
 npm run db:reset    # wipe local data and re-seed
 npm run db:fresh    # the opposite: an empty workspace for your own documents
@@ -243,7 +250,7 @@ function that selects two ids and nothing else.
 | Teams | Invitations that expire, are single-use and revocable; the last owner cannot be removed |
 | API design | REST resources for sources, URL ingestion, generation (SSE), conflicts, questions and sharing; consistent error envelopes |
 | Data modelling | 13 tables including the span-level evidence store |
-| Automated testing | 129 unit tests + 10 browser tests over the demo walkthrough |
+| Automated testing | 136 unit tests + 12 browser tests over the demo walkthrough |
 | Multiple environments | Neon branching for preview vs production; migrations run at build |
 | CI/CD | GitHub Actions: typecheck, unit tests and build in one job, end-to-end in another |
 | Preventing bugs | TypeScript strict, Zod at every boundary, and the quote verifier itself |
@@ -254,10 +261,10 @@ function that selects two ids and nothing else.
 
 Nova Interiors, a 40-person interior fit-out firm in Pune running client projects
 on WhatsApp and a shared spreadsheet. Its fixtures
-([`fixtures/nova-interiors/`](fixtures/nova-interiors/)) are two call
-transcripts, a 69-message WhatsApp export, a process SOP as a real `.docx`, a
-vendor-terms `.pdf`, and a screenshot — containing planted contradictions and
-gaps:
+([`fixtures/nova-interiors/`](fixtures/nova-interiors/)) are six documents in
+five formats — two call transcripts, a 69-message WhatsApp export, a process SOP
+as a real `.docx`, a vendor-terms `.pdf`, and a screenshot of the master tracker
+— containing planted contradictions and gaps:
 
 - a first-phase budget given as two lakh by the founder and around five lakh by
   the head of operations two weeks later;
