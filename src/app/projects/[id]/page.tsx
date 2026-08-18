@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { asc, eq } from "drizzle-orm";
-import { requireSession } from "@/lib/auth/session";
+import { requireSessionPage } from "@/lib/auth/session";
 import { withTenant } from "@/db/tenant";
 import { evidenceSpans, sources } from "@/db/schema";
 import { SourceKindBadge } from "@/components/source-kind-badge";
@@ -14,7 +14,7 @@ export default async function SourcesPage({
   params: Promise<{ id: string }>;
   searchParams: Promise<{ source?: string }>;
 }) {
-  const session = await requireSession("consultant");
+  const session = await requireSessionPage("consultant");
   const { id } = await params;
   const { source: selectedRef } = await searchParams;
 

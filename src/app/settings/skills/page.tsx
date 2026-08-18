@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { requireSession } from "@/lib/auth/session";
+import { requireSessionPage } from "@/lib/auth/session";
 import { AppHeader } from "@/components/app-header";
 
 /**
@@ -144,7 +144,7 @@ const GROUPS: Array<{ heading: string; skills: Skill[] }> = [
 ];
 
 export default async function SkillsPage() {
-  const session = await requireSession("consultant");
+  const session = await requireSessionPage("consultant");
 
   return (
     <>

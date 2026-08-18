@@ -1,4 +1,4 @@
-import { requireSession } from "@/lib/auth/session";
+import { requireSessionPage } from "@/lib/auth/session";
 import { listArtifactVersions, loadArtifact } from "@/lib/artifacts";
 import { ArtifactVersions } from "@/components/artifact-versions";
 import type { Prototype } from "@/lib/ai/schemas";
@@ -15,7 +15,7 @@ export default async function PrototypePage({
   params: Promise<{ id: string }>;
   searchParams: Promise<{ v?: string }>;
 }) {
-  const session = await requireSession("consultant");
+  const session = await requireSessionPage("consultant");
   const { id } = await params;
   const { v } = await searchParams;
   const requested = v ? Number(v) : undefined;

@@ -1,5 +1,5 @@
 import { and, desc, eq } from "drizzle-orm";
-import { requireSession } from "@/lib/auth/session";
+import { requireSessionPage } from "@/lib/auth/session";
 import { withTenant } from "@/db/tenant";
 import { openQuestions, projects } from "@/db/schema";
 import { EmptyStage } from "@/components/empty-stage";
@@ -24,7 +24,7 @@ export default async function QuestionsPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const session = await requireSession("consultant");
+  const session = await requireSessionPage("consultant");
   const { id } = await params;
 
   const { questions, project } = await withTenant(session.orgId, async (tx) => {

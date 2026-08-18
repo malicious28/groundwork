@@ -1,4 +1,4 @@
-import { requireSession } from "@/lib/auth/session";
+import { requireSessionPage } from "@/lib/auth/session";
 import { listArtifactVersions, loadArtifact } from "@/lib/artifacts";
 import type { Brief, Outline } from "@/lib/ai/schemas";
 import { comparePlans, type ChangeKind } from "@/lib/compare";
@@ -26,7 +26,7 @@ export default async function ComparePage({
   params: Promise<{ id: string }>;
   searchParams: Promise<{ a?: string; b?: string }>;
 }) {
-  const session = await requireSession("consultant");
+  const session = await requireSessionPage("consultant");
   const { id } = await params;
   const { a, b } = await searchParams;
 

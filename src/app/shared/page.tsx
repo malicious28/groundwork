@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { and, eq } from "drizzle-orm";
-import { requireSession } from "@/lib/auth/session";
+import { requireSessionPage } from "@/lib/auth/session";
 import { withTenant } from "@/db/tenant";
 import { artifacts, projects } from "@/db/schema";
 import { AppHeader } from "@/components/app-header";
@@ -13,7 +13,7 @@ import { AppHeader } from "@/components/app-header";
  * an isolation bug to hide.
  */
 export default async function SharedPage() {
-  const session = await requireSession("client");
+  const session = await requireSessionPage("client");
 
   const rows = await withTenant(session.orgId, async (tx) => {
     const found = await tx

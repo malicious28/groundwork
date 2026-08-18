@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { and, eq } from "drizzle-orm";
-import { requireSession } from "@/lib/auth/session";
+import { requireSessionPage } from "@/lib/auth/session";
 import { withTenant } from "@/db/tenant";
 import { projects } from "@/db/schema";
 import { loadArtifact } from "@/lib/artifacts";
@@ -25,7 +25,7 @@ export default async function SharedProjectPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const session = await requireSession("client");
+  const session = await requireSessionPage("client");
   const { id } = await params;
 
   const [project] = await withTenant(session.orgId, (tx) =>
