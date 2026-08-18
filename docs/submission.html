@@ -9,7 +9,6 @@
     --line:#cfdcee; --line-soft:#e3ebf6; --paper:#fff; --tint:#f4f7fc;
     --accent:#1d4ed8; --accent-soft:#e7eefc;
     --warn:#8a5a08; --warn-soft:#fbf0da;
-    --stop:#b42318; --stop-soft:#fdeceb;
     --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
     --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
     --mono:"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
@@ -19,43 +18,47 @@
        font-size:10.5pt;line-height:1.55}
   .wrap{max-width:172mm;margin:0 auto;padding:0 2mm}
 
-  .cover{padding:4mm 0 8mm;border-bottom:2px solid var(--accent);margin-bottom:8mm}
-  .eyebrow{font-family:var(--mono);font-size:8.5pt;letter-spacing:.14em;
+  .cover{padding:3mm 0 7mm;border-bottom:2px solid var(--accent);margin-bottom:7mm}
+  .eyebrow{font-family:var(--mono);font-size:8pt;letter-spacing:.16em;
            text-transform:uppercase;color:var(--accent);margin:0 0 3mm}
-  h1{font-family:var(--serif);font-size:31pt;line-height:1.02;margin:0 0 4mm;letter-spacing:-.015em}
-  .standfirst{font-family:var(--serif);font-size:13pt;color:var(--ink-2);max-width:150mm;margin:0 0 5mm}
+  h1{font-family:var(--serif);font-size:32pt;line-height:1;margin:0 0 4mm;letter-spacing:-.015em}
+  .standfirst{font-family:var(--serif);font-size:13pt;color:var(--ink-2);max-width:152mm;margin:0 0 5mm}
   .meta{font-family:var(--mono);font-size:8.5pt;color:var(--muted)}
 
-  h2{font-family:var(--serif);font-size:18pt;margin:11mm 0 1mm;letter-spacing:-.01em;
-     page-break-after:avoid}
-  .sec-num{font-family:var(--mono);font-size:8.5pt;color:var(--accent);letter-spacing:.14em;
-           text-transform:uppercase;margin:0 0 1mm;font-weight:600}
+  .contents{border:1px solid var(--line);background:var(--tint);padding:4mm 6mm;margin:0 0 8mm}
+  .contents ol{margin:0;padding-left:6mm;columns:2;column-gap:10mm}
+  .contents li{margin-bottom:1.2mm;font-size:9.5pt}
+
+  h2{font-family:var(--serif);font-size:19pt;margin:0 0 1mm;letter-spacing:-.01em;page-break-after:avoid}
+  .sec-num{font-family:var(--mono);font-size:8pt;color:var(--accent);letter-spacing:.16em;
+           text-transform:uppercase;margin:10mm 0 1mm;font-weight:600}
   .sec-rule{height:1px;background:var(--line);margin:0 0 5mm}
-  h3{font-family:var(--serif);font-size:13pt;margin:7mm 0 2mm;page-break-after:avoid}
-  h4{font-size:10.5pt;margin:5mm 0 1.5mm;color:var(--ink)}
-  p{margin:0 0 3mm;max-width:160mm}
-  ul,ol{margin:0 0 3mm;padding-left:5.5mm} li{margin-bottom:1.6mm}
-  strong{font-weight:600}
+  h3{font-family:var(--serif);font-size:13.5pt;margin:7mm 0 2mm;page-break-after:avoid}
+  h4{font-size:10.5pt;margin:5mm 0 1.5mm}
+  p{margin:0 0 3mm;max-width:162mm}
+  ul,ol{margin:0 0 3mm;padding-left:5.5mm} li{margin-bottom:1.5mm}
   code{font-family:var(--mono);font-size:9pt;background:var(--tint);padding:0 1mm;
        border:1px solid var(--line-soft)}
 
-  .res{display:grid;grid-template-columns:34mm 1fr;gap:2mm 5mm;align-items:baseline;
-       border:1px solid var(--line);background:var(--tint);padding:5mm 6mm;margin:0 0 5mm}
-  .res dt{font-family:var(--mono);font-size:8.5pt;letter-spacing:.08em;text-transform:uppercase;
-          color:var(--accent);font-weight:600}
-  .res dd{margin:0;font-size:10pt;word-break:break-all}
-  .res dd .note{display:block;color:var(--muted);font-size:9pt;word-break:normal;margin-top:.5mm}
+  dl.res{display:grid;grid-template-columns:32mm 1fr;gap:2.5mm 5mm;align-items:baseline;
+         border:1px solid var(--line);background:var(--tint);padding:5mm 6mm;margin:0 0 5mm}
+  dl.res dt{font-family:var(--mono);font-size:8pt;letter-spacing:.08em;text-transform:uppercase;
+            color:var(--accent);font-weight:600}
+  dl.res dd{margin:0;font-size:9.5pt;overflow-wrap:anywhere}
+  dl.res dd a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent-soft)}
+  dl.res dd .note{display:block;color:var(--muted);font-size:8.5pt;word-break:normal;margin-top:.6mm}
 
-  pre{font-family:var(--mono);font-size:8.8pt;line-height:1.5;background:var(--tint);
+  pre{font-family:var(--mono);font-size:8.6pt;line-height:1.55;background:var(--tint);
       border:1px solid var(--line);padding:3.5mm 4.5mm;overflow-x:auto;margin:0 0 4mm}
   .cmt{color:var(--muted)}
 
   table{width:100%;border-collapse:collapse;margin:0 0 4mm;font-size:9.5pt}
-  th{text-align:left;font-family:var(--mono);font-size:8pt;letter-spacing:.08em;
+  th{text-align:left;font-family:var(--mono);font-size:7.5pt;letter-spacing:.08em;
      text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--line);
      padding:0 3mm 1.5mm 0;font-weight:600}
-  td{padding:2mm 3mm 2mm 0;border-bottom:1px solid var(--line-soft);vertical-align:top}
-  td:first-child{font-weight:600;white-space:nowrap}
+  td{padding:1.8mm 3mm 1.8mm 0;border-bottom:1px solid var(--line-soft);vertical-align:top}
+  td:first-child{font-weight:600}
+  table.tight td:first-child{white-space:nowrap}
 
   .box{border:1px solid var(--line);background:var(--tint);padding:4mm 5mm;margin:0 0 5mm;
        page-break-inside:avoid}
@@ -64,16 +67,16 @@
   .box h4{margin-top:0}
   .box p:last-child,.box ul:last-child{margin-bottom:0}
 
-  .stat{display:flex;flex-wrap:wrap;gap:4mm;margin:0 0 5mm}
-  .stat div{border:1px solid var(--line);padding:3mm 4mm;min-width:38mm}
+  .stat{display:flex;flex-wrap:wrap;gap:3.5mm;margin:0 0 5mm}
+  .stat div{border:1px solid var(--line);padding:3mm 4mm;min-width:36mm}
   .stat b{display:block;font-family:var(--serif);font-size:17pt;color:var(--accent);
           font-variant-numeric:tabular-nums;line-height:1}
-  .stat span{font-size:8.5pt;color:var(--muted);display:block;margin-top:1mm}
+  .stat span{font-size:8pt;color:var(--muted);display:block;margin-top:1mm}
 
-  .flow{font-family:var(--mono);font-size:8.5pt;line-height:1.75;background:var(--tint);
+  .flow{font-family:var(--mono);font-size:8.4pt;line-height:1.8;background:var(--tint);
         border-left:3px solid var(--accent);padding:3.5mm 5mm;margin:0 0 4mm}
   @page{size:A4;margin:0}
-  .page-break{page-break-before:always}
+  .pb{page-break-before:always}
 </style>
 </head>
 <body>
@@ -85,56 +88,193 @@
   <p class="standfirst">Turning scattered client input — recorded calls, chat exports, contracts,
     screenshots — into a plan you can defend, where every line is traceable back to the sentence
     somebody actually said.</p>
-  <p class="meta">Ashika · 18 August 2026 · AI Business Discovery to POC</p>
+  <p class="meta">Ashika · August 2026 · AI Business Discovery to POC</p>
 </header>
 
-<p>This is a working tool, not a slide deck, but it is deliberately not a finished product.
-The brief said the goal was to show how an open business problem is turned into a working
-solution in limited time, so I built the parts that carry the idea and left the parts that
-only carry weight in production. Where I stopped, I have said so plainly — including a
-section on what can go wrong when you run it, and why.</p>
+<div class="contents">
+  <ol>
+    <li>Resources</li>
+    <li>What it does</li>
+    <li>How the AI works</li>
+    <li>Running it, and testing it</li>
+    <li>Assumptions</li>
+    <li>Limitations</li>
+    <li>The business perspective</li>
+  </ol>
+</div>
 
-<!-- ============================================================ 1 -->
-<p class="sec-num">Section one</p>
+<p>This is a working tool, and deliberately not a finished product. The brief said the goal was
+to show how an open business problem becomes a working solution in limited time, so I built the
+parts that carry the idea and left the parts that only carry weight in production. Where I
+stopped, I have said so — sections six and seven are as honest as the rest.</p>
+
+<!-- ================================================================= 1 -->
+<p class="sec-num">One</p>
 <h2>Resources</h2>
 <div class="sec-rule"></div>
 
 <dl class="res">
-  <dt>Source code</dt>
-  <dd>https://github.com/malicious28/groundwork
-    <span class="note">Public. The commit history is worth a look — every feature was built on
-    its own branch and merged separately, so <code>git log --graph --first-parent</code> reads
-    as a sequence of decisions rather than one drop of code.</span></dd>
+  <dt>Repository</dt>
+  <dd><a href="https://github.com/malicious28/groundwork">https://github.com/malicious28/groundwork</a>
+    <span class="note">Public. The history is worth a look: every feature was built on its own
+    branch and merged separately, so <code>git log --graph --first-parent</code> reads as a
+    sequence of decisions rather than one drop of code.</span></dd>
 
-  <dt>Zip</dt>
-  <dd>groundwork.zip
-    <span class="note">The same code, attached to the email. Identical to the repository except
-    that a zip cannot carry git history.</span></dd>
+  <dt>Download the zip</dt>
+  <dd><a href="https://github.com/malicious28/groundwork/releases/download/v1.0/groundwork.zip">https://github.com/malicious28/groundwork/releases/<wbr>download/v1.0/groundwork.zip</a>
+    <span class="note">A direct download — no account needed. Supplied as a link rather than an
+    attachment because Gmail blocks any archive containing a JavaScript file, and one build
+    config file is enough to trigger it.</span></dd>
 
-  <dt>Video — part 1</dt>
-  <dd>https://www.loom.com/share/1c8385c26338433e8ff7b273c45a99c5</dd>
+  <dt>Video, part 1</dt>
+  <dd><a href="https://www.loom.com/share/1c8385c26338433e8ff7b273c45a99c5">https://www.loom.com/share/1c8385c26338433e8ff7b273c45a99c5</a></dd>
 
-  <dt>Video — part 2</dt>
-  <dd>https://www.loom.com/share/afb2c7b02aae4825ad0c332652abe097</dd>
+  <dt>Video, part 2</dt>
+  <dd><a href="https://www.loom.com/share/afb2c7b02aae4825ad0c332652abe097">https://www.loom.com/share/afb2c7b02aae4825ad0c332652abe097</a></dd>
 
-  <dt>Plain-language explainer</dt>
+  <dt>Explainer</dt>
   <dd>docs/groundwork-explained.pdf
-    <span class="note">19 pages, written for a non-technical reader. Covers the whole product
-    and why each decision was made.</span></dd>
+    <span class="note">19 pages in plain language, for a non-technical reader.</span></dd>
 
   <dt>Build plan</dt>
   <dd>docs/groundwork-plan.html
-    <span class="note">The plan and the market survey the build started from, written before
-    any code.</span></dd>
+    <span class="note">The plan and market survey written before any code.</span></dd>
 </dl>
 
-<h3>Running it</h3>
-<p>No Docker, no database server, no cloud account, and no API key needed to see the whole
-thing working. The database is Postgres compiled to WebAssembly and runs inside the
-application process, so setup is genuinely two commands.</p>
+<!-- ================================================================= 2 -->
+<p class="sec-num">Two</p>
+<h2>What it does</h2>
+<div class="sec-rule"></div>
 
-<pre><span class="cmt"># Node 20 or newer</span>
-npm install
+<p>A client never explains what they need in one clean document. It arrives as a recorded call,
+a WhatsApp thread, a PDF of their vendor terms, a screenshot of the spreadsheet they actually run
+on, and a paragraph in an email. Somebody has to read all of it and turn it into a plan — and
+that job fails in a specific way: details get lost, gaps get filled with guesses, and months
+later the client says <em>we never asked for that</em> with nobody able to prove otherwise.</p>
+
+<h3>Taking anything the client sends</h3>
+<p>Seven input types. The format is detected from the file's contents rather than its name,
+because clients rename things.</p>
+<table>
+  <tr><th>Input</th><th>Handling</th></tr>
+  <tr><td>Call transcripts</td><td>Speaker and timestamp preserved, so a quote can be attributed to a person</td></tr>
+  <tr><td>WhatsApp exports</td><td>Message-level, with sender and date</td></tr>
+  <tr><td>PDFs</td><td>Text extracted and split into citable sections</td></tr>
+  <tr><td>Word documents</td><td>Same, with headings kept as context</td></tr>
+  <tr><td>Screenshots</td><td>Read by a vision model at upload, not at analysis time</td></tr>
+  <tr><td>Web pages</td><td>Fetched by URL, with protection against internal addresses</td></tr>
+  <tr><td>Typed or pasted text</td><td>The most common thing a client actually sends</td></tr>
+</table>
+<p>Screenshots deserve a note. A screenshot is not a document you can search, so it is
+transcribed the moment it is uploaded. That single choice means every later stage treats it
+exactly like a transcript, and a claim drawn from a spreadsheet screenshot can be quoted and
+verified like any other. Passing raw images into each analysis call would have put that content
+outside the checking path entirely.</p>
+
+<h3>What comes out</h3>
+<div class="flow">
+1 · Brief          what they need, every line quoted and checked<br>
+2 · Contradictions where their own documents disagree with each other<br>
+3 · Questions      what nobody has answered yet<br>
+4 · Process        how it runs today, and what to change<br>
+5 · Outline        roles, modules and features, prioritised<br>
+6 · Prototype      a working demo of the tool being proposed
+</div>
+
+<h3>The rest of the product</h3>
+<table>
+  <tr><th>Feature</th><th>What it is for</th></tr>
+  <tr><td>Evidence ledger</td><td>Every source, split into addressable spans. The brief points back into this.</td></tr>
+  <tr><td>Grounding score</td><td>What proportion of the plan is backed by a real quote, shown rather than hidden.</td></tr>
+  <tr><td>Decisions</td><td>Settle a contradiction and it is fed into the next run, so it is not raised again.</td></tr>
+  <tr><td>Answers</td><td>Record what the client said and the next brief stops treating it as a gap.</td></tr>
+  <tr><td>Versions</td><td>Nothing is overwritten. Any two runs can be compared side by side.</td></tr>
+  <tr><td>Teams</td><td>Invite colleagues into a workspace; everyone adds to the same evidence.</td></tr>
+  <tr><td>Client link</td><td>A shareable link with no account, showing the plan and the demo — and none of the internal notes.</td></tr>
+  <tr><td>Proposal export</td><td>A document the client can keep, editable before it goes out.</td></tr>
+</table>
+
+<!-- ================================================================= 3 -->
+<p class="sec-num">Three</p>
+<h2>How the AI works</h2>
+<div class="sec-rule"></div>
+
+<h3>Six calls, not one</h3>
+<p>Pressing <em>Run discovery</em> makes six separate requests. Each is a different job, and a
+single request asking for everything does every part of it worse. They also fail independently —
+a broken prototype does not cost you the brief — each is versioned separately so you can re-run
+one thing, and the reader watches the work arrive instead of staring at a spinner.</p>
+<p>Every call is told the exact shape of answer it must return, so what comes back is structured
+data rather than prose to be parsed hopefully. The five calls after the brief do not depend on
+each other, so they run at the same time.</p>
+
+<h3>The idea the whole thing rests on</h3>
+<p>AI makes things up. That is the known problem, and every serious objection to using it in
+consulting work comes back to it. So here, the AI writes the plan but
+<strong>it does not get to be believed.</strong></p>
+<p>Every statement must carry a verbatim quote from a source document. After the model answers,
+the application goes back to the original text and checks the quote is really there: first an
+exact match, then a match that ignores whitespace and punctuation differences, then a fuzzy match
+that is recorded but deliberately <em>not</em> counted as verified. Only the first two count.</p>
+<p>The result is a score, shown at the top of the brief. Clicking any citation opens the source
+with the sentence highlighted in place.</p>
+
+<div class="stat">
+  <div><b>84%</b><span>seeded demo — 27 of 32</span></div>
+  <div><b>89%</b><span>a live run — 40 of 45</span></div>
+  <div><b>197</b><span>quotable spans, 6 documents</span></div>
+  <div><b>230</b><span>tests, plus 12 in a browser</span></div>
+</div>
+
+<div class="box">
+  <h4>It is deliberately not 100%</h4>
+  <p>Four of the unverified statements are honest assumptions, marked as assumptions. The fifth
+  is a claim planted on purpose: it cites a sentence that appears in no document anywhere, and it
+  renders red every time.</p>
+  <p>That is the proof the check can fail. A verification layer that always says yes is
+  decoration. Tests assert both ends — that the real citations pass, and that the planted one
+  does not.</p>
+</div>
+
+<h3>Two things it catches that people miss</h3>
+<p><strong>Contradictions.</strong> The founder says the first-phase budget is two lakh; two
+weeks later the head of operations says five. Both are in the notes, nobody noticed, and a plan
+built on the wrong number fails. It shows both sides with a quote each and does not pick a
+winner, because that is the client's decision.</p>
+<p><strong>Unanswered questions.</strong> Budget, timeline, integrations, what happens to eight
+months of spreadsheet history on the day the new system goes live. Each phrased so it can be
+pasted straight into an email. An absent answer is a finding; most tools quietly guess.</p>
+
+<h3>The demo it builds</h3>
+<p>The sixth call does not describe what to build — it builds a working demo. A single
+self-contained page seeded with the client's real project names and people, where actions have
+consequences that cross screens: a supervisor posts an update and it appears on the client's
+view; post something mentioning a cost and it stops in the founder's approval queue instead. It
+runs inside a sandbox that can execute its own code but cannot read anything from the
+application around it.</p>
+<p>The client does not just read the proposal. They can use it, and tell you it is wrong before
+anyone writes production code.</p>
+
+<!-- ================================================================= 4 -->
+<p class="sec-num">Four</p>
+<h2>Running it, and testing it</h2>
+<div class="sec-rule"></div>
+
+<p>No Docker, no database server, no cloud account, and no API key needed to see everything
+working. The database is Postgres compiled to WebAssembly, running inside the application
+process. Node 20 or newer is the only requirement.</p>
+
+<h3>From the repository</h3>
+<pre>git clone https://github.com/malicious28/groundwork.git
+cd groundwork</pre>
+
+<h3>From the zip</h3>
+<pre><span class="cmt"># download, then</span>
+unzip groundwork.zip
+cd groundwork</pre>
+
+<h3>Then, either way</h3>
+<pre>npm install
 cp .env.example .env
 
 <span class="cmt"># AUTH_SECRET is required — it signs the session cookie. Generate one:</span>
@@ -144,271 +284,178 @@ node -e "console.log(require('crypto').randomBytes(48).toString('base64url'))"
 npm run setup     <span class="cmt"># creates the database, applies security policies, loads the demo</span>
 npm run dev       <span class="cmt"># http://localhost:3000</span></pre>
 
-<p>Sign in with <code>ashika@meridian.example</code> and password <code>demo1234</code>. The
-sign-in screen carries the credentials, so there is nothing to look up. Two other accounts are
-seeded: a client who sees only what was shared with them, and an unrelated firm that proves it
-can see none of it.</p>
-
-<h4>The AI key is optional, and this matters</h4>
-<p>Without <code>ANTHROPIC_API_KEY</code>, the app replays a recorded analysis of the seeded
-project — but <strong>the verification layer still runs for real</strong> against the actual
-documents. That is why the demo can show a claim failing its check. With a key set, the same
-code path calls the model. <code>npm run set-key</code> writes the key into <code>.env</code>
-correctly; the server must be restarted afterwards, because <code>.env</code> is read once at
-startup.</p>
-
-<table>
-  <tr><th>Command</th><th>What it does</th></tr>
-  <tr><td>npm run dev</td><td>Start the app</td></tr>
-  <tr><td>npm run db:reset</td><td>Wipe local data and reload the demo — safe, and the fastest fix for most problems</td></tr>
-  <tr><td>npm run db:fresh</td><td>An empty workspace, to walk the flow with your own documents</td></tr>
-  <tr><td>npm test</td><td>230 automated tests</td></tr>
-  <tr><td>npm run test:e2e</td><td>12 tests driving a real browser through the demo</td></tr>
+<p>The sign-in screen carries the credentials, so there is nothing to look up. All three
+accounts use the password <code>demo1234</code>.</p>
+<table class="tight">
+  <tr><th>Account</th><th>What it shows</th></tr>
+  <tr><td>ashika@meridian.example</td><td>The consultant. The full workspace with the demo engagement.</td></tr>
+  <tr><td>rohit@novainteriors.example</td><td>Their client. Only what was shared, read-only.</td></tr>
+  <tr><td>dev@northwind.example</td><td>An unrelated firm. Proof that it sees none of the above.</td></tr>
 </table>
 
-<div class="page-break"></div>
+<h3>A five-minute test</h3>
+<ol>
+  <li>Sign in as the consultant. The dashboard shows six documents and 197 quotable spans.</li>
+  <li>Press <strong>Run discovery</strong> and watch the six stages land.</li>
+  <li>Open <strong>Brief</strong>. Note the score. Click any green citation — the source opens
+    with the sentence highlighted.</li>
+  <li>Find the red citation on the claim about Tally. It cites a sentence in no document. This is
+    the planted claim, and it is the point of the whole tool.</li>
+  <li>Open <strong>Conflicts</strong> and record a decision on the budget disagreement.</li>
+  <li>Open <strong>Prototype</strong>. Post an update from site, then switch to the client view
+    and watch it appear. Post one mentioning a cost and watch it queue for approval instead.</li>
+  <li>Sign out, sign in as the client. You now see only what was shared — no contradictions, no
+    internal notes.</li>
+  <li>Sign in as the third account. The demo project is not merely hidden; opening its URL
+    directly returns a 404.</li>
+</ol>
 
-<!-- ============================================================ 2 -->
-<p class="sec-num">Section two</p>
-<h2>What it does, and how the AI works</h2>
+<h3>Testing it the other way</h3>
+<pre>npm test          <span class="cmt"># 230 tests</span>
+npm run test:e2e  <span class="cmt"># 12 tests driving a real browser through the demo</span>
+npm run db:fresh  <span class="cmt"># an empty workspace, to walk the flow with your own documents</span>
+npm run db:reset  <span class="cmt"># back to the demo — the fastest fix for most problems</span></pre>
+
+<h4>Using a real API key</h4>
+<p>Optional. Without one, the app replays a recorded analysis of the seeded project — and the
+verification layer still runs for real against the actual documents, which is why the demo can
+show a claim failing its check. With a key, the same code path calls the model.
+<code>npm run set-key</code> writes it into <code>.env</code> correctly, and the server must be
+restarted because <code>.env</code> is read once at startup. A full live run takes about eleven
+minutes.</p>
+
+<!-- ================================================================= 5 -->
+<p class="sec-num">Five</p>
+<h2>Assumptions</h2>
 <div class="sec-rule"></div>
 
-<p>A client never explains what they need in one clean document. It arrives as a recorded call,
-a WhatsApp thread, a PDF of their vendor terms, a screenshot of the spreadsheet they actually
-run on, and a paragraph in an email. Somebody has to read all of it and turn it into a plan —
-and that job goes wrong in a specific way: details get lost, and the gaps get filled with
-guesses. Months later the client says <em>we never asked for that</em>, and nobody can prove
-otherwise.</p>
+<p>Stated plainly, because most of them could reasonably have gone the other way.</p>
 
-<h3>What goes in</h3>
-<p>Seven input types, and the format is detected from the file contents rather than its name,
-because clients rename things. Call transcripts, WhatsApp exports, PDFs, Word documents,
-screenshots, a web page by URL, and text typed or pasted straight in — which is the most common
-thing a client actually sends.</p>
-<p>A screenshot is not a document you can search, so it is read by a vision model
-<strong>at the moment it is uploaded</strong> rather than at analysis time. That choice matters:
-turning the image into text once means every later stage treats it exactly like a transcript,
-and a claim drawn from a spreadsheet screenshot can be quoted and checked like any other. Passing
-raw images into each analysis call would put that content outside the verification path
-entirely.</p>
+<h3>About the problem</h3>
+<ul>
+  <li><strong>"Scattered inputs" means formats, not volume.</strong> A handful of documents in
+    incompatible formats, not thousands of files. That ruled out a vector database: the whole
+    corpus fits in one context window, and chunking it would make cross-document synthesis worse
+    rather than better. At a few hundred documents this reverses.</li>
+  <li><strong>The reviewer's time is the scarcest resource.</strong> Hence a demo that runs with
+    no API key, no Docker and no cloud account, and a seeded engagement that shows the whole flow
+    without anyone uploading anything.</li>
+  <li><strong>A prototype they can operate beats one they look at.</strong> The brief says "basic
+    POC". I read that as something the client can carry the proposed workflow through, which is
+    why the generated demo has working state and consequences that cross screens.</li>
+</ul>
 
-<h3>The six AI calls</h3>
-<p>Pressing <em>Run discovery</em> makes six separate requests, not one.</p>
-<div class="flow">
-1 · brief        what they actually need, with every line quoted<br>
-2 · conflicts    where their own documents contradict each other<br>
-3 · questions    what nobody has answered yet<br>
-4 · process      how it runs today, and what to change<br>
-5 · outline      roles, modules, features, prioritised<br>
-6 · prototype    a working demo of the tool being proposed
-</div>
-<p>Six rather than one, for reasons that showed up in practice. Each is a different job, and a
-single request asking for all of it does every part worse. They fail independently — a broken
-prototype does not cost you the brief. Each is versioned separately, so you can re-run one
-thing. And the reader watches the work arrive rather than staring at a spinner.</p>
-<p>Every call is told the exact shape of answer it must return, so what comes back is structured
-data rather than prose to be parsed hopefully.</p>
+<h3>About the product</h3>
+<ul>
+  <li><strong>A consultant will not trust output they cannot check.</strong> Everything rests on
+    this. It is why every claim carries a quote that is re-checked, and why the score is shown.</li>
+  <li><strong>A wrong claim is worse than a missing one.</strong> An unverifiable claim is shown
+    as unverified rather than quietly dropped, and gaps are raised as questions rather than
+    filled with plausible guesses.</li>
+  <li><strong>Clients read what you send them and nothing else.</strong> The client view and the
+    exported proposal deliberately omit the contradictions — quoting their own staff disagreeing
+    with each other is a working note for the consultant.</li>
+</ul>
 
-<h3>The idea the whole thing rests on</h3>
-<p>AI makes things up. That is the known problem, and every serious objection to using it in
-consulting work comes back to it. So in this tool the AI writes the plan, but
-<strong>it does not get to be believed</strong>.</p>
-<p>Every statement it produces must carry a verbatim quote from a source document. After it
-answers, the application goes back to the original text and checks that the quote is really
-there — first an exact match, then a whitespace- and punctuation-normalised match, then a fuzzy
-match that is recorded but <em>not</em> counted as verified. Only the first two count.</p>
-<p>The result is a grounding score, shown at the top of the brief rather than buried:
-<strong>84% on the seeded demo — 27 of 32 statements verified</strong>. Clicking any citation
-opens the source with the sentence highlighted in place.</p>
+<h3>About the technical setting</h3>
+<ul>
+  <li><strong>Single database, multi-tenant, small scale.</strong> Row-level security in one
+    Postgres is the right shape for tens of workspaces. A database per tenant is right at a
+    different scale and is not this.</li>
+  <li><strong>No email service.</strong> Invitations produce a link you send yourself. Adding a
+    provider is an afternoon and would prove nothing about what is being assessed.</li>
+  <li><strong>The model changes its mind between runs.</strong> Hence versioned artifacts, nothing
+    overwritten, and a comparison view — because two runs over the same corpus genuinely differ.</li>
+</ul>
 
-<div class="box">
-  <h4>It is deliberately not 100%, and that is the point</h4>
-  <p>Four of the unverified statements are honest assumptions, marked as assumptions. The fifth
-  is a claim I planted on purpose: it cites a sentence that appears in no document anywhere, and
-  it renders red every single time.</p>
-  <p>That is the proof the check can actually fail. A verification layer that always says yes is
-  decoration. There are tests asserting this from both ends — that the genuine citations pass,
-  and that the planted one fails.</p>
-</div>
-
-<div class="stat">
-  <div><b>84%</b><span>grounded — 27 of 32, seeded demo</span></div>
-  <div><b>89%</b><span>a live run — 40 of 45</span></div>
-  <div><b>197</b><span>quotable spans across 6 documents</span></div>
-  <div><b>230</b><span>automated tests, plus 12 in a browser</span></div>
-</div>
-
-<h3>Two things it finds that people miss</h3>
-<p><strong>Contradictions.</strong> The founder says the first-phase budget is two lakh. Two
-weeks later the head of operations says five. Both are in the notes, nobody noticed, and a plan
-built on the wrong number fails. It shows both sides with a quote each and does not pick a
-winner, because that is the client's decision. Once recorded, the decision is fed back into the
-next run so it is not raised again.</p>
-<p><strong>Unanswered questions.</strong> Budget, timeline, integrations, what happens to eight
-months of spreadsheet history on the day the new system goes live. Each phrased so it can be
-pasted into an email. An absent answer is a finding — most tools quietly guess and move on.</p>
-
-<h3>The demo it builds</h3>
-<p>The sixth call does not describe what to build. It builds a working demo of it: a single
-self-contained page, seeded with the client's real project names and people, where actions have
-consequences that cross screens. A supervisor posts an update and it appears on the client's
-view; post something mentioning a cost and it stops in the founder's approval queue instead.</p>
-<p>It runs inside a sandboxed frame that can execute its own code but cannot read anything from
-the application around it. The client does not just read the proposal — they can test it, and
-tell you it is wrong before anyone writes production code.</p>
-
-<h3>How the frontend and backend work together</h3>
-<p>One application rather than two. Pages are rendered on the server, which reads the database
-directly and sends back finished HTML — so the browser is never handed data it is not allowed to
-see, because the filtering happens before anything leaves the server. Changes (uploading,
-recording a decision, inviting a colleague) go through small API endpoints.</p>
-<p>Generating a plan takes minutes, so that one path streams progress back as each stage lands,
-with a heartbeat every fifteen seconds to stop intermediaries treating a quiet connection as a
-dead one.</p>
-
-<div class="page-break"></div>
-
-<!-- ============================================================ 3 -->
-<p class="sec-num">Section three</p>
-<h2>The business case, and scaling it</h2>
+<!-- ================================================================= 6 -->
+<p class="sec-num">Six</p>
+<h2>Limitations</h2>
 <div class="sec-rule"></div>
 
-<h3>What it is actually worth</h3>
-<p>Discovery is the part of a project that is hardest to charge for and most expensive to get
-wrong. The time goes on reading and reconciling, and the risk sits in what gets missed. This
-does not replace the consultant — it removes the reading and, more importantly, it produces
-evidence.</p>
+<h3>Deliberately not built</h3>
+<table>
+  <tr><th>Not built</th><th>Why, and what it would take</th></tr>
+  <tr><td>Deployment</td><td>Configured for Vercel; it has only ever run locally. The configuration is in the repository.</td></tr>
+  <tr><td>Background jobs</td><td>Analysis runs inside the request, so closing the laptop mid-run loses the stages still in flight. Finished stages are saved. A queue is the fix.</td></tr>
+  <tr><td>Email delivery</td><td>Invitations produce a link to send yourself.</td></tr>
+  <tr><td>File storage</td><td>Uploads are parsed to text and stored in the database; the original file is not kept, apart from screenshots.</td></tr>
+  <tr><td>Rate limiting, audit log</td><td>Both matter in production. Neither proves anything about what is being assessed.</td></tr>
+  <tr><td>Retrieval over large corpora</td><td>Not needed at this size, and it would make synthesis worse. Necessary past a few hundred documents.</td></tr>
+</table>
+
+<h3>Where the design could be wrong</h3>
+<ul>
+  <li>Verification is exact-match with a normalised and a fuzzy fallback. A model that
+    paraphrases well but quotes loosely scores badly here even when it is right. I would rather
+    that than the reverse.</li>
+  <li>Prompt caching is set up and, measured, never pays off: the output schema sits ahead of the
+    system prompt in the cached prefix, and the six stages each need their own schema. Making it
+    work would mean one shared schema validated only after the fact. I kept the per-stage schemas,
+    because a guaranteed-shape response is what makes the output checkable. Somebody optimising
+    for cost would decide the other way.</li>
+  <li>The recorded analysis only describes the seeded project and refuses to run against anyone
+    else's documents. Deliberate, but it does mean the no-key demo is a demo rather than a trial.</li>
+</ul>
+
+<div class="box warn">
+  <h4>What can go wrong when you run it, and why</h4>
+  <p>All of these say the same thing in the application. None fails silently.</p>
+  <table style="margin-bottom:0">
+    <tr><th>Message</th><th>Cause and fix</th></tr>
+    <tr><td>No API key is set</td><td>No key, or a key added while the server was running — <code>.env</code> is read once at startup. Run <code>npm run set-key</code> and restart, or ignore it and use the demo.</td></tr>
+    <tr><td>Account has no capacity left</td><td>The key has hit its usage limit. Nothing in the code can work around it; the demo still runs.</td></tr>
+    <tr><td>Answer was cut off after N tokens</td><td>A stage produced more than its budget allowed. Re-run — everything that finished is saved. Budgets were sized from measurement.</td></tr>
+    <tr><td>Database already open in process N</td><td>The embedded database allows one process at a time, usually a second <code>npm run dev</code>. Stop the other, or set <code>PGLITE_DATA_DIR</code> elsewhere. It refuses loudly because opening it twice corrupts the data silently.</td></tr>
+    <tr><td>Empty workspace, saving fails</td><td>A browser session from before <code>npm run db:reset</code>. Sign out and in.</td></tr>
+    <tr><td>Screenshot shows 0 spans</td><td>Reading an image needs a model, so with no key it is stored but not transcribed. Set a key and upload again.</td></tr>
+  </table>
+</div>
+
+<!-- ================================================================= 7 -->
+<p class="sec-num">Seven</p>
+<h2>The business perspective</h2>
+<div class="sec-rule"></div>
+
+<h3>What it is worth</h3>
+<p>Discovery is the part of a project hardest to charge for and most expensive to get wrong. The
+time goes on reading and reconciling; the risk sits in what gets missed. This does not replace
+the consultant — it removes the reading, and it produces evidence.</p>
 <table>
   <tr><th>Where it pays</th><th>How</th></tr>
-  <tr><td>Speed to proposal</td><td>Days of reading become minutes. A full analysis of six documents takes about eleven minutes end to end.</td></tr>
-  <tr><td>Fewer disputes</td><td>Every requirement is quoted back to the sentence it came from. "We never asked for that" becomes a link, not an argument.</td></tr>
-  <tr><td>Risk found early</td><td>Contradictions and gaps surface during discovery, when they are cheap, rather than during build.</td></tr>
-  <tr><td>Higher win rate</td><td>The client can operate the proposed tool before signing. A prototype they have used is a far stronger sell than one they have watched.</td></tr>
-  <tr><td>Scope control</td><td>Assumptions are listed separately and visibly, so the client corrects them at proposal stage instead of at delivery.</td></tr>
+  <tr><td>Speed to proposal</td><td>Days of reading become minutes. A full analysis of six documents runs in about eleven minutes.</td></tr>
+  <tr><td>Fewer disputes</td><td>Every requirement is quoted back to its source. "We never asked for that" becomes a link rather than an argument.</td></tr>
+  <tr><td>Risk found early</td><td>Contradictions and gaps surface during discovery, when they are cheap.</td></tr>
+  <tr><td>Higher win rate</td><td>A prototype the client has used is a stronger sell than one they have watched.</td></tr>
+  <tr><td>Scope control</td><td>Assumptions are listed visibly, so the client corrects them at proposal stage rather than at delivery.</td></tr>
 </table>
 
 <h3>Who uses it</h3>
-<p>Three roles, and they are enforced rather than cosmetic. The <strong>consultant</strong> owns
-the workspace and runs the analysis. Their <strong>colleagues</strong> are invited into the same
-workspace and add to the same pile of evidence. The <strong>client</strong> gets a link — no
-account — showing the brief, the proposed process and the working demo, with a downloadable
-proposal. The client never sees the internal working notes: quoting their own staff disagreeing
-with each other is for the consultant, not for them.</p>
+<p>Three roles, enforced rather than cosmetic. The <strong>consultant</strong> owns the workspace
+and runs the analysis. Their <strong>colleagues</strong> are invited in and add to the same
+evidence. The <strong>client</strong> gets a link with no account, showing the brief, the proposed
+process and the working demo, with a proposal they can download.</p>
 
-<h3>Scaling it</h3>
-<p>The architecture was chosen so that growth is a configuration change rather than a rewrite.</p>
-
-<h4>More customers</h4>
-<p>Multi-tenant from the first table. Every row carries an organisation id, and separation is
-enforced <strong>twice</strong>: once in the application code, and again by row-level security
-policies inside the database, under a role that has no permission to bypass them. If the code
-asked wrongly, the database would still refuse. There are tests that try to break it and fail to.
-Adding a customer is a row, not an environment.</p>
-
-<h4>More load</h4>
-<p>The same schema runs on managed Postgres by setting one environment variable — the embedded
-database is a development convenience, not a different system, so row-level security, indexes
-and transactions behave identically. Deployment is configured for Vercel, with migrations running
-as part of the build.</p>
-
-<h4>More documents per engagement</h4>
-<p>This is where I would be honest about the ceiling. Today the whole corpus is sent in one
-context window, which is the right call for the handful of incompatible documents a real client
-sends, and it is why cross-document synthesis works at all — a retrieval system would chunk the
-evidence and make exactly this job worse. At a few hundred documents that reverses, and the
-answer is a retrieval layer feeding the same six calls. The verification layer would not change,
-which is the part that matters.</p>
-
-<h4>Cost</h4>
-<p>The model is configurable per deployment. Sonnet is the default because the work is careful
-reading rather than deep reasoning, and cost per run decides whether a consultant re-runs after
-every new document — which is the behaviour the product wants. The five independent stages run
-concurrently, so wall-clock time is roughly the longest stage rather than the sum of all six.</p>
-
-<div class="box">
-  <h4>An honest note on efficiency</h4>
-  <p>Prompt caching is set up correctly and currently never pays off. I measured it rather than
-  assuming: every stage reports zero cache reads, because the structured-output schema sits ahead
-  of the system prompt in the cached prefix, and the six stages each need their own schema.</p>
-  <p>Making it work would mean one shared schema validated only after the fact. I kept the
-  per-stage schemas, because a guaranteed-shape response is what makes every downstream stage
-  parseable in a product whose entire claim is that its output can be checked. It is documented
-  in the README, because an efficiency claim nobody verified is worse than no claim at all.</p>
-</div>
+<h3>How it scales</h3>
+<table>
+  <tr><th>Axis</th><th>What happens</th></tr>
+  <tr><td>More customers</td><td>Multi-tenant from the first table. Separation is enforced twice — in the application, and again by policies inside the database under a role with no permission to bypass them. Adding a customer is a row, not an environment.</td></tr>
+  <tr><td>More load</td><td>The same schema runs on managed Postgres by setting one environment variable. The embedded database is a development convenience, not a different system.</td></tr>
+  <tr><td>More documents</td><td>The honest ceiling. Today the whole corpus goes in one context window, which is why cross-document synthesis works. Past a few hundred documents the answer is a retrieval layer feeding the same six calls — the verification layer would not change.</td></tr>
+  <tr><td>Cost</td><td>The model is configurable per deployment. The default is chosen because the work is careful reading rather than deep reasoning, and cost per run decides whether a consultant re-runs after every new document.</td></tr>
+</table>
 
 <h3>What I would build next</h3>
-<ul>
+<ol>
+  <li><strong>Background jobs</strong>, so a run survives a closed laptop and a single failed
+    stage can be retried on its own.</li>
+  <li><strong>Client replies on the questions</strong>, so answers arrive in the tool rather than
+    in an inbox.</li>
+  <li><strong>Real invitation emails.</strong></li>
   <li><strong>Retrieval</strong>, once an engagement outgrows a single context window.</li>
-  <li><strong>Background jobs.</strong> Analysis currently runs inside the request. A queue would
-    survive a closed laptop and allow retrying a single failed stage.</li>
-  <li><strong>Real invitation emails.</strong> Today it produces a link you send yourself.</li>
-  <li><strong>Client replies on the questions</strong>, so the answers arrive in the tool rather
-    than in an inbox.</li>
-</ul>
+</ol>
 
-<div class="page-break"></div>
-
-<!-- ============================================================ 4 -->
-<p class="sec-num">Appendix</p>
-<h2>What can go wrong when you run it</h2>
-<div class="sec-rule"></div>
-
-<p>This was built inside a limited time as a proposed idea rather than a production system, so
-here are the rough edges I know about, what causes them, and what to do. Everything below has an
-error message in the application that says the same thing — none of them fail silently.</p>
-
-<h4>"No ANTHROPIC_API_KEY is set"</h4>
-<p><em>Cause:</em> no key, or a key added while the server was running. <code>.env</code> is read
-once at startup. <em>Fix:</em> <code>npm run set-key</code>, then restart. Or ignore it — the
-seeded demo works fully without a key. The recorded analysis is deliberately refused for
-<em>your own</em> documents, because replaying an analysis of one company's project over another
-company's files would be dishonest.</p>
-
-<h4>"The Anthropic account has no capacity left"</h4>
-<p><em>Cause:</em> the API key has hit its usage limit. <em>Fix:</em> nothing in the code can work
-around it. The seeded demo still runs.</p>
-
-<h4>"The outline answer was cut off after N tokens"</h4>
-<p><em>Cause:</em> a stage produced more output than its budget allowed — a large corpus makes a
-large brief. <em>Fix:</em> re-run; everything that completed has been saved. Budgets were sized
-from measurement, but a much bigger corpus could exceed them.</p>
-
-<h4>"The local database is already open in process N"</h4>
-<p><em>Cause:</em> the embedded database allows one process at a time, and something else has it
-open — usually a second <code>npm run dev</code>. <em>Fix:</em> stop the other one, or set
-<code>PGLITE_DATA_DIR</code> to a different folder. This message exists because opening it twice
-corrupts the data silently, and I would rather refuse loudly.</p>
-
-<h4>A page shows an empty workspace, and saving fails</h4>
-<p><em>Cause:</em> a browser session left over from before <code>npm run db:reset</code> — the
-ids in the cookie no longer exist. <em>Fix:</em> sign out and in. Sessions are now re-checked
-against the database on every request, so this should send you to the sign-in screen rather than
-showing an empty page.</p>
-
-<h4>An uploaded screenshot shows "0 spans"</h4>
-<p><em>Cause:</em> reading an image needs a model, so with no API key it is stored but not
-transcribed. <em>Fix:</em> set a key and upload it again — transcription happens at upload, so
-the stored copy stays empty. The source list says exactly this next to the file.</p>
-
-<h4>Generation takes about eleven minutes</h4>
-<p>Not a fault, but worth expecting. It is six calls over the whole corpus and the final one
-writes a complete working web page. Progress streams stage by stage so you can watch it.</p>
-
-<div class="box warn">
-  <h4>Deliberately not built</h4>
-  <ul>
-    <li><strong>Not deployed.</strong> Configured for Vercel; it has only ever run locally.</li>
-    <li><strong>No background job queue.</strong> Analysis runs inside the request, so closing
-      the laptop mid-run loses the stages still in flight — the ones already finished are saved.</li>
-    <li><strong>No email delivery.</strong> Invitations produce a link to send yourself.</li>
-    <li><strong>No file storage service.</strong> Uploads are parsed to text and stored in the
-      database; the original binary is not kept, apart from screenshots.</li>
-    <li><strong>No rate limiting or audit log.</strong> Both matter in production and prove
-      nothing about the parts being assessed here.</li>
-  </ul>
-</div>
-
-<p style="margin-top:7mm;color:var(--muted);font-size:9.5pt">Happy to walk through any of this,
+<p style="margin-top:8mm;color:var(--muted);font-size:9.5pt">Happy to walk through any of this,
 or to go deeper on the verification layer and the tenant isolation — those are the two parts I
 would most want to be questioned on.</p>
 
