@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { DEMO_ACCOUNTS, DEMO_PASSWORD } from "@/lib/demo";
 
 /**
  * Signing in ends with a full page load rather than a client-side navigation.
@@ -19,6 +20,11 @@ import { useState } from "react";
 export function LoginForm() {
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  // Controlled so the demo button can fill them. The fields are no longer
+  // pre-filled: a real account holder should not have to clear somebody else's
+  // credentials out of the form before they can sign in.
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -28,16 +34,11 @@ export function LoginForm() {
     setBusy(true);
     setError(null);
 
-    const form = new FormData(event.currentTarget);
-
     try {
       const response = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({
-          email: form.get("email"),
-          password: form.get("password"),
-        }),
+        body: JSON.stringify({ email, password }),
       });
 
       const body = (await response.json().catch(() => ({}))) as {
@@ -71,7 +72,8 @@ export function LoginForm() {
           type="email"
           required
           autoComplete="username"
-          defaultValue="ashika@meridian.example"
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
           className="rounded border border-line bg-surface px-3 py-2 text-ink"
         />
       </label>
@@ -85,7 +87,8 @@ export function LoginForm() {
           type="password"
           required
           autoComplete="current-password"
-          defaultValue="demo1234"
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
           className="rounded border border-line bg-surface px-3 py-2 text-ink"
         />
       </label>
@@ -105,6 +108,18 @@ export function LoginForm() {
         className="mt-1 rounded bg-accent px-4 py-2.5 font-medium text-white disabled:opacity-60"
       >
         {busy ? "Signing in…" : "Sign in"}
+      </button>
+
+      <button
+        type="button"
+        onClick={() => {
+          setEmail(DEMO_ACCOUNTS[0].email);
+          setPassword(DEMO_PASSWORD);
+          setError(null);
+        }}
+        className="self-start text-xs text-accent underline underline-offset-2"
+      >
+        Fill in the demo consultant account
       </button>
     </form>
   );
