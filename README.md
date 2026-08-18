@@ -37,10 +37,11 @@ those results, so the demo is honest about what it is. With a key set, the same
 code path calls `claude-opus-5` for real.
 
 ```bash
-npm test            # 100 unit tests
-npm run test:e2e    # 9 browser tests over the demo walkthrough
+npm test            # 129 unit tests
+npm run test:e2e    # 10 browser tests over the demo walkthrough
 npm run typecheck
 npm run db:reset    # wipe local data and re-seed
+npm run db:fresh    # the opposite: an empty workspace for your own documents
 ```
 
 ### The local database
@@ -67,8 +68,10 @@ character offsets into the normalised text the reader is shown. Nothing
 downstream is allowed to be a free-floating assertion.
 
 1. **Intake** — transcripts (Teams/Zoom `.vtt`), WhatsApp `.txt` exports, PDFs,
-   Word documents, screenshots, and website URLs. Format is detected from the
-   file's own bytes, not its extension.
+   Word documents, screenshots, website URLs, and text typed or pasted straight
+   in. Format is detected from the file's own bytes, not its extension. Sources
+   can be withdrawn as well as added, and everything derived from a withdrawn
+   document goes with it.
 2. **Understand** — the discovery brief: goal, stakeholders, as-is process, pain
    points, requirements, out-of-scope, assumptions. Plus the Conflict Radar and
    the Blind-Spot Register.
@@ -76,8 +79,16 @@ downstream is allowed to be a free-floating assertion.
    naming the specific waste it removes.
 4. **Specify** — roles, modules, screens, and a MoSCoW feature list where every
    row cites its evidence.
-5. **Prototype** — a self-contained clickable prototype seeded with the client's
-   own vocabulary, rendered in a locked-down sandbox and shareable by link.
+5. **Prototype** — not a mock-up but a small working tool, so a client can carry
+   out the proposed workflow and find out whether it holds up. It holds real
+   state, and an action on one screen has a consequence on another: post a
+   progress update and it appears on the client's own view; post something
+   touching a date, cost or scope and it queues for approval instead. Rendered
+   in a locked-down sandbox and shareable by link.
+
+Alongside those, the work accumulates rather than resetting: **teams** share one
+workspace and one ledger, every run is kept and can be **compared** against
+another, and the client can **download the proposal** as Markdown.
 
 ---
 
@@ -113,6 +124,24 @@ that cannot be caught failing proves nothing.
 
 ---
 
+## Teams, and what a client gets
+
+A workspace is shared. Owners invite by email and role; the invitee opens a
+link, chooses a password and is signed straight in. Invitations are rows rather
+than stateless signed links, because they must be revocable, must expire, and an
+owner must be able to see what is outstanding. The invited address is fixed and
+shown read-only, so holding a link cannot become a way to claim somebody else's.
+
+The client gets three things: a forwardable link needing no account, a prototype
+they can actually try, and a **proposal to download**. That last is Markdown
+rather than a generated PDF — it opens anywhere, pastes into a proposal
+template, and survives being edited before it goes out, which is what happens to
+these documents. It carries what was understood, what is not working, what is
+proposed and what would be built, plus the grounding score and the assumptions,
+because a client should see how much of it rests on guesswork. It deliberately
+omits the conflict radar: quoting their own people disagreeing is a working
+note, not something to hand them.
+
 ## The engagement accumulates
 
 Discovery is not a single pass. Three things a consultant does are recorded, and
@@ -122,10 +151,15 @@ all three are carried into the next run's prompt as settled context:
 - **Answering an open question.** What the client said, in their words.
 - **Regenerating.** Artifacts are versioned, never overwritten.
 
-So a second run stops re-litigating what has already been answered, and the
-version picker shows each run's grounding score side by side — which makes
-"did the new evidence actually help?" a question with an answer rather than a
-feeling.
+So a second run stops re-litigating what has already been answered. The
+**Compare** tab puts two runs against each other — what appeared, what dropped
+away, what stayed but was reworded, and how the grounding score moved. Matching
+is by what a line says rather than where it sits, because the model reorders
+freely between runs; a reordered line reported as "dropped, and a new one added"
+would make the view untrustworthy after the first false alarm.
+
+That makes "did the new evidence actually help?" a question with an answer
+rather than a feeling — and a fall in grounding is shown as a fall.
 
 This also drove a real fix: the first implementation deleted every conflict
 before inserting new ones, so a second run would have silently destroyed every
@@ -206,9 +240,10 @@ function that selects two ids and nothing else.
 | Multi-tenant architecture | `organizations` as tenant root; `org_id` on every customer table, composite indexes leading with it |
 | Strict data isolation | App-level scoping + forced RLS on a restricted role; [`tests/tenant-isolation.test.ts`](tests/tenant-isolation.test.ts) |
 | Auth & authorisation | JWT via `jose`; `owner`/`consultant`/`client`; middleware gate plus a live re-check in every data path |
+| Teams | Invitations that expire, are single-use and revocable; the last owner cannot be removed |
 | API design | REST resources for sources, URL ingestion, generation (SSE), conflicts, questions and sharing; consistent error envelopes |
-| Data modelling | 12 tables including the span-level evidence store |
-| Automated testing | 100 unit tests + 9 browser tests over the demo walkthrough |
+| Data modelling | 13 tables including the span-level evidence store |
+| Automated testing | 129 unit tests + 10 browser tests over the demo walkthrough |
 | Multiple environments | Neon branching for preview vs production; migrations run at build |
 | CI/CD | GitHub Actions: typecheck, unit tests and build in one job, end-to-end in another |
 | Preventing bugs | TypeScript strict, Zod at every boundary, and the quote verifier itself |
@@ -254,8 +289,8 @@ part of the build, sets per-route durations, and adds security headers.
   when they were said and flagging where the ask changed is a small step.
 - **Grounded chat over the evidence**, using the same verification layer to
   answer follow-up questions with citations.
-- **Export** the brief to DOCX, since that is how consultants actually send
-  things.
+- **Sending invitations by email.** Today an owner copies the link themselves,
+  which is honest but not what a product would do.
 - **Server-side refusal fallbacks.** `claude-opus-5` can decline a request; the
   code handles the `refusal` stop reason but does not configure a fallback
   model, which I would not ship untested against a live key.
