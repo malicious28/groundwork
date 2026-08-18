@@ -10,6 +10,7 @@ import { SourceKindBadge } from "@/components/source-kind-badge";
 import { GenerateButton } from "@/components/generate-button";
 import { NewProjectForm } from "@/components/new-project-form";
 import { ProjectSwitcher } from "@/components/project-switcher";
+import { ShareLink } from "@/components/share-link";
 
 /**
  * The whole product on one screen: pick a project, give it what the client sent
@@ -41,6 +42,7 @@ export default async function DashboardPage({
         name: projects.name,
         clientName: projects.clientName,
         summary: projects.summary,
+        shareToken: projects.shareToken,
       })
       .from(projects)
       .where(eq(projects.orgId, session.orgId))
@@ -286,6 +288,15 @@ export default async function DashboardPage({
                   detail="A working tool, not a picture of one"
                 />
               ) : null}
+            </div>
+
+            {/* The hand-off lived only on the prototype tab, which is the last
+                place anybody would look for the thing they give the client. */}
+            <div className="mt-5">
+              <ShareLink
+                projectId={selected.id}
+                initialToken={selected.shareToken ?? null}
+              />
             </div>
 
             <div className="mt-4 flex flex-wrap gap-3 text-sm">

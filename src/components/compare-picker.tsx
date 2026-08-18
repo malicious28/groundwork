@@ -32,6 +32,7 @@ export function ComparePicker({
       </span>
       <select
         value={older}
+        aria-label="Earlier run to compare from"
         onChange={(e) => go(Number(e.target.value), newer)}
         className="rounded border border-line bg-surface px-2 py-1 font-mono text-xs"
       >
@@ -40,6 +41,7 @@ export function ComparePicker({
       <span className="text-muted">→</span>
       <select
         value={newer}
+        aria-label="Later run to compare with"
         onChange={(e) => go(older, Number(e.target.value))}
         className="rounded border border-line bg-surface px-2 py-1 font-mono text-xs"
       >

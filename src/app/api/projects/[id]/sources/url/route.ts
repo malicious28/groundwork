@@ -1,6 +1,7 @@
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 import { requireSession, AuthError } from "@/lib/auth/session";
+import { isUuid } from "@/lib/ids";
 import { withTenant } from "@/db/tenant";
 import { evidenceSpans, projects, sources } from "@/db/schema";
 import { fetchPage, PageFetchError } from "@/lib/parsers/webpage";
@@ -19,6 +20,9 @@ export async function POST(
   try {
     const session = await requireSession("consultant");
     const { id } = await params;
+    if (!isUuid(id)) {
+      return Response.json({ error: "That could not be found." }, { status: 404 });
+    }
 
     const parsed = Input.safeParse(await request.json().catch(() => null));
     if (!parsed.success) {

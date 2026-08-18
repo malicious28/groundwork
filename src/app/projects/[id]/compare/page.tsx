@@ -1,3 +1,5 @@
+import { isUuid } from "@/lib/ids";
+import { notFound } from "next/navigation";
 import { requireSessionPage } from "@/lib/auth/session";
 import { listArtifactVersions, loadArtifact } from "@/lib/artifacts";
 import type { Brief, Outline } from "@/lib/ai/schemas";
@@ -28,6 +30,7 @@ export default async function ComparePage({
 }) {
   const session = await requireSessionPage("consultant");
   const { id } = await params;
+  if (!isUuid(id)) notFound();
   const { a, b } = await searchParams;
 
   const versions = await listArtifactVersions(session.orgId, id, "brief");

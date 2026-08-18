@@ -1,3 +1,5 @@
+import { isUuid } from "@/lib/ids";
+import { notFound } from "next/navigation";
 import { requireSessionPage } from "@/lib/auth/session";
 import { listArtifactVersions, loadArtifact } from "@/lib/artifacts";
 import { ArtifactVersions } from "@/components/artifact-versions";
@@ -18,6 +20,7 @@ export default async function BriefPage({
 }) {
   const session = await requireSessionPage("consultant");
   const { id } = await params;
+  if (!isUuid(id)) notFound();
   const { v } = await searchParams;
   const requested = v ? Number(v) : undefined;
   const artifact = await loadArtifact<Brief>(

@@ -78,16 +78,20 @@ export function TeamManager({
             copy the link to them yourself.
           </p>
           <div className="flex flex-wrap gap-2">
+            {/* Labelled for anyone not reading the placeholder: a placeholder
+                is not an accessible name, and it disappears once you type. */}
             <input
               name="email"
               type="email"
               required
+              aria-label="Email address to invite"
               placeholder="colleague@agency.example"
               className="min-w-0 flex-1 rounded border border-line bg-surface px-3 py-1.5 text-sm"
             />
             <select
               name="role"
               defaultValue="consultant"
+              aria-label="Role for the person you are inviting"
               className="rounded border border-line bg-surface px-3 py-1.5 text-sm"
             >
               <option value="consultant">Consultant</option>
@@ -137,9 +141,13 @@ export function TeamManager({
 
             {canManage && member.userId !== currentUserId ? (
               <>
+                {/* Named per person: with several members a screen reader
+                    otherwise hears "Remove" three times over, with nothing to
+                    say whose row it is about. */}
                 <select
                   defaultValue={member.role}
                   disabled={busy}
+                  aria-label={`Role for ${member.name}`}
                   onChange={(event) =>
                     call(`/api/team/members/${member.userId}`, {
                       method: "POST",
@@ -156,6 +164,7 @@ export function TeamManager({
                 <button
                   type="button"
                   disabled={busy}
+                  aria-label={`Remove ${member.name} from the workspace`}
                   onClick={() =>
                     call(`/api/team/members/${member.userId}`, {
                       method: "DELETE",
@@ -198,6 +207,7 @@ export function TeamManager({
                 </div>
                 <button
                   type="button"
+                  aria-label={`Copy the invitation link for ${pending.email}`}
                   onClick={async () => {
                     await navigator.clipboard.writeText(
                       `${window.location.origin}/join/${pending.token}`,
@@ -213,6 +223,7 @@ export function TeamManager({
                   <button
                     type="button"
                     disabled={busy}
+                    aria-label={`Revoke the invitation for ${pending.email}`}
                     onClick={() =>
                       call(`/api/team/invite/${pending.id}`, {
                         method: "DELETE",

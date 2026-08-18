@@ -1,6 +1,7 @@
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 import { requireSession, AuthError } from "@/lib/auth/session";
+import { isUuid } from "@/lib/ids";
 import { withTenant } from "@/db/tenant";
 import { conflicts, conflictSides } from "@/db/schema";
 
@@ -32,6 +33,9 @@ export async function POST(
   try {
     const session = await requireSession("consultant");
     const { id, conflictId } = await params;
+    if (!isUuid(id) || !isUuid(conflictId)) {
+      return Response.json({ error: "That could not be found." }, { status: 404 });
+    }
 
     const parsed = Decision.safeParse(await request.json().catch(() => null));
     if (!parsed.success) {

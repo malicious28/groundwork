@@ -1,5 +1,6 @@
 import { and, eq } from "drizzle-orm";
 import { requireSession, AuthError } from "@/lib/auth/session";
+import { isUuid } from "@/lib/ids";
 import { withTenant } from "@/db/tenant";
 import { projects } from "@/db/schema";
 import { runDiscovery, type ProgressEvent } from "@/lib/ai/generate";
@@ -27,6 +28,9 @@ export async function POST(
   }
 
   const { id } = await params;
+  if (!isUuid(id)) {
+    return Response.json({ error: "That could not be found." }, { status: 404 });
+  }
 
   // Re-checked here rather than trusted from the URL: middleware never touches
   // the database, so this is the first point at which ownership is known.
