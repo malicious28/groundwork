@@ -18,7 +18,8 @@
     "setup": "npm run db:migrate && npm run db:seed",
     "test:e2e": "playwright test",
     "docs:pdf": "tsx scripts/make-pdf.ts",
-    "db:fresh": "tsx scripts/fresh.ts"
+    "db:fresh": "tsx scripts/fresh.ts",
+    "set-key": "tsx scripts/set-key.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.117.1",

@@ -49,6 +49,7 @@ npm run test:e2e    # 12 browser tests over the demo walkthrough
 npm run typecheck
 npm run db:reset    # wipe local data and re-seed
 npm run db:fresh    # the opposite: an empty workspace for your own documents
+npm run set-key     # writes ANTHROPIC_API_KEY into .env without the usual traps
 ```
 
 ### The local database
