@@ -4,5 +4,5 @@ import { getSession } from "@/lib/auth/session";
 export default async function Home() {
   const session = await getSession();
   if (!session) redirect("/login");
-  redirect(session.role === "client" ? "/shared" : "/projects");
+  redirect(session.role === "client" ? "/shared" : "/dashboard");
 }

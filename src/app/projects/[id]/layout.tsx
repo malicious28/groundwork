@@ -36,10 +36,10 @@ export default async function ProjectLayout({
       <div className="border-b border-line bg-surface">
         <div className="mx-auto max-w-5xl px-6 pt-6 pb-0">
           <Link
-            href="/projects"
+            href={`/dashboard?project=${project.id}`}
             className="font-mono text-[11px] tracking-[0.1em] text-muted uppercase hover:text-accent"
           >
-            ← Projects
+            ← Dashboard
           </Link>
 
           <div className="mt-3 flex flex-wrap items-start justify-between gap-4">

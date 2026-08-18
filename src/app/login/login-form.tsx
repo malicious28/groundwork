@@ -54,7 +54,7 @@ export function LoginForm() {
 
       // Deliberately left busy: the page is on its way out, and re-enabling
       // the button would invite a second sign-in during the load.
-      window.location.assign(body.redirectTo ?? "/projects");
+      window.location.assign(body.redirectTo ?? "/dashboard");
     } catch {
       setError("Could not reach the server. Check it is still running.");
       setBusy(false);
