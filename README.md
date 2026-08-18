@@ -41,7 +41,7 @@ tool read from *your* documents.
 model output and labels the result as such. Every citation is still verified
 against the real source text and the grounding score is still computed from
 those results, so the demo is honest about what it is. With a key set, the same
-code path calls `claude-opus-5` for real.
+code path calls `claude-sonnet-5` for real.
 
 ```bash
 npm test            # 210 unit tests
@@ -182,7 +182,7 @@ decision recorded since the first.
 | Framework | Next.js 16 App Router, TypeScript strict | Route handlers for the REST surface, server components for reads |
 | Database | PGlite locally, Neon in deployment | One schema, one migration path, zero-setup clone |
 | ORM | Drizzle | Typed SQL rather than a query-builder abstraction |
-| AI | Official `@anthropic-ai/sdk`, `claude-opus-5` | Direct access to prompt caching and structured output |
+| AI | Official `@anthropic-ai/sdk`, `claude-sonnet-5` | Direct access to prompt caching and structured output |
 | Vision | `claude-haiku-4-5` at ingest | Transcription, not judgement, and it runs once per file |
 | Auth | Hand-rolled JWT with `jose`, HTTP-only cookies | The job asks for JWT/RBAC understanding; a library hides it |
 | Diagrams | Mermaid, validated before render | A diagram that fails to parse degrades to its source |
@@ -299,6 +299,6 @@ part of the build, sets per-route durations, and adds security headers.
   answer follow-up questions with citations.
 - **Sending invitations by email.** Today an owner copies the link themselves,
   which is honest but not what a product would do.
-- **Server-side refusal fallbacks.** `claude-opus-5` can decline a request; the
+- **Server-side refusal fallbacks.** The model can decline a request; the
   code handles the `refusal` stop reason but does not configure a fallback
   model, which I would not ship untested against a live key.

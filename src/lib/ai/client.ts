@@ -12,8 +12,21 @@ import type { ModelUsage } from "@/db/schema";
  * elsewhere.
  */
 
-export const DEFAULT_MODEL = "claude-opus-5";
-/** Cheap pass for per-document summarising at ingest. */
+/**
+ * Sonnet for the six synthesis calls.
+ *
+ * The work these prompts ask for is careful reading rather than deep
+ * reasoning: find what somebody said, quote it exactly, and say how sure you
+ * are. Sonnet does that well, and it does it several times cheaper — which
+ * matters more than it sounds for this product, because a single run is six
+ * calls over the client's entire corpus, and a consultant re-runs after every
+ * new document. Cost per run is the difference between using this on every
+ * engagement and saving it for the big ones.
+ *
+ * Override with ANTHROPIC_MODEL when a particular engagement is worth more.
+ */
+export const DEFAULT_MODEL = "claude-sonnet-5";
+/** Cheap pass for transcribing screenshots at ingest. */
 export const FAST_MODEL = "claude-haiku-4-5";
 
 /**
