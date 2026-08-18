@@ -139,8 +139,51 @@ test.describe.serial("consultant walkthrough", () => {
     await expect(
       inner.getByRole("heading", { name: /Kharadi 3BHK/ }),
     ).toBeVisible();
-    await inner.getByRole("button", { name: "Approvals" }).click();
+    await inner.getByRole("button", { name: /Approvals/ }).click();
     await expect(inner.getByRole("heading", { name: "Waiting on you" })).toBeVisible();
+  });
+
+  test("the prototype is testable: an action on one screen changes another", async ({
+    page,
+  }) => {
+    await signIn(page, "ashika@meridian.example");
+    await openNovaProject(page);
+    await page.getByRole("link", { name: "Prototype" }).click();
+
+    // Wait for the frame to exist and finish parsing its srcDoc before reaching
+    // inside it. Without this the first locator can resolve against an iframe
+    // whose document is still empty, and simply time out.
+    await expect(
+      page.locator('iframe[title="Generated prototype"]'),
+    ).toBeVisible();
+    const app = page.frameLocator('iframe[title="Generated prototype"]');
+    await expect(app.getByRole("button", { name: "Client view" })).toBeVisible();
+
+    // The whole point of the proposed workflow: a supervisor posts progress,
+    // and it reaches the client without waiting for anyone. If this ever stops
+    // working, the prototype has gone back to being a picture.
+    await app.getByRole("button", { name: "Post update" }).click();
+    await app.getByPlaceholder(/Putty second coat/).fill("Second coat done today.");
+    await app.getByRole("button", { name: "Publish update" }).click();
+
+    await expect(app.getByText("Second coat done today.")).toBeVisible();
+    await expect(app.getByText(/on the client/i)).toBeVisible();
+
+    // And the other half of the rule: anything touching a date, cost or scope
+    // queues for approval instead, and only reaches the client once approved.
+    await app.getByRole("button", { name: "Post update" }).click();
+    await app.getByPlaceholder(/Putty second coat/).fill("Handover moves to 2 May.");
+    await app.getByLabel(/date, a cost or a scope/).selectOption("sensitive");
+    await app.getByRole("button", { name: "Publish update" }).click();
+
+    await expect(app.getByRole("heading", { name: "Waiting on you" })).toBeVisible();
+    await expect(app.getByText("Handover moves to 2 May.")).toBeVisible();
+
+    // `.last()` because the queue is seeded with one item already and new ones
+    // are appended — approving the wrong one would leave ours unpublished.
+    await app.getByRole("button", { name: "Approve and publish" }).last().click();
+    await expect(app.getByRole("heading", { name: /Kharadi 3BHK/ })).toBeVisible();
+    await expect(app.getByText("Handover moves to 2 May.")).toBeVisible();
   });
 });
 

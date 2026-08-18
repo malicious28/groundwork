@@ -59,6 +59,7 @@ export default async function SharedProjectPage({
             brief={brief?.content ?? null}
             process={process?.content ?? null}
             prototype={prototype?.content ?? null}
+            downloadHref={`/api/projects/${id}/export`}
           />
         </div>
       </main>

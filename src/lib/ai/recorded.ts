@@ -895,43 +895,52 @@ export const RECORDED_PROTOTYPE: Prototype = {
 };
 
 function PROTOTYPE_HTML(): string {
-  return `<!doctype html>
+  return String.raw`<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Nova Interiors — portal prototype</title>
+<title>Nova Interiors - portal prototype</title>
 <style>
-  :root{--ground:#f5f6f3;--surface:#fff;--line:#d8dcd5;--ink:#171c1a;--muted:#626d67;--accent:#14655a;--accent-soft:#e0eee9;--flag:#a02e22;--gap:#8a6410}
+  :root{--ground:#f5f6f3;--surface:#fff;--line:#d8dcd5;--soft:#eceee9;--ink:#171c1a;--muted:#626d67;--accent:#14655a;--accent-soft:#e0eee9;--flag:#a02e22;--flag-soft:#f6e4e1;--gap:#8a6410;--gap-soft:#f5ebd6}
   *{box-sizing:border-box}
   body{margin:0;background:var(--ground);color:var(--ink);font:15px/1.55 ui-sans-serif,-apple-system,"Segoe UI",Roboto,sans-serif}
   header{background:var(--surface);border-bottom:1px solid var(--line);padding:10px 16px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-  header b{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-right:8px}
+  header b{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-right:4px}
+  nav{display:flex;gap:6px;flex-wrap:wrap}
   nav button{font:inherit;font-size:13px;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:5px 10px;border-radius:4px;cursor:pointer}
   nav button[aria-current="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
-  main{max-width:760px;margin:0 auto;padding:20px 16px 60px}
-  h1{font-size:22px;margin:0 0 4px}
-  h2{font-size:15px;margin:24px 0 8px}
-  p.sub{color:var(--muted);margin:0 0 18px;font-size:14px}
+  .who{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
+  .who select{font:inherit;font-size:12px;padding:3px 6px;border:1px solid var(--line);border-radius:4px;background:var(--surface);color:var(--ink)}
+  main{max-width:780px;margin:0 auto;padding:20px 16px 64px}
+  h1{font-size:21px;margin:0 0 4px}
+  h2{font-size:14px;margin:22px 0 8px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+  p.sub{color:var(--muted);margin:0 0 16px;font-size:14px}
   .card{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:14px 16px;margin-bottom:12px}
   .row{display:flex;justify-content:space-between;gap:12px;align-items:baseline;flex-wrap:wrap}
-  .pill{font-size:11px;text-transform:uppercase;letter-spacing:.06em;padding:2px 8px;border-radius:99px;border:1px solid var(--accent);color:var(--accent);background:var(--accent-soft)}
-  .pill.warn{border-color:var(--gap);color:var(--gap);background:#f5ebd6}
-  .pill.late{border-color:var(--flag);color:var(--flag);background:#f6e4e1}
+  .pill{font-size:11px;text-transform:uppercase;letter-spacing:.06em;padding:2px 8px;border-radius:99px;border:1px solid var(--accent);color:var(--accent);background:var(--accent-soft);white-space:nowrap}
+  .pill.warn{border-color:var(--gap);color:var(--gap);background:var(--gap-soft)}
+  .pill.late{border-color:var(--flag);color:var(--flag);background:var(--flag-soft)}
   ol.steps{list-style:none;padding:0;margin:0}
-  ol.steps li{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid #eceee9}
+  ol.steps li{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--soft)}
   ol.steps li:last-child{border-bottom:0}
   .dot{width:9px;height:9px;border-radius:50%;background:var(--line);margin-top:6px;flex:none}
   .done .dot{background:var(--accent)}
-  .now .dot{background:var(--gap);box-shadow:0 0 0 3px #f5ebd6}
+  .now .dot{background:var(--gap);box-shadow:0 0 0 3px var(--gap-soft)}
   .muted{color:var(--muted);font-size:13px}
-  .photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
-  .photo{aspect-ratio:4/3;border-radius:5px;border:1px solid var(--line);background:repeating-linear-gradient(45deg,#e8ebe6,#e8ebe6 8px,#dfe3dd 8px,#dfe3dd 16px);display:grid;place-items:center;color:var(--muted);font-size:11px;text-align:center;padding:6px}
+  .feed{list-style:none;padding:0;margin:0}
+  .feed li{border-bottom:1px solid var(--soft);padding:10px 0}
+  .feed li:last-child{border-bottom:0}
   label{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:12px 0 4px}
   input,textarea,select{width:100%;font:inherit;padding:8px;border:1px solid var(--line);border-radius:4px;background:var(--surface);color:var(--ink)}
-  .btn{margin-top:14px;background:var(--accent);color:#fff;border:0;border-radius:4px;padding:10px 16px;font:inherit;cursor:pointer}
+  .btn{margin-top:14px;background:var(--accent);color:#fff;border:0;border-radius:4px;padding:9px 15px;font:inherit;cursor:pointer}
+  .btn.ghost{background:transparent;color:var(--muted);border:1px solid var(--line)}
+  .btn:disabled{opacity:.5;cursor:default}
   .note{border-left:3px solid var(--accent);padding-left:12px;color:var(--muted);font-size:13px;margin:14px 0}
+  .empty{color:var(--muted);font-size:14px;padding:14px 0}
   section{display:none}section.active{display:block}
+  .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:18px;background:var(--ink);color:#fff;padding:9px 15px;border-radius:5px;font-size:13px;opacity:0;transition:opacity .2s;pointer-events:none}
+  .toast.show{opacity:1}
 </style>
 </head>
 <body>
@@ -939,108 +948,246 @@ function PROTOTYPE_HTML(): string {
   <b>Nova Interiors</b>
   <nav>
     <button data-go="client" aria-current="true">Client view</button>
-    <button data-go="list">Projects</button>
     <button data-go="post">Post update</button>
-    <button data-go="approve">Approvals</button>
+    <button data-go="approve">Approvals <span id="queueCount"></span></button>
+    <button data-go="list">Projects</button>
   </nav>
+  <span class="who">
+    You are
+    <select id="role">
+      <option value="supervisor">Imran (site supervisor)</option>
+      <option value="ops">Priya (operations)</option>
+      <option value="founder">Rohit (founder)</option>
+      <option value="client">Anjali (client)</option>
+    </select>
+  </span>
 </header>
 <main>
 
 <section id="client" class="active">
-  <h1>Kharadi 3BHK — Anjali Deshpande</h1>
-  <p class="sub">Shared by Sameer Kulkarni · updated today</p>
-
+  <h1>Kharadi 3BHK - Anjali Deshpande</h1>
+  <p class="sub">What the client sees. Nothing appears here until it is published.</p>
   <div class="card">
-    <div class="row"><strong>Currently: painting</strong><span class="pill">On schedule</span></div>
-    <p class="muted" style="margin:6px 0 0">Next: wardrobe installation, expected 8 April. Handover expected 24 April.</p>
+    <div class="row"><strong id="stage">Currently: painting</strong><span class="pill" id="stagePill">On schedule</span></div>
+    <p class="muted" style="margin:6px 0 0" id="nextUp"></p>
   </div>
-
   <h2>Progress</h2>
-  <div class="card">
-    <ol class="steps">
-      <li class="done"><span class="dot"></span><span>Site measurement and drawings signed off<br><span class="muted">10 March</span></span></li>
-      <li class="done"><span class="dot"></span><span>Electrical conduiting<br><span class="muted">13 March</span></span></li>
-      <li class="done"><span class="dot"></span><span>False ceiling<br><span class="muted">27 March</span></span></li>
-      <li class="now"><span class="dot"></span><span>Painting — putty first coat done<br><span class="muted">In progress since 30 March</span></span></li>
-      <li><span class="dot"></span><span>Wardrobe installation<br><span class="muted">Expected 8 April</span></span></li>
-      <li><span class="dot"></span><span>Snagging and handover<br><span class="muted">Expected 24 April</span></span></li>
-    </ol>
-  </div>
-
-  <h2>Photos</h2>
-  <div class="card photos">
-    <div class="photo">Ceiling framework<br>20 Mar</div>
-    <div class="photo">Ceiling complete<br>27 Mar</div>
-    <div class="photo">Putty first coat<br>2 Apr</div>
-  </div>
-
-  <h2>Payments</h2>
-  <div class="card">
-    <div class="row"><span>Milestone 2 — on completion of ceiling</span><span class="pill">Paid</span></div>
-    <div class="row" style="margin-top:10px"><span>Milestone 3 — on completion of painting</span><span class="pill warn">Due 12 April</span></div>
-    <p class="muted" style="margin:10px 0 0">Figures come from Nova's accounting system. This page shows status only.</p>
-  </div>
-
-  <h2>Your approvals</h2>
-  <div class="card">
-    <div class="row"><span>Wardrobe finish changed to walnut · +₹18,000</span><span class="pill">Approved 19 Mar</span></div>
-    <p class="muted" style="margin:8px 0 0">Recorded against this project permanently.</p>
-  </div>
-</section>
-
-<section id="list">
-  <h1>Live projects</h1>
-  <p class="sub">21 active · 3 need attention</p>
-  <div class="card"><div class="row"><strong>Kharadi 3BHK — Deshpande</strong><span class="pill">On schedule</span></div><p class="muted" style="margin:6px 0 0">Painting · Sameer Kulkarni · handover 24 Apr</p></div>
-  <div class="card"><div class="row"><strong>Baner 2BHK — Iyer</strong><span class="pill late">Delivery slipped</span></div><p class="muted" style="margin:6px 0 0">Hettich hardware 4 days late · carpenter due Monday</p></div>
-  <div class="card"><div class="row"><strong>Wakad villa — Sethi</strong><span class="pill warn">Update overdue</span></div><p class="muted" style="margin:6px 0 0">No client update posted in 9 days</p></div>
-  <div class="card"><div class="row"><strong>Viman Nagar 3BHK — Rao</strong><span class="pill">On schedule</span></div><p class="muted" style="margin:6px 0 0">Civil work · Imran Shaikh · handover 30 May</p></div>
+  <div class="card"><ol class="steps" id="timeline"></ol></div>
+  <h2>Published updates</h2>
+  <div class="card"><ul class="feed" id="clientFeed"></ul></div>
 </section>
 
 <section id="post">
   <h1>Post an update</h1>
-  <p class="sub">Written once. Reaches the client view, the project record and the schedule.</p>
+  <p class="sub">Written once. It reaches the client view, the project record and the schedule.</p>
   <div class="card">
-    <label for="proj">Project</label>
-    <select id="proj"><option>Kharadi 3BHK — Deshpande</option><option>Baner 2BHK — Iyer</option></select>
-    <label for="stage">Stage</label>
-    <select id="stage"><option>Painting</option><option>Wardrobe installation</option></select>
-    <label for="txt">What happened</label>
-    <textarea id="txt" rows="3">Putty first coat done. Second coat Thursday.</textarea>
-    <label>Photos</label>
-    <div class="photos"><div class="photo">2 selected<br>queued</div></div>
-    <p class="note">Photos upload in the background and resume on their own if the signal drops.</p>
-    <button class="btn" onclick="alert('Published to the client view. No approval needed — this update involves no date, cost or scope change.')">Publish</button>
+    <label for="pProject">Project</label>
+    <select id="pProject"><option>Kharadi 3BHK - Deshpande</option><option>Baner 2BHK - Iyer</option></select>
+    <label for="pText">What happened</label>
+    <textarea id="pText" rows="3" placeholder="Putty second coat done. Wardrobe carcass arriving Thursday."></textarea>
+    <label for="pKind">Does this involve a date, a cost or a scope change?</label>
+    <select id="pKind">
+      <option value="progress">No - progress only</option>
+      <option value="sensitive">Yes - date, cost or scope</option>
+    </select>
+    <p class="note" id="routeHint"></p>
+    <button class="btn" id="publish">Publish update</button>
+    <button class="btn ghost" id="reset" style="margin-left:8px">Reset demo</button>
   </div>
 </section>
 
 <section id="approve">
   <h1>Waiting on you</h1>
   <p class="sub">Only dates, money and scope reach this queue. Progress updates publish straight away.</p>
-  <div class="card">
-    <div class="row"><strong>Baner 2BHK — handover moved to 14 May</strong><span class="pill warn">Date change</span></div>
-    <p class="muted" style="margin:6px 0 8px">Hardware delivery slipped 4 days. Sameer proposes telling the client today.</p>
-    <button class="btn" onclick="alert('Approved and sent to the client.')">Approve</button>
-  </div>
-  <div class="card">
-    <div class="row"><strong>Wakad villa — additional loft storage · +₹42,000</strong><span class="pill warn">Cost change</span></div>
-    <p class="muted" style="margin:6px 0 8px">Client asked on site. Priya has costed it.</p>
-    <button class="btn" onclick="alert('Approved and sent to the client.')">Approve</button>
-  </div>
-  <p class="note">14 progress updates published today without needing you.</p>
+  <div id="queue"></div>
+  <p class="note" id="approveCount"></p>
+</section>
+
+<section id="list">
+  <h1>Live projects</h1>
+  <p class="sub" id="listSub"></p>
+  <div id="projects"></div>
 </section>
 
 </main>
+<div class="toast" id="toast"></div>
 <script>
-  document.querySelectorAll('nav button').forEach(function (button) {
-    button.addEventListener('click', function () {
-      document.querySelectorAll('nav button').forEach(function (b) { b.setAttribute('aria-current', 'false'); });
-      button.setAttribute('aria-current', 'true');
-      document.querySelectorAll('section').forEach(function (s) { s.classList.remove('active'); });
-      document.getElementById(button.dataset.go).classList.add('active');
-      window.scrollTo(0, 0);
-    });
-  });
+var KEY = "nova-portal-prototype";
+
+var seed = {
+  stage: "Painting",
+  next: "Wardrobe installation, expected 8 April. Handover expected 24 April.",
+  timeline: [
+    {label:"Site measurement and drawings signed off", when:"10 March", state:"done"},
+    {label:"Electrical conduiting", when:"13 March", state:"done"},
+    {label:"False ceiling", when:"27 March", state:"done"},
+    {label:"Painting - putty first coat done", when:"since 30 March", state:"now"},
+    {label:"Wardrobe installation", when:"expected 8 April", state:""},
+    {label:"Snagging and handover", when:"expected 24 April", state:""}
+  ],
+  published: [
+    {text:"Ceiling complete. Painter coming Monday for putty.", by:"Imran Shaikh", when:"27 Mar"}
+  ],
+  queue: [
+    {text:"Handover moved to 14 May - Hettich hardware slipped 4 days.", by:"Sameer Kulkarni", project:"Baner 2BHK - Iyer"}
+  ],
+  projects: [
+    {name:"Kharadi 3BHK - Deshpande", status:"On schedule", cls:"", note:"Painting - Sameer Kulkarni - handover 24 Apr"},
+    {name:"Baner 2BHK - Iyer", status:"Delivery slipped", cls:"late", note:"Hettich hardware 4 days late - carpenter due Monday"},
+    {name:"Wakad villa - Sethi", status:"Update overdue", cls:"warn", note:"No client update posted in 9 days"}
+  ],
+  publishedCount: 14
+};
+
+var state = load();
+
+function load(){
+  try {
+    var raw = localStorage.getItem(KEY);
+    if (raw) return JSON.parse(raw);
+  } catch (e) {}
+  return JSON.parse(JSON.stringify(seed));
+}
+function save(){
+  try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+}
+function el(id){ return document.getElementById(id); }
+function esc(t){
+  return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+function toast(msg){
+  var t = el("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(function(){ t.classList.remove("show"); }, 2400);
+}
+function today(){
+  var d = new Date();
+  var m = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  return d.getDate() + " " + m[d.getMonth()];
+}
+
+function render(){
+  el("stage").textContent = "Currently: " + state.stage.toLowerCase();
+  el("nextUp").textContent = "Next: " + state.next;
+
+  el("timeline").innerHTML = state.timeline.map(function(s){
+    return '<li class="' + s.state + '"><span class="dot"></span><span>' +
+      esc(s.label) + '<br><span class="muted">' + esc(s.when) + '</span></span></li>';
+  }).join("");
+
+  var feed = el("clientFeed");
+  if (!state.published.length) {
+    feed.innerHTML = '<li class="empty">Nothing published yet.</li>';
+  } else {
+    feed.innerHTML = state.published.slice().reverse().map(function(u){
+      return "<li><strong>" + esc(u.text) + "</strong><br><span class='muted'>" +
+        esc(u.by) + " - " + esc(u.when) + "</span></li>";
+    }).join("");
+  }
+
+  var q = el("queue");
+  if (!state.queue.length) {
+    q.innerHTML = '<div class="card"><p class="empty" style="padding:0">Nothing waiting. Progress updates published without you.</p></div>';
+  } else {
+    q.innerHTML = state.queue.map(function(item, i){
+      return '<div class="card"><div class="row"><strong>' + esc(item.text) +
+        '</strong><span class="pill warn">Needs approval</span></div>' +
+        '<p class="muted" style="margin:6px 0 8px">' + esc(item.by) + " - " + esc(item.project) + '</p>' +
+        '<button class="btn" data-approve="' + i + '">Approve and publish</button> ' +
+        '<button class="btn ghost" data-reject="' + i + '">Send back</button></div>';
+    }).join("");
+  }
+  el("queueCount").textContent = state.queue.length ? "(" + state.queue.length + ")" : "";
+  el("approveCount").textContent = state.publishedCount +
+    " progress updates published today without needing you.";
+
+  el("projects").innerHTML = state.projects.map(function(p){
+    return '<div class="card"><div class="row"><strong>' + esc(p.name) +
+      '</strong><span class="pill ' + p.cls + '">' + esc(p.status) + '</span></div>' +
+      '<p class="muted" style="margin:6px 0 0">' + esc(p.note) + '</p></div>';
+  }).join("");
+  el("listSub").textContent = state.projects.length + " active";
+
+  hint();
+}
+
+function hint(){
+  var role = el("role").value;
+  var kind = el("pKind").value;
+  var h = el("routeHint");
+  if (kind === "sensitive") {
+    h.textContent = "This mentions a date, cost or scope change, so it goes to Rohit for approval before the client sees it.";
+  } else if (role === "founder" || role === "ops") {
+    h.textContent = "Progress update from operations - publishes to the client straight away.";
+  } else {
+    h.textContent = "Progress update - publishes to the client straight away, no approval needed.";
+  }
+}
+
+function publish(){
+  var text = el("pText").value.trim();
+  if (!text) { toast("Write something first."); return; }
+
+  var role = el("role").value;
+  var names = { supervisor:"Imran Shaikh", ops:"Priya Nair", founder:"Rohit Menon", client:"Anjali Deshpande" };
+  var by = names[role] || "Imran Shaikh";
+
+  if (el("pKind").value === "sensitive") {
+    state.queue.push({ text: text, by: by, project: el("pProject").value });
+    save(); render();
+    show("approve");
+    toast("Sent to Rohit for approval - the client cannot see it yet.");
+  } else {
+    state.published.push({ text: text, by: by, when: today() });
+    state.publishedCount += 1;
+    save(); render();
+    show("client");
+    toast("Published - it is on the client's view now.");
+  }
+  el("pText").value = "";
+}
+
+function show(id){
+  var buttons = document.querySelectorAll("nav button");
+  for (var i = 0; i < buttons.length; i++) {
+    buttons[i].setAttribute("aria-current", buttons[i].dataset.go === id ? "true" : "false");
+  }
+  var sections = document.querySelectorAll("section");
+  for (var j = 0; j < sections.length; j++) sections[j].classList.remove("active");
+  el(id).classList.add("active");
+  window.scrollTo(0, 0);
+}
+
+document.addEventListener("click", function(e){
+  var t = e.target;
+  if (t.dataset && t.dataset.go) { show(t.dataset.go); return; }
+
+  if (t.dataset && t.dataset.approve !== undefined) {
+    var item = state.queue.splice(Number(t.dataset.approve), 1)[0];
+    state.published.push({ text: item.text, by: item.by, when: today() });
+    save(); render(); show("client");
+    toast("Approved - now visible to the client.");
+    return;
+  }
+  if (t.dataset && t.dataset.reject !== undefined) {
+    state.queue.splice(Number(t.dataset.reject), 1);
+    save(); render();
+    toast("Sent back. Nothing reached the client.");
+    return;
+  }
+  if (t.id === "publish") { publish(); return; }
+  if (t.id === "reset") {
+    state = JSON.parse(JSON.stringify(seed));
+    save(); render(); show("client");
+    toast("Demo reset.");
+  }
+});
+
+el("role").addEventListener("change", hint);
+el("pKind").addEventListener("change", hint);
+
+render();
 </script>
 </body>
 </html>`;

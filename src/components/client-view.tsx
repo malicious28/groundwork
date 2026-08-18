@@ -16,19 +16,33 @@ export function ClientView({
   brief,
   process,
   prototype,
+  downloadHref,
 }: {
   projectName: string;
   brief: Brief | null;
   process: ProcessArtifact | null;
   prototype: Prototype | null;
+  /** Omitted when there is nothing to export yet. */
+  downloadHref?: string;
 }) {
   const nothingPublished = !brief && !process && !prototype;
 
   return (
     <>
-      <h1 className="mb-6 font-serif text-3xl font-semibold tracking-tight text-balance">
-        {projectName}
-      </h1>
+      <div className="mb-6 flex flex-wrap items-start justify-between gap-3">
+        <h1 className="font-serif text-3xl font-semibold tracking-tight text-balance">
+          {projectName}
+        </h1>
+        {downloadHref && brief ? (
+          <a
+            href={downloadHref}
+            download
+            className="rounded border border-accent px-3 py-1.5 text-sm font-medium text-accent hover:bg-accent-soft"
+          >
+            Download the proposal
+          </a>
+        ) : null}
+      </div>
 
       {nothingPublished ? (
         <p className="rounded border border-line bg-surface px-5 py-8 text-muted">

@@ -67,6 +67,7 @@ export default async function SharedByTokenPage({
           brief={brief?.content ?? null}
           process={process?.content ?? null}
           prototype={prototype?.content ?? null}
+          downloadHref={`/api/projects/${share.projectId}/export?token=${encodeURIComponent(token)}`}
         />
 
         <p className="mt-12 border-t border-line pt-4 font-mono text-[11px] text-muted">
