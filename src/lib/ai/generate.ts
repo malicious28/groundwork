@@ -1,6 +1,7 @@
 import { and, desc, eq } from "drizzle-orm";
 import type { Db } from "@/db";
 import { withTenant } from "@/db/tenant";
+import { DEMO_SOURCE_REFS } from "@/lib/demo";
 import {
   artifacts,
   conflicts as conflictsTable,
@@ -130,12 +131,7 @@ const RECORDED_USAGE: ModelUsage = { model: "recorded" };
  * the quoted sentences appear nowhere in their files. That reads as a broken
  * product rather than an honest one, so it is refused instead.
  */
-const RECORDED_FOR = new Set([
-  "kickoff-call",
-  "followup-call",
-  "whatsapp-site-group",
-  "handover-sop",
-]);
+const RECORDED_FOR = new Set(DEMO_SOURCE_REFS);
 
 const recordedOutputFits = (refs: string[]): boolean =>
   refs.length > 0 && refs.every((ref) => RECORDED_FOR.has(ref));

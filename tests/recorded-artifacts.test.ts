@@ -14,7 +14,7 @@ import {
   collectOutlineClaims,
   collectProcessClaims,
 } from "../src/lib/ai/pipeline";
-import type { SourceKind } from "../src/db/schema";
+import { DEMO_SOURCES } from "../src/lib/demo";
 
 /**
  * The recorded artifacts stand in for a live model when no API key is present.
@@ -29,19 +29,10 @@ import type { SourceKind } from "../src/db/schema";
 
 const FIXTURES = resolve(process.cwd(), "fixtures/nova-interiors");
 
-const SOURCES: Array<{ ref: string; kind: SourceKind; file: string }> = [
-  { ref: "kickoff-call", kind: "transcript", file: "kickoff-call.vtt" },
-  { ref: "followup-call", kind: "transcript", file: "followup-call.vtt" },
-  {
-    ref: "whatsapp-site-group",
-    kind: "whatsapp",
-    file: "whatsapp-site-coordination.txt",
-  },
-  { ref: "handover-sop", kind: "docx", file: "project-handover-sop.md" },
-];
-
+// The same manifest the seed loads, so this can never drift out of step with
+// the corpus the recorded citations were written against.
 const textByRef = new Map(
-  SOURCES.map((source) => [
+  DEMO_SOURCES.map((source) => [
     source.ref,
     parseSource(readFileSync(resolve(FIXTURES, source.file), "utf8"), source.kind)
       .text,

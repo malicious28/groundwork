@@ -67,9 +67,9 @@ test.describe.serial("consultant walkthrough", () => {
     await page.getByRole("link", { name: "Brief" }).click();
 
     // The headline number, and the fact that it is not 100%.
-    await expect(page.getByText("83%")).toBeVisible();
+    await expect(page.getByText("84%")).toBeVisible();
     await expect(
-      page.getByText(/24 of 29 claims verified against source/),
+      page.getByText(/27 of 32 claims verified against source/),
     ).toBeVisible();
 
     // Click a verified citation and read the sentence behind it.

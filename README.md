@@ -113,7 +113,7 @@ apostrophe while copying has still copied faithfully, and rejecting that would
 flag honest citations as invented. A model rewording a sentence has not, so
 fuzzy never counts as verified.
 
-The seeded demo scores **83% — 24 of 29 claims verified**. It is not 100% by
+The seeded demo scores **84% — 27 of 32 claims verified**. It is not 100% by
 design: four claims are assumptions the model declared as its own, and one is a
 planted requirement citing a sentence that appears in no source. It renders with
 a red ✗ and the panel says the quote could not be located.
