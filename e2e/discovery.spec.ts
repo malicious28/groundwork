@@ -243,3 +243,39 @@ test.describe.serial("the client link", () => {
     await expect(page.getByText(/two lakh/)).toHaveCount(0);
   });
 });
+
+/**
+ * Signing in and out is the one place where a broken navigation strands
+ * somebody with nothing to click, so it is asserted from both ends: the good
+ * path must actually land, and the rejected path must hand the form back.
+ */
+test.describe("the session boundary", () => {
+  test("a wrong password returns the form rather than swallowing the click", async ({
+    page,
+  }) => {
+    await page.goto("/login");
+    await page.getByLabel("Email").fill("ashika@meridian.example");
+    await page.getByLabel("Password").fill("not-the-password");
+    await page.getByRole("button", { name: "Sign in" }).click();
+
+    await expect(page.getByRole("alert")).toBeVisible();
+    // The button must come back, not sit on "Signing in…" forever.
+    await expect(page.getByRole("button", { name: "Sign in" })).toBeEnabled();
+    await expect(page).toHaveURL(/\/login/);
+  });
+
+  test("signing in lands on the projects list, and signing out leaves nothing behind", async ({
+    page,
+  }) => {
+    await signIn(page, "ashika@meridian.example");
+    await expect(page).toHaveURL(/\/projects/);
+    await expect(page.getByRole("heading", { name: "Projects" })).toBeVisible();
+
+    await page.getByRole("button", { name: "Sign out" }).click();
+    await expect(page).toHaveURL(/\/login/);
+
+    // The session is gone on the server too, not just visually.
+    await page.goto("/projects");
+    await expect(page).toHaveURL(/\/login/);
+  });
+});

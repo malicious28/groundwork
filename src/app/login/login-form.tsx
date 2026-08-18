@@ -1,41 +1,63 @@
 "use client";
 
-import { useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 
+/**
+ * Signing in ends with a full page load rather than a client-side navigation.
+ *
+ * The session cookie has just changed, which means every layout above this
+ * point — the header, the tenant scope, the role gate — was rendered for a
+ * different person, or for nobody. Asking the client router to patch that up
+ * is the fragile way to say "re-enter the app as someone else": it depends on
+ * the running build still matching the one this tab was loaded from, and when
+ * it does not the navigation quietly never completes and the button sits on
+ * "Signing in…" forever with nothing to click.
+ *
+ * A document load is also honest about what happened. You signed in; the
+ * application starts again as you.
+ */
 export function LoginForm() {
-  const router = useRouter();
   const [error, setError] = useState<string | null>(null);
-  const [pending, startTransition] = useTransition();
+  const [busy, setBusy] = useState(false);
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    // Before the request, not after it: the network call is the slow part, and
+    // until this flips the button is live and a second click sends a second
+    // sign-in.
+    setBusy(true);
     setError(null);
 
     const form = new FormData(event.currentTarget);
-    const response = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({
-        email: form.get("email"),
-        password: form.get("password"),
-      }),
-    });
 
-    const body = (await response.json().catch(() => ({}))) as {
-      error?: string;
-      redirectTo?: string;
-    };
+    try {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          email: form.get("email"),
+          password: form.get("password"),
+        }),
+      });
 
-    if (!response.ok) {
-      setError(body.error ?? "Something went wrong. Try again.");
-      return;
+      const body = (await response.json().catch(() => ({}))) as {
+        error?: string;
+        redirectTo?: string;
+      };
+
+      if (!response.ok) {
+        setError(body.error ?? "Something went wrong. Try again.");
+        setBusy(false);
+        return;
+      }
+
+      // Deliberately left busy: the page is on its way out, and re-enabling
+      // the button would invite a second sign-in during the load.
+      window.location.assign(body.redirectTo ?? "/projects");
+    } catch {
+      setError("Could not reach the server. Check it is still running.");
+      setBusy(false);
     }
-
-    startTransition(() => {
-      router.push(body.redirectTo ?? "/projects");
-      router.refresh();
-    });
   }
 
   return (
@@ -79,10 +101,10 @@ export function LoginForm() {
 
       <button
         type="submit"
-        disabled={pending}
+        disabled={busy}
         className="mt-1 rounded bg-accent px-4 py-2.5 font-medium text-white disabled:opacity-60"
       >
-        {pending ? "Signing in…" : "Sign in"}
+        {busy ? "Signing in…" : "Sign in"}
       </button>
     </form>
   );

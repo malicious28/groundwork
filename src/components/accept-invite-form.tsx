@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 
 export function AcceptInviteForm({
   token,
@@ -10,7 +9,6 @@ export function AcceptInviteForm({
   token: string;
   email: string;
 }) {
-  const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
@@ -39,8 +37,10 @@ export function AcceptInviteForm({
       setBusy(false);
       return;
     }
-    router.push(body.redirectTo ?? "/projects");
-    router.refresh();
+    // A document load, for the same reason as the login form: accepting an
+    // invitation creates the session, so everything above this page was
+    // rendered for nobody.
+    window.location.assign(body.redirectTo ?? "/projects");
   }
 
   return (
