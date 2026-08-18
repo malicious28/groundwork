@@ -39,6 +39,14 @@ export default defineConfig({
       AUTH_SECRET:
         process.env.AUTH_SECRET ?? "e2e-secret-not-used-outside-the-test-run",
       PGLITE_DATA_DIR: "./.pglite-e2e",
+      // Deliberately blank, whatever is in .env. These tests assert the exact
+      // contents of the brief — the grounding score, the planted unsupported
+      // claim, the wording of a conflict — which only holds against the
+      // recorded analysis. Inheriting a real key made the suite spend money,
+      // take minutes, and fail for reasons that have nothing to do with the
+      // code: a spent quota, a rate limit, a model returning something
+      // slightly different this time.
+      ANTHROPIC_API_KEY: "",
     },
   },
 });

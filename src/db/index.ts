@@ -5,6 +5,7 @@ import { drizzle as drizzlePglite } from "drizzle-orm/pglite";
 import { Pool } from "@neondatabase/serverless";
 import { drizzle as drizzleNeon } from "drizzle-orm/neon-serverless";
 import * as schema from "./schema";
+import { claimDataDirectory } from "./lock";
 
 /**
  * One schema, two drivers.
@@ -38,7 +39,9 @@ export const PGLITE_DATA_DIR = process.env.PGLITE_DATA_DIR ?? "./.pglite";
 /*
  * Next.js re-evaluates modules on every hot reload in development. Without a
  * global cache each reload would open a second PGlite instance against the same
- * data directory, and the second one fails to acquire the lock.
+ * data directory. Within one process that is what this cache prevents; across
+ * processes it is what `claimDataDirectory` prevents, and that one matters more
+ * because PGlite does not refuse a second opener — it corrupts.
  */
 const globalForDb = globalThis as unknown as { __groundworkDb?: Db };
 
@@ -47,6 +50,7 @@ function create(): Db {
     const pool = new Pool({ connectionString: process.env.DATABASE_URL });
     return drizzleNeon(pool, { schema }) as unknown as Db;
   }
+  claimDataDirectory(PGLITE_DATA_DIR);
   const client = new PGlite(PGLITE_DATA_DIR);
   return drizzlePglite(client, { schema }) as unknown as Db;
 }

@@ -50,6 +50,50 @@ function getClient(): Anthropic {
   return cached;
 }
 
+/**
+ * Turns a failed model call into something worth reading.
+ *
+ * The SDK's message is the HTTP status followed by the raw JSON body, so what
+ * reached the screen was `400 {"type":"error","error":{...}}` — the answer is
+ * in there, but nobody should have to read JSON out of an alert to find out
+ * they have run out of credit. The three failures that actually happen in this
+ * app are a spent quota, a bad key and a rate limit, and each has a different
+ * thing to do about it.
+ */
+export function explainApiFailure(error: unknown): string {
+  const raw = error instanceof Error ? error.message : String(error);
+
+  // The SDK puts the API's own sentence in here; prefer it to anything invented.
+  const apiMessage = (() => {
+    const start = raw.indexOf("{");
+    if (start === -1) return null;
+    try {
+      const parsed = JSON.parse(raw.slice(start)) as {
+        error?: { message?: string };
+      };
+      return parsed.error?.message ?? null;
+    } catch {
+      return null;
+    }
+  })();
+
+  const said = apiMessage ?? raw;
+
+  if (/usage limits?|credit balance|quota/i.test(said)) {
+    return `The Anthropic account has no capacity left, so nothing could be generated. ${said} Until then this project cannot be analysed — the recorded demo still works, on the seeded project only.`;
+  }
+  if (/rate limit|too many requests|overloaded/i.test(said) || /\b429\b/.test(raw)) {
+    return `Anthropic is rate-limiting this key. ${said} Wait a moment and run it again — nothing was lost.`;
+  }
+  if (/authentication|invalid x-api-key|unauthorized/i.test(said) || /\b401\b/.test(raw)) {
+    return `Anthropic rejected the API key. ${said} Check ANTHROPIC_API_KEY in .env — \`npm run set-key\` writes it without quotes or stray whitespace — then restart the server.`;
+  }
+  if (/not_found|model/i.test(said) && /\b404\b/.test(raw)) {
+    return `That model is not available to this account. ${said} Check ANTHROPIC_MODEL in .env, or leave it unset to use the default.`;
+  }
+  return said;
+}
+
 export class GenerationError extends Error {
   constructor(
     message: string,
@@ -161,10 +205,7 @@ export async function generateStructured<T extends z.ZodType>({
   try {
     message = await stream.finalMessage();
   } catch (error) {
-    throw new GenerationError(
-      error instanceof Error ? error.message : "The model call failed.",
-      "api",
-    );
+    throw new GenerationError(explainApiFailure(error), "api");
   }
 
   // A safety decline arrives as a successful response, not an exception, so it
