@@ -30,7 +30,7 @@ async function main() {
     footerTemplate: `
       <div style="width:100%;font-size:8px;font-family:-apple-system,sans-serif;
                   color:#6b7570;padding:0 16mm;display:flex;justify-content:space-between">
-        <span>Groundwork — WSI ALM candidate assignment</span>
+        <span>Groundwork — candidate assignment</span>
         <span class="pageNumber"></span>
       </div>`,
     margin: { top: "16mm", bottom: "18mm", left: "16mm", right: "16mm" },
