@@ -5,9 +5,25 @@ process documents, screenshots, a website — into a requirements brief where
 every claim can be clicked back to the sentence a human actually said, then into
 an improved process, a prioritised solution outline, and a clickable prototype.
 
-Built for the *AI Business Discovery to POC* assignment. The plan it was built
-from, and the market survey behind it, is in
-[`docs/groundwork-plan.html`](docs/groundwork-plan.html).
+Built for the *AI Business Discovery to POC* assignment.
+
+**Start here**
+
+| | |
+| --- | --- |
+| Run it locally | [Running it](#running-it) — two commands, no Docker and no cloud account |
+| What it does, stage by stage | [The five stages](#the-five-stages) |
+| The idea the whole thing rests on | [Verified grounding](#the-part-that-matters-verified-grounding) |
+| Why it is built this way | [Architecture](#architecture) |
+| What I assumed, and where I could be wrong | [Assumptions](#assumptions) |
+| Plain-language explainer, 19 pages | [`docs/groundwork-explained.pdf`](docs/groundwork-explained.pdf) |
+| The plan and market survey it was built from | [`docs/groundwork-plan.html`](docs/groundwork-plan.html) |
+
+The same code is also supplied as a zip. The zip and this repository are
+identical except that the zip cannot carry the git history, and the history is
+worth a look: every feature was built on its own branch and merged separately,
+so `git log --graph --first-parent` reads as a sequence of decisions rather
+than one drop of code.
 
 ---
 
@@ -17,10 +33,24 @@ No Docker, no database server, no cloud account.
 
 ```bash
 npm install
-cp .env.example .env      # then set AUTH_SECRET — the file tells you how
-npm run setup             # migrate + seed the demo project
+cp .env.example .env
+
+# AUTH_SECRET is required — it signs session cookies. Generate one:
+node -e "console.log(require('crypto').randomBytes(48).toString('base64url'))"
+# paste it after AUTH_SECRET= in .env
+
+npm run setup             # migrate, apply RLS policies, seed the demo
 npm run dev
 ```
+
+That is enough to see everything. `ANTHROPIC_API_KEY` is **optional**: without
+it the app replays a recorded analysis of the seeded project, and the
+verification layer still runs for real against the actual documents — which is
+why the demo can show a claim failing its check. With a key set, the same code
+path calls the model. `npm run set-key` writes it into `.env` without the usual
+traps (quotes, whitespace, or a duplicate line that dotenv silently ignores),
+and the server must be restarted afterwards because `.env` is read once at
+startup.
 
 Open <http://localhost:3000>. The sign-in screen explains the product and
 carries these credentials, so there is nothing to look up. Every demo account
@@ -289,6 +319,63 @@ as a real `.docx`, a vendor-terms `.pdf`, and a screenshot of the master tracker
   months of spreadsheet history on the day the portal goes live.
 
 Stages 2 and 3 exist to surface exactly those.
+
+---
+
+## Assumptions
+
+Stated plainly, because most of them could reasonably have gone the other way.
+
+**About the assignment**
+
+- **"Scattered inputs" means formats, not volume.** I took the brief to be about
+  a handful of documents in incompatible formats, not thousands of files. That
+  ruled out a vector database and retrieval: the whole corpus fits in one
+  context window, and chunking it would make cross-document synthesis worse
+  rather than better. At a few hundred documents this decision reverses.
+- **The reviewer's time is the scarcest resource.** Hence a demo that runs with
+  no API key, no Docker and no cloud account, and a seeded engagement that shows
+  the whole flow without anyone uploading anything.
+- **A prototype the client can operate beats a prototype they look at.** The
+  assignment says "basic POC". I read that as something they can carry the
+  proposed workflow through, which is why the generated demo has working state
+  and cross-screen consequences rather than being a clickable picture.
+
+**About the product**
+
+- **A consultant will not trust output they cannot check.** Everything rests on
+  this. It is why every claim carries a verbatim quote that is re-checked
+  against the source, and why the grounding score is shown rather than hidden.
+- **A wrong claim is worse than a missing one.** So an unverifiable claim is
+  shown as unverified rather than quietly dropped, and gaps are raised as
+  questions instead of being filled with plausible guesses.
+- **Clients read what you send them and nothing else.** So the client view and
+  the exported proposal deliberately omit the conflict radar — quoting their own
+  staff disagreeing with each other is a working note for the consultant.
+
+**About the technical setting**
+
+- **Single Postgres, multi-tenant, small scale.** Row-level security in one
+  database is the right shape for tens of workspaces. A database per tenant
+  would be right at a different scale and is not this.
+- **No email service.** Invitations produce a link you copy to somebody. Adding
+  a transactional email provider is an afternoon and would have proved nothing
+  about the parts being assessed.
+- **The model changes its mind between runs.** Every artifact is versioned and
+  nothing is overwritten, and the comparison view exists because two runs of the
+  same corpus genuinely differ.
+
+**Where I could be wrong**
+
+- The verification is exact-match with a normalised and a fuzzy fallback. A
+  model that paraphrases well but quotes loosely would score badly here even
+  when it is right. I would rather that than the reverse.
+- Prompt caching is set up and does not currently pay off, for the reason
+  documented above. I kept the per-stage schemas anyway. Somebody optimising for
+  cost over output guarantees would make the opposite call.
+- The recorded-analysis fallback only describes the seeded project, and refuses
+  to run against anyone else's documents. That is deliberate, but it does mean
+  the no-key demo is a demo rather than a trial.
 
 ---
 
