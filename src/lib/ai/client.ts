@@ -16,8 +16,26 @@ export const DEFAULT_MODEL = "claude-opus-5";
 /** Cheap pass for per-document summarising at ingest. */
 export const FAST_MODEL = "claude-haiku-4-5";
 
+/**
+ * Whether there is a key worth trying.
+ *
+ * `Boolean(value)` was too generous. A line left as `ANTHROPIC_API_KEY=` reads
+ * as unset, which is right — but `= " "`, or a value still wrapped in the
+ * quotes it was pasted with, read as *set*, and the app would then announce it
+ * was analysing for real before failing deep inside an HTTP call with an
+ * authentication error that says nothing about the .env file. The three ways a
+ * key actually gets mis-set are an empty value, stray whitespace, and quotes,
+ * so all three are treated as absent.
+ */
 export function hasApiKey(): boolean {
-  return Boolean(process.env.ANTHROPIC_API_KEY);
+  return apiKey().length > 0;
+}
+
+/** The key as the SDK should receive it: unquoted and trimmed. */
+export function apiKey(): string {
+  const raw = (process.env.ANTHROPIC_API_KEY ?? "").trim();
+  const unquoted = raw.replace(/^(['"])(.*)\1$/s, "$2").trim();
+  return unquoted;
 }
 
 export function getModel(): string {
@@ -27,7 +45,7 @@ export function getModel(): string {
 let cached: Anthropic | null = null;
 function getClient(): Anthropic {
   if (!cached) {
-    cached = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+    cached = new Anthropic({ apiKey: apiKey() });
   }
   return cached;
 }
