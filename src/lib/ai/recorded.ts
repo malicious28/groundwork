@@ -957,7 +957,7 @@ function PROTOTYPE_HTML(): string {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Nova Interiors - portal prototype</title>
 <style>
-  :root{--ground:#f5f6f3;--surface:#fff;--line:#d8dcd5;--soft:#eceee9;--ink:#171c1a;--muted:#626d67;--accent:#14655a;--accent-soft:#e0eee9;--flag:#a02e22;--flag-soft:#f6e4e1;--gap:#8a6410;--gap-soft:#f5ebd6}
+  :root{--ground:#f4f7fc;--surface:#fff;--line:#cfdcee;--soft:#eaf0f9;--ink:#0d1b2e;--muted:#5f7089;--accent:#1d4ed8;--accent-soft:#e7eefc;--flag:#b42318;--flag-soft:#fdeceb;--gap:#8a5a08;--gap-soft:#fbf0da}
   *{box-sizing:border-box}
   body{margin:0;background:var(--ground);color:var(--ink);font:15px/1.55 ui-sans-serif,-apple-system,"Segoe UI",Roboto,sans-serif}
   header{background:var(--surface);border-bottom:1px solid var(--line);padding:10px 16px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
@@ -996,6 +996,9 @@ function PROTOTYPE_HTML(): string {
   section{display:none}section.active{display:block}
   .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:18px;background:var(--ink);color:#fff;padding:9px 15px;border-radius:5px;font-size:13px;opacity:0;transition:opacity .2s;pointer-events:none}
   .toast.show{opacity:1}
+  .tryit{margin:0;padding:10px 16px;background:var(--accent-soft);border-bottom:1px solid var(--line);font-size:13px;line-height:1.5}
+  .tryit b{color:var(--accent)}
+  .madeup{display:block;margin-top:2px;color:var(--muted);font-size:12px}
 </style>
 </head>
 <body>
@@ -1017,6 +1020,13 @@ function PROTOTYPE_HTML(): string {
     </select>
   </span>
 </header>
+<p class="tryit">
+  <b>Try this:</b> post an update from site and watch it appear on Anjali&rsquo;s
+  client view &mdash; then post one that mentions a cost, and see it stop in
+  Rohit&rsquo;s approval queue instead.
+  <span class="madeup">The projects, people and dates below are taken from your
+  own documents. Nothing here is a live system.</span>
+</p>
 <main>
 
 <section id="client" class="active">
