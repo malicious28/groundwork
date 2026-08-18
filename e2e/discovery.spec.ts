@@ -17,9 +17,16 @@ async function signIn(page: Page, email: string) {
   await page.getByRole("button", { name: "Sign in" }).click();
 }
 
+/** Signing in lands on the dashboard; the deep pages hang off the workspace. */
 async function openNovaProject(page: Page) {
-  await expect(page.getByRole("heading", { name: "Projects" })).toBeVisible();
-  await page.getByRole("link", { name: /Nova Interiors/ }).click();
+  await expect(
+    page.getByRole("heading", { name: /Nova Interiors/ }),
+  ).toBeVisible();
+  await page.getByRole("link", { name: "Open the full workspace" }).click();
+  // Wait for the address, not only the content: this is a client-side
+  // navigation, and a caller that reads page.url() straight after can otherwise
+  // still see the dashboard.
+  await page.waitForURL(/\/projects\/[0-9a-f-]{36}/);
   await expect(page.getByText("Evidence ledger")).toBeVisible();
 }
 
@@ -28,10 +35,13 @@ async function openNovaProject(page: Page) {
 test.describe.serial("consultant walkthrough", () => {
   test("signs in, runs discovery, and every stage lands", async ({ page }) => {
     await signIn(page, "ashika@meridian.example");
-    await openNovaProject(page);
 
-    // The ledger is populated before anything is generated.
-    await expect(page.getByText(/4 sources ·/)).toBeVisible();
+    // Everything needed to start is on the dashboard: the sources are listed
+    // and the button is there, with no navigating first.
+    await expect(
+      page.getByRole("heading", { name: /Nova Interiors/ }),
+    ).toBeVisible();
+    await expect(page.getByText(/sources ·/)).toBeVisible();
     await expect(
       page.getByRole("link", { name: /WhatsApp — Kharadi site group/ }),
     ).toBeVisible();
@@ -198,7 +208,9 @@ test.describe("tenant isolation, through the browser", () => {
 
     await context.clearCookies();
     await signIn(page, "dev@northwind.example");
-    await expect(page.getByText("Ellis & Co")).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: /Ellis & Co/ }),
+    ).toBeVisible();
     await expect(page.getByText("Nova Interiors")).toHaveCount(0);
 
     await page.goto(url);
@@ -209,7 +221,7 @@ test.describe("tenant isolation, through the browser", () => {
     await signIn(page, "rohit@novainteriors.example");
     await expect(page).toHaveURL(/\/shared$/);
 
-    await page.goto("/projects");
+    await page.goto("/dashboard");
     await expect(page).toHaveURL(/\/shared$/);
   });
 });
@@ -268,14 +280,16 @@ test.describe("the session boundary", () => {
     page,
   }) => {
     await signIn(page, "ashika@meridian.example");
-    await expect(page).toHaveURL(/\/projects/);
-    await expect(page.getByRole("heading", { name: "Projects" })).toBeVisible();
+    await expect(page).toHaveURL(/\/dashboard/);
+    await expect(
+      page.getByRole("heading", { name: /Nova Interiors/ }),
+    ).toBeVisible();
 
     await page.getByRole("button", { name: "Sign out" }).click();
     await expect(page).toHaveURL(/\/login/);
 
     // The session is gone on the server too, not just visually.
-    await page.goto("/projects");
+    await page.goto("/dashboard");
     await expect(page).toHaveURL(/\/login/);
   });
 });

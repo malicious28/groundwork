@@ -200,7 +200,7 @@ export default async function SkillsPage() {
           evidence, and server-side refusal fallbacks. All three are listed in
           the README with the reasoning — a tight complete story is worth more
           than a wider one with thin patches.{" "}
-          <Link href="/projects" className="text-accent">
+          <Link href="/dashboard" className="text-accent">
             Back to projects
           </Link>
         </p>

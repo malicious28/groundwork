@@ -54,7 +54,7 @@ export async function POST(request: Request) {
   await createSessionCookie(claims);
   return NextResponse.json({
     ok: true,
-    redirectTo: claims.role === "client" ? "/shared" : "/projects",
+    redirectTo: claims.role === "client" ? "/shared" : "/dashboard",
   });
 }
 

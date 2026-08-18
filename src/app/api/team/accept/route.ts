@@ -43,6 +43,6 @@ export async function POST(request: Request) {
 
   return Response.json({
     ok: true,
-    redirectTo: claims.role === "client" ? "/shared" : "/projects",
+    redirectTo: claims.role === "client" ? "/shared" : "/dashboard",
   });
 }

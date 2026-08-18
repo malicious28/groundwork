@@ -40,7 +40,7 @@ export function AcceptInviteForm({
     // A document load, for the same reason as the login form: accepting an
     // invitation creates the session, so everything above this page was
     // rendered for nobody.
-    window.location.assign(body.redirectTo ?? "/projects");
+    window.location.assign(body.redirectTo ?? "/dashboard");
   }
 
   return (
