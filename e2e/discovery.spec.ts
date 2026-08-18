@@ -169,6 +169,12 @@ test.describe.serial("consultant walkthrough", () => {
     const app = page.frameLocator('iframe[title="Generated prototype"]');
     await expect(app.getByRole("button", { name: "Client view" })).toBeVisible();
 
+    // It has to tell somebody what is worth trying, or they click around and
+    // conclude nothing. And it has to admit the data is invented, or a client
+    // makes decisions on numbers we made up.
+    await expect(app.getByText(/Try this:/)).toBeVisible();
+    await expect(app.getByText(/Nothing here is a live system/)).toBeVisible();
+
     // The whole point of the proposed workflow: a supervisor posts progress,
     // and it reaches the client without waiting for anyone. If this ever stops
     // working, the prototype has gone back to being a picture.
