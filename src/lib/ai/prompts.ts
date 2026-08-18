@@ -135,14 +135,19 @@ Prioritise with MoSCoW, and be strict about it: \`must\` means the first release
 
 Cite the evidence for each feature. A feature nobody asked for, however sensible, must be marked \`could\` at best and its rationale must say plainly that it was your idea rather than the client's.`;
 
-export const PROTOTYPE_INSTRUCTION = `Build the clickable prototype.
+export const PROTOTYPE_INSTRUCTION = `Build a prototype the client can test the idea in, not a mock-up they look at.
 
-Produce one self-contained HTML document that demonstrates the \`must\` features. It renders inside a sandboxed iframe with no network access, so everything has to be inline — no external stylesheets, scripts, fonts or images of any kind.
+The distinction is the whole point. A clickable picture proves nothing. What is needed is a small working tool where the client can carry out the proposed workflow themselves and find out whether it actually holds up — where an action they take has a visible consequence somewhere else, exactly as it would in the real system.
 
-Requirements:
-- Three to five screens, switched by JavaScript. Working navigation between them.
-- Seed it with the client's real vocabulary: their people, their project names, their statuses, their terminology, taken from the sources. Generic placeholder data wastes the whole exercise.
-- Make it legible rather than decorative: readable type, clear hierarchy, obvious controls. Assume it will be shown on a laptop to a non-technical client.
-- No lorem ipsum, and no features outside the \`must\` list.
+Produce one self-contained HTML document. It renders inside a sandboxed iframe with no network access, so everything must be inline — no external stylesheets, scripts, fonts or images.
 
-Return the complete document in \`html\`, starting at \`<!doctype html>\`.`;
+It must genuinely work:
+- Hold the data in a JavaScript object at the top of the script, seeded with the client's real project names, people, statuses and vocabulary taken from the sources. Render every screen from that object.
+- Every action mutates that object and re-renders. Adding an item makes it appear in the list. Approving something moves it out of the queue and changes its status on the screen that shows it. Filtering actually filters.
+- Consequences must cross screens. The single most convincing thing you can build is an action on one screen that visibly changes another — a supervisor posting an update, and the client's own view then showing it. Build at least one of those.
+- Never use alert() to stand in for an action. If a button cannot do something real, do not put it there.
+- Persist to localStorage under one key, and include a "Reset demo" control, so the client can experiment freely and put it back.
+
+Three to five screens, switched by JavaScript, with working navigation. Make it legible rather than decorative: readable type, clear hierarchy, obvious controls. Assume it is shown on a laptop to a non-technical client.
+
+No lorem ipsum, no placeholder names, and nothing outside the \`must\` features. Return the complete document in \`html\`, starting at \`<!doctype html>\`.`;
