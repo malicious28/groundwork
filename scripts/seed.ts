@@ -10,9 +10,9 @@ import {
   projects,
   sources,
   evidenceSpans,
-  type SourceKind,
 } from "../src/db/schema";
 import { withTenant } from "../src/db/tenant";
+import { DEMO_ACCOUNTS, DEMO_PASSWORD, DEMO_SOURCES } from "../src/lib/demo";
 import { hashPassword } from "../src/lib/auth/password";
 import { parseSource } from "../src/lib/parsers";
 
@@ -31,55 +31,7 @@ import { parseSource } from "../src/lib/parsers";
  */
 
 const FIXTURES = resolve(process.cwd(), "fixtures/nova-interiors");
-const PASSWORD = "demo1234";
-
-type SourceFixture = {
-  ref: string;
-  kind: SourceKind;
-  label: string;
-  file: string;
-  filename: string;
-  mimeType: string;
-};
-
-const NOVA_SOURCES: SourceFixture[] = [
-  {
-    ref: "kickoff-call",
-    kind: "transcript",
-    label: "Kickoff call — 12 March",
-    file: "kickoff-call.vtt",
-    filename: "Nova Interiors - discovery call 1.vtt",
-    mimeType: "text/vtt",
-  },
-  {
-    ref: "followup-call",
-    kind: "transcript",
-    label: "Follow-up call — 26 March",
-    file: "followup-call.vtt",
-    filename: "Nova Interiors - discovery call 2.vtt",
-    mimeType: "text/vtt",
-  },
-  {
-    ref: "whatsapp-site-group",
-    kind: "whatsapp",
-    label: "WhatsApp — Kharadi site group",
-    file: "whatsapp-site-coordination.txt",
-    filename: "WhatsApp Chat with Nova - Kharadi 3BHK - Site.txt",
-    mimeType: "text/plain",
-  },
-  {
-    ref: "handover-sop",
-    // The fixture holds the text a DOCX extractor produces, so the shape of
-    // this row matches what the upload path will write once that extractor
-    // lands. The binary itself is not in the repository.
-    kind: "docx",
-    label: "Project Handover SOP v3.1",
-    file: "project-handover-sop.md",
-    filename: "Nova Interiors - Project Handover SOP v3.1.docx",
-    mimeType:
-      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-  },
-];
+const PASSWORD = DEMO_PASSWORD;
 
 async function main() {
   const db = getDb();
@@ -165,7 +117,7 @@ async function main() {
       .returning();
     if (!project) throw new Error("project insert failed");
 
-    for (const fixture of NOVA_SOURCES) {
+    for (const fixture of DEMO_SOURCES) {
       const content = readFileSync(resolve(FIXTURES, fixture.file), "utf8");
       const parsed = parseSource(content, fixture.kind, fixture.filename);
 
@@ -184,6 +136,11 @@ async function main() {
           parseStatus: "ready",
           spanCount: parsed.spans.length,
           meta: parsed.meta,
+          // Bare base64, no data: prefix — the evidence panel builds the URI
+          // itself, exactly as it does for an uploaded screenshot.
+          imageData: fixture.image
+            ? readFileSync(resolve(FIXTURES, fixture.image)).toString("base64")
+            : null,
         })
         .returning();
       if (!source) throw new Error(`source insert failed: ${fixture.ref}`);

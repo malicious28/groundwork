@@ -169,6 +169,45 @@ export const RECORDED_BRIEF: Brief = {
 
   painPoints: [
     {
+      title: "The tracker everyone is supposed to trust is eleven days stale",
+      detail:
+        "The master spreadsheet is the only place a project's real state is written down, and the copy on the shared drive was last touched by Priya eleven days ago. Half the stages on the open project have a planned date and nothing else against them, so the sheet cannot answer the question it exists to answer.",
+      severity: 3,
+      whoFeelsIt: "Head of Operations, founder, anyone asked for a date",
+      confidence: "explicit",
+      citations: [
+        {
+          sourceRef: "master-tracker",
+          quote: "last saved by Priya 11 days ago",
+        },
+        {
+          sourceRef: "master-tracker",
+          quote:
+            "have a planned date and nothing else; Owner, Actual and Client told? are all empty",
+        },
+      ],
+    },
+    {
+      title: "Late deliveries cost Nova money and are recorded nowhere",
+      detail:
+        "The vendor terms put the cost of idle labour on Nova rather than the supplier, and no penalty attaches to slippage. Because delivery dates are agreed over WhatsApp with nothing written down, there is no record to reconcile against when a delivery does not arrive.",
+      severity: 3,
+      whoFeelsIt: "Head of Operations, site team, founder",
+      confidence: "explicit",
+      citations: [
+        {
+          sourceRef: "vendor-terms",
+          quote:
+            "Idle labour caused by a late delivery is borne by Nova Interiors, not the vendor.",
+        },
+        {
+          sourceRef: "vendor-terms",
+          quote:
+            "Vendors confirm delivery dates by WhatsApp; no written confirmation is required.",
+        },
+      ],
+    },
+    {
       title: "The founder is the status switchboard",
       detail:
         "Clients call Rohit because he is the number they have, and every question becomes a chain down to site and back before anyone can answer it.",
@@ -266,6 +305,22 @@ export const RECORDED_BRIEF: Brief = {
   ],
 
   requirements: [
+    {
+      text: "Expected delivery dates recorded against each material order, so a slipped date is visible rather than remembered",
+      category: "functional",
+      confidence: "inferred",
+      citations: [
+        {
+          sourceRef: "vendor-terms",
+          quote:
+            "Delivery slippage is not tracked centrally and no penalty applies.",
+        },
+        {
+          sourceRef: "master-tracker",
+          quote: "Hardware delivery (Hettich) | Deshmukh Traders | 14-Mar | not delivered",
+        },
+      ],
+    },
     {
       text: "A per-project client view showing current stage, what is next, and the expected completion date",
       category: "functional",
